@@ -1,8 +1,12 @@
+import Link from "next/link";
 import Image from "next/image";
+import { getProperties } from "./lib/data";
 
 // app/page.tsx (Versi Awal)
 
-export default function Home() {
+export default async function Home() {
+  const properties = await getProperties();
+
   return (
     <main className="min-h-screen">
       {/* HERO SECTION */}
@@ -32,6 +36,23 @@ export default function Home() {
           </button>
         </div>
       </section>
+      {/* PROPERTY SELECTION SECTION */}
+      <section className="relative z-10 -mt-10 px-6">
+        <div className="max-w-[1200px] mx-auto overflow-x-auto pb-4 no-scrollbar">
+          <div className="flex gap-3 justify-start md:justify-center min-w-max">
+            {properties.map((prop: any) => (
+              <Link
+                key={prop.id}
+                href={`/${prop.id}`}
+                className="px-6 py-3 rounded-full font-display text-sm font-medium transition-all duration-300 border bg-bg-glass text-text-secondary border-border-glass hover:border-accent hover:text-accent-light hover:bg-white/5"
+              >
+                {prop.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
 
       {/* SIMPLE FOOTER */}
       <footer className="py-12 px-6 border-t border-white/10 text-center">
