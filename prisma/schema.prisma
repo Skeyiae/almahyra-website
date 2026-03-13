@@ -30,4 +30,21 @@ model Property {
   imagesPremium       Json?    @default("[]")
   mortgageSchemes    Json?    @default("[]")
   units              Unit[]
-}  
+}
+
+model Unit {
+  id           String   @id
+  propertyId   String
+  label        String?  // e.g., "A-01", "B-05"
+  property     Property @relation(fields: [propertyId], references: [id])
+  type         String
+  price        String
+  status       String
+  features     String[]
+  bedrooms     Int?     @default(2)
+  bathrooms    Int?     @default(1)
+  buildingArea Int?     @default(36)
+  landArea     Int?     @default(72)
+  electricity  String?  @default("1300 VA")
+  waterSource  String?  @default("Sumur Bor")
+}
