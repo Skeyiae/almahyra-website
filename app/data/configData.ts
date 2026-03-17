@@ -99,4 +99,18 @@ export const models: Model[] = [
             },
         ],
     },
+    {
+        id: "model-elok-1",
+        propertyId: "griya-elok",
+        name: "Griya Elok Luxury",
+        description: "Kenyamanan eksklusif di Griya Elok",
+        variants: [
+            {
+                id: "elok-v1",
+                label: "Premium",
+                color: "#8B6914",
+                image: "https://res.cloudinary.com/daoubepeo/image/upload/v1/models/model-exterior-brown.png",
+            },
+        ],
+    },
 ];
