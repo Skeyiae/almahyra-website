@@ -85,4 +85,18 @@ export const models: Model[] = [
             },
         ],
     },
+    {
+        id: "model-arraz-1",
+        propertyId: "arraz",
+        name: "ARRAZ Residence",
+        description: "Hunian asri di Srimahi City",
+        variants: [
+            {
+                id: "arraz-v1",
+                label: "Modern",
+                color: "#c9a96e",
+                image: "https://res.cloudinary.com/daoubepeo/image/upload/v1/models/model-exterior-white.png",
+            },
+        ],
+    },
 ];
