@@ -127,4 +127,18 @@ export const models: Model[] = [
             },
         ],
     },
+    {
+        id: "model-nayra-1",
+        propertyId: "nayra",
+        name: "Nayra House",
+        description: "Hunian minimalis dengan udara sejuk",
+        variants: [
+            {
+                id: "nayra-v1",
+                label: "Standard",
+                color: "#7a6b5d",
+                image: "https://res.cloudinary.com/daoubepeo/image/upload/v1/models/interior-living.png",
+            },
+        ],
+    },
 ];
