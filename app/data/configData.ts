@@ -42,4 +42,18 @@ export const models: Model[] = [
             },
         ],
     },
+    {
+        id: "model-kurnia-1",
+        propertyId: "kurnia-jaya",
+        name: "Kurnia Jaya Luxury",
+        description: "Hunian mewah dengan konsep alam di Kurnia Jaya",
+        variants: [
+            {
+                id: "natural",
+                label: "Natural",
+                color: "#7a6b5d",
+                image: "https://res.cloudinary.com/daoubepeo/image/upload/v1/models/interior-living.png",
+            },
+        ],
+    },
 ];
