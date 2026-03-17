@@ -56,4 +56,19 @@ export const models: Model[] = [
             },
         ],
     },
+    // Tambahkan model untuk perumahan lain di sini dengan propertyId yang sesuai
+    {
+        id: "model-jati-1",
+        propertyId: "jati-asri",
+        name: "Jati Asri Classic",
+        description: "Nuansa kayu klasik di Jati Asri",
+        variants: [
+            {
+                id: "oak",
+                label: "Oak",
+                color: "#4a3728",
+                image: "https://res.cloudinary.com/daoubepeo/image/upload/v1/models/interior-bedroom.png",
+            },
+        ],
+    },
 ];
