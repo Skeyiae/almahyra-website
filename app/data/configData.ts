@@ -141,4 +141,18 @@ export const models: Model[] = [
             },
         ],
     },
+    {
+        id: "model-reno-1",
+        propertyId: "reno",
+        name: "Reno Residence",
+        description: "Pilihan tepat untuk investasi masa depan",
+        variants: [
+            {
+                id: "reno-v1",
+                label: "Classic",
+                color: "#4a3728",
+                image: "https://res.cloudinary.com/daoubepeo/image/upload/v1/models/model-exterior-brown.png",
+            },
+        ],
+    },
 ];
