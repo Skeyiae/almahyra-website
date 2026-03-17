@@ -113,4 +113,18 @@ export const models: Model[] = [
             },
         ],
     },
+    {
+        id: "model-arsy-1",
+        propertyId: "arsy",
+        name: "ARSY Modern House",
+        description: "Desain masa kini untuk keluarga dinamis",
+        variants: [
+            {
+                id: "arsy-v1",
+                label: "White",
+                color: "#f5f0e8",
+                image: "https://res.cloudinary.com/daoubepeo/image/upload/v1/models/model-exterior-white.png",
+            },
+        ],
+    },
 ];
