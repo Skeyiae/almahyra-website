@@ -155,4 +155,18 @@ export const models: Model[] = [
             },
         ],
     },
+    {
+        id: "model-green-1",
+        propertyId: "green-permana",
+        name: "Green Permana Eco",
+        description: "Konsep ramah lingkungan di Green Permana",
+        variants: [
+            {
+                id: "green-v1",
+                label: "Eco",
+                color: "#2d5a27",
+                image: "https://res.cloudinary.com/daoubepeo/image/upload/v1/models/model-exterior-white.png",
+            },
+        ],
+    }
 ];
