@@ -71,4 +71,18 @@ export const models: Model[] = [
             },
         ],
     },
+    {
+        id: "model-pandora-1",
+        propertyId: "pandora-subsidi",
+        name: "Pandora Residence",
+        description: "Hunian mewah dengan konsep alam di Pandora Residence",
+        variants: [
+            {
+                id: "natural",
+                label: "Natural",
+                color: "#7a6b5d",
+                image: "https://res.cloudinary.com/daoubepeo/image/upload/v1/models/interior-living.png",
+            },
+        ],
+    },
 ];
