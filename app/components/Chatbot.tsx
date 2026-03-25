@@ -18,3 +18,9 @@ interface Message {
     sender: "bot" | "user";
     timestamp: Date;
 }
+
+interface ChatbotProps {
+    salesPhone?: string;
+    salesName?: string;
+    propertyName?: string;
+}
