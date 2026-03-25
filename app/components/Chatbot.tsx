@@ -134,3 +134,22 @@ export default function Chatbot({
                 response = "Wah, sepertinya saat ini unit kami sedang penuh. Silakan hubungi Sales kami untuk info daftar tunggu (waitlist).";
             }
         }
+        // 4. Default
+        else {
+            response = "Maaf, saya belum mengenali perintah itu. 🙏\n\n" +
+                "Coba ketik **'Harga'**, **'Unit Kosong'**, atau langsung ketik ID unit yang ingin Anda ketahui (contoh: **A-01**).";
+        }
+
+        const botMsg: Message = {
+            id: (Date.now() + 1).toString(),
+            text: response,
+            sender: "bot",
+            timestamp: new Date(),
+        };
+
+        setMessages((prev) => [...prev, botMsg]);
+    };
+
+    const handleQuickAction = (action: string) => {
+        handleSend(action);
+    };
