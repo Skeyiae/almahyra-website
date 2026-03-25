@@ -34,3 +34,29 @@ interface PropertyInteractiveContentProps {
     imagesPremium?: any;
     mortgageSchemes?: any;
 }
+
+export default function PropertyInteractiveContent({
+    propertyId,
+    propertyName,
+    units,
+    landmarks,
+    locationText,
+    sitePlanImage,
+    mapUrl,
+    imagesStandard,
+    imagesPremium,
+    mortgageSchemes
+}: PropertyInteractiveContentProps) {
+    // State untuk unit yang sedang dipilih
+    const [selectedUnit, setSelectedUnit] = useState<Unit | null>(units.length > 0 ? units[0] : null);
+
+    // Fungsi untuk update specs berdasarkan unit yang dipilih
+    const specs = selectedUnit ? [
+        { label: "Kamar Tidur", value: `${selectedUnit.bedrooms} Unit`, icon: "bed" as const },
+        { label: "Kamar Mandi", value: `${selectedUnit.bathrooms} Unit`, icon: "bath" as const },
+        { label: "Listrik", value: selectedUnit.electricity || "1300 VA", icon: "power" as const },
+        { label: "Sumber Air", value: selectedUnit.waterSource || "Sumur Bor", icon: "water" as const },
+        { label: "Luas Bangunan", value: `${selectedUnit.buildingArea} m²`, icon: "home" as const },
+        { label: "Luas Tanah", value: `${selectedUnit.landArea} m²`, icon: "layout" as const },
+    ] : [];
+
