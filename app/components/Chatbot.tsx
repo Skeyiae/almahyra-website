@@ -50,3 +50,32 @@ export default function Chatbot({
             .then(data => setUnits(data))
             .catch(err => console.error("Failed to fetch units:", err));
     }, []);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        if (isOpen) {
+            scrollToBottom();
+        }
+    }, [messages, isOpen]);
+
+    const handleSend = (text: string = inputValue) => {
+        if (!text.trim()) return;
+
+        const userMsg: Message = {
+            id: Date.now().toString(),
+            text,
+            sender: "user",
+            timestamp: new Date(),
+        };
+
+        setMessages((prev) => [...prev, userMsg]);
+        setInputValue("");
+
+        // Simple Bot Logic
+        setTimeout(() => {
+            processBotResponse(text.toLowerCase());
+        }, 600);
+    };
