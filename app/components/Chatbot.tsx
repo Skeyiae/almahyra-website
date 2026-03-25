@@ -24,3 +24,18 @@ interface ChatbotProps {
     salesName?: string;
     propertyName?: string;
 }
+
+export default function Chatbot({
+    salesPhone = "62895610098292",
+    salesName = "Almahyra Sales",
+    propertyName = "Almahyra"
+}: ChatbotProps) {
+    const [isOpen, setIsOpen] = useState(false);
+    const [messages, setMessages] = useState<Message[]>([
+        {
+            id: "1",
+            text: `Halo! Saya Asisten Virtual ${propertyName}. Ada yang bisa saya bantu hari ini?`,
+            sender: "bot",
+            timestamp: new Date(),
+        },
+    ]);
