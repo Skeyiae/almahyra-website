@@ -39,3 +39,14 @@ export default function Chatbot({
             timestamp: new Date(),
         },
     ]);
+    const [inputValue, setInputValue] = useState("");
+    const [units, setUnits] = useState<Unit[]>([]);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    // Fetch units from Supabase on mount
+    useEffect(() => {
+        fetch("/api/units")
+            .then(res => res.json())
+            .then(data => setUnits(data))
+            .catch(err => console.error("Failed to fetch units:", err));
+    }, []);
