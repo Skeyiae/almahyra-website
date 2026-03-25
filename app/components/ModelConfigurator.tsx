@@ -152,3 +152,26 @@ function ModelCard({ model }: ModelCardProps) {
                         </button>
                     ))}
                 </div>
+
+                {/* Thumbnails */}
+                <div className="flex gap-2.5 mt-5 overflow-x-auto pb-1 scrollbar-hide">
+                    {model.variants.map((variant, idx) => (
+                        <button
+                            key={variant.id}
+                            className={`w-20 h-[54px] rounded-sm overflow-hidden cursor-pointer border-2 transition-fast flex-shrink-0 ${idx === activeIndex ? "border-accent opacity-100" : "border-transparent opacity-50 hover:opacity-80"}`}
+                            onClick={() => setActiveIndex(idx)}
+                        >
+                            <Image
+                                src={variant.image}
+                                alt={variant.label}
+                                width={80}
+                                height={54}
+                                className="w-full h-full object-cover"
+                            />
+                        </button>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
