@@ -81,3 +81,28 @@ function ModelCard({ model }: ModelCardProps) {
                     </p>
                 </div>
             </div>
+            {/* Image Viewer */}
+            <div className="relative px-8 py-6">
+                <div className="relative w-full aspect-[16/10] rounded-md overflow-hidden bg-background-secondary">
+                    {model.variants.map((variant, idx) => (
+                        <Image
+                            key={variant.id}
+                            src={variant.image}
+                            alt={`${model.name} - ${variant.label}`}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 1200px"
+                            className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out ${idx === activeIndex ? "opacity-100" : "opacity-0"}`}
+                            priority={idx === 0}
+                        />
+                    ))}
+
+                    {/* Overlay Info */}
+                    <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/70 to-transparent flex items-end justify-between">
+                        <span className="font-display text-[0.9rem] font-medium text-white px-4 py-1.5 bg-white/15 rounded-full backdrop-blur-md">
+                            {activeVariant.label}
+                        </span>
+                        <span className="text-[0.8rem] text-white/60 font-normal">
+                            {activeIndex + 1} / {model.variants.length}
+                        </span>
+                    </div>
+                </div>
