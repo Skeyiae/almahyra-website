@@ -149,3 +149,50 @@ export default function MortgageCalculator({
                                 <ChevronDown className={`transition-transform duration-300 ${showTable ? "rotate-180" : ""}`} size={14} />
                             </button>
                         </div>
+
+                        {/* Breakdown Table */}
+                        <AnimatePresence>
+                            {showTable && (
+                                <motion.div
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: "auto" }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                    className="overflow-hidden"
+                                >
+                                    <div className="mt-4 p-5 rounded-2xl bg-black/30 border border-white/5">
+                                        <div className="flex items-center gap-2 mb-4 text-[0.7rem] font-bold text-text-secondary uppercase">
+                                            <Table size={14} />
+                                            Rincian {selectedBank.name}
+                                        </div>
+                                        <table className="w-full text-left">
+                                            <thead>
+                                                <tr className="border-b border-white/10">
+                                                    <th className="py-2 text-[0.65rem] text-text-muted uppercase font-bold">Periode</th>
+                                                    <th className="py-2 text-[0.65rem] text-text-muted uppercase font-bold text-right">Angsuran</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-white/[0.05]">
+                                                {selectedOption.periods.map((period: any, idx: number) => (
+                                                    <tr key={idx} className="group">
+                                                        <td className="py-3 text-sm text-text-secondary font-medium">{period.label}</td>
+                                                        <td className="py-3 text-sm text-white font-bold text-right">
+                                                            {formatCurrency(Math.round(period.monthlyPayment * scalingFactor))}
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        <p className="text-[0.6rem] text-text-muted italic opacity-50 font-light leading-relaxed">
+                            *Estimasi angsuran dihitung berdasarkan harga unit {formatCurrency(price)}.
+                            Angka di atas bersifat simulasi dan dapat berubah sesuai kebijakan bank.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
