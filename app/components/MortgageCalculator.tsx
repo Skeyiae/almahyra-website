@@ -125,3 +125,27 @@ export default function MortgageCalculator({
                                 </div>
                             </div>
                         )}
+
+                        {/* Main Pricing Insight */}
+                        <div className="p-6 rounded-2xl bg-white/5 border border-border-glass relative group overflow-hidden">
+                            <div className="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-40 transition-opacity">
+                                <CreditCard size={40} />
+                            </div>
+
+                            <div className="flex items-center gap-2 text-text-muted text-[0.65rem] uppercase tracking-widest mb-4 font-semibold">
+                                Estimasi Angsuran ({selectedOption.periods[0].label})
+                            </div>
+
+                            <div className="text-3xl font-display font-extrabold text-white tracking-tight">
+                                {formatCurrency(Math.round(selectedOption.periods[0].monthlyPayment * scalingFactor))}
+                                <span className="text-[0.4em] font-light text-text-muted ml-2">/bulan*</span>
+                            </div>
+
+                            <button
+                                onClick={() => setShowTable(!showTable)}
+                                className="mt-6 w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-accent/10 border border-accent/20 text-accent text-[0.65rem] font-bold uppercase tracking-widest hover:bg-accent/20 transition-all"
+                            >
+                                {showTable ? "Tutup Rincian" : "Lihat Tabel Angsuran"}
+                                <ChevronDown className={`transition-transform duration-300 ${showTable ? "rotate-180" : ""}`} size={14} />
+                            </button>
+                        </div>
