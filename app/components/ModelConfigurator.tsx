@@ -175,3 +175,44 @@ function ModelCard({ model }: ModelCardProps) {
         </div>
     );
 }
+
+interface ModelConfiguratorProps {
+    activePropertyId?: string;
+    propertyName?: string;
+    sitePlanImage?: string | null;
+    units: Unit[];
+    onUnitSelect?: (unit: any) => void;
+    selectedUnitId?: string;
+    imagesStandard?: any;
+    imagesPremium?: any;
+}
+
+export default function ModelConfigurator({
+    activePropertyId,
+    propertyName,
+    sitePlanImage,
+    units,
+    onUnitSelect,
+    selectedUnitId,
+    imagesStandard,
+    imagesPremium
+}: ModelConfiguratorProps) {
+    const [filter, setFilter] = useState<"All" | "Standard" | "Premium">("All");
+
+    // Filter units based on the selected type
+    const filteredUnits = units.filter((unit: any) => {
+        if (filter === "All") return true;
+
+        const unitType = unit.type.toLowerCase();
+        const filterType = filter.toLowerCase();
+
+        // Direct match (e.g., "Premium" in "Type 70 Premium")
+        if (unitType.includes(filterType)) return true;
+
+        // Custom mapping for dimension-based types
+        if (filter === "Standard" && unitType.includes("60x84")) return true;
+        if (filter === "Premium" && unitType.includes("80x105")) return true;
+
+        return false;
+    });
+
