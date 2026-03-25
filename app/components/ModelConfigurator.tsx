@@ -299,4 +299,95 @@ export default function ModelConfigurator({
                 </div>
             )}
 
+            {/* Unit Status Table */}
+            <div className="mt-8 animate-fade-in-up">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+                    <div>
+                        <h3 className="font-display text-2xl font-bold text-text-primary">Status & Stok Unit</h3>
+                        <p className="text-text-secondary text-sm font-light mt-1">Klik pada baris unit untuk melihat detail spesifikasi</p>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-3">
+                        <div className="flex bg-white/5 p-1 rounded-lg border border-white/10">
+                            {(["All", "Standard", "Premium"] as const).map((t) => (
+                                <button
+                                    key={t}
+                                    onClick={() => setFilter(t)}
+                                    className={`px-4 py-1.5 rounded-md text-[0.75rem] font-bold transition-all ${filter === t
+                                        ? "bg-accent text-background-primary shadow-lg"
+                                        : "text-text-secondary hover:text-text-primary hover:bg-white/5"
+                                        }`}
+                                >
+                                    {t === "All" ? "SEMUA" : t.toUpperCase()}
+                                </button>
+                            ))}
+                        </div>
+
+                        <div className="h-6 w-px bg-white/10 hidden md:block mx-1"></div>
+
+                        <div className="flex gap-4 text-[0.7rem] font-medium uppercase tracking-wider text-text-muted">
+                            <div className="flex items-center gap-1.5">
+                                <span className="w-2 h-2 rounded-full bg-emerald-500"></span> Available
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                <span className="w-2 h-2 rounded-full bg-amber-500"></span> Booked
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                <span className="w-2 h-2 rounded-full bg-rose-500"></span> Sold
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {filteredUnits.length > 0 ? (
+                    <div className="bg-bg-card border border-border-glass rounded-xl overflow-hidden glass-blur shadow-2xl">
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left border-collapse">
+                                <thead>
+                                    <tr className="bg-white/5 border-b border-white/10">
+                                        <th className="px-6 py-4 font-display text-sm font-bold text-text-primary">No. Kapling</th>
+                                        <th className="px-6 py-4 font-display text-sm font-bold text-text-primary">Tipe</th>
+                                        <th className="px-6 py-4 font-display text-sm font-bold text-text-primary">Harga</th>
+                                        <th className="px-6 py-4 font-display text-sm font-bold text-text-primary">Status</th>
+                                        <th className="px-6 py-4 font-display text-sm font-bold text-text-primary">Fasilitas</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-white/5">
+                                    {filteredUnits.map((unit: any) => (
+                                        <tr
+                                            key={unit.id}
+                                            className={`cursor-pointer transition-all duration-200 ${selectedUnitId === unit.id ? 'bg-accent/10 border-l-4 border-l-accent' : 'hover:bg-white/[0.05] border-l-4 border-l-transparent'}`}
+                                            onClick={() => onUnitSelect?.(unit)}
+                                        >
+                                            <td className="px-6 py-4 font-body text-sm font-bold text-accent">{unit.label || unit.id}</td>
+                                            <td className="px-6 py-4 font-body text-sm text-text-secondary">{unit.type}</td>
+                                            <td className="px-6 py-4 font-body text-sm text-text-primary font-semibold">Rp {unit.price}</td>
+                                            <td className="px-6 py-4">
+                                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${unit.status === 'Available' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                                                    unit.status === 'Booked' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
+                                                        'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                                                    }`}>
+                                                    {unit.status}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 font-body text-[11px] text-text-muted leading-relaxed">
+                                                {unit.features.join(", ")}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="text-center py-12 border border-dashed border-border-glass rounded-xl">
+                        <p className="text-text-muted font-body">Belum ada data unit untuk perumahan ini.</p>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+
 
