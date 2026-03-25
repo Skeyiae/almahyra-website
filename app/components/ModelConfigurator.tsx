@@ -216,3 +216,31 @@ export default function ModelConfigurator({
         return false;
     });
 
+    // Build separate models for Standard and Premium types
+    const dbModels = useMemo(() => {
+        const models = [];
+
+        // Helper to convert arrays of {label, url} to variants
+        const buildVariants = (data: any, suffix: string) => {
+            if (!data || !Array.isArray(data)) return [];
+            return data.map((img: any, idx: number) => ({
+                id: `db-${suffix}-${idx}`,
+                label: img.label || `Tampilan ${idx + 1}`,
+                color: suffix === 'standard' ? "#f5f0e8" : "#8B6914",
+                image: img.url,
+                category: suffix === 'standard' ? "Standard" : "Premium"
+            }));
+        };
+
+        const standardVariants = buildVariants(imagesStandard, 'standard');
+        if (standardVariants.length > 0) {
+            models.push({
+                id: `db-model-standard-${activePropertyId}`,
+                propertyId: activePropertyId || "",
+                name: `${propertyName} - Tipe Standard`,
+                description: `Visualisasi lengkap unit tipe Standard`,
+                variants: standardVariants,
+                category: "Standard"
+            });
+        }
+
