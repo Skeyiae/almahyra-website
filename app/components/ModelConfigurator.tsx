@@ -106,3 +106,28 @@ function ModelCard({ model }: ModelCardProps) {
                         </span>
                     </div>
                 </div>
+
+                {/* Navigation Arrows */}
+                {model.variants.length > 1 && (
+                    <div className="absolute top-1/2 left-8 right-8 -translate-y-1/2 flex justify-between pointer-events-none z-[5]">
+                        <button
+                            className="w-11 h-11 rounded-full bg-black/50 border border-white/10 text-white flex items-center justify-center cursor-pointer pointer-events-auto transition-fast backdrop-blur-md hover:bg-[rgba(201,169,110,0.3)] hover:border-accent hover:scale-110"
+                            onClick={handlePrev}
+                            aria-label="Previous"
+                        >
+                            <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        <button
+                            className="w-11 h-11 rounded-full bg-black/50 border border-white/10 text-white flex items-center justify-center cursor-pointer pointer-events-auto transition-fast backdrop-blur-md hover:bg-[rgba(201,169,110,0.3)] hover:border-accent hover:scale-110"
+                            onClick={handleNext}
+                            aria-label="Next"
+                        >
+                            <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                )}
+            </div>
