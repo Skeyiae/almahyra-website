@@ -79,3 +79,30 @@ export default function Chatbot({
             processBotResponse(text.toLowerCase());
         }, 600);
     };
+
+    const processBotResponse = (input: string) => {
+        let response = "";
+        const cleanInput = input.trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
+
+        // 1. Cek apakah input adalah ID Unit atau Label spesifik (misal: A-01)
+        const matchedUnit = units.find(u => {
+            const unitIdClean = u.id.toUpperCase().replace(/[^A-Z0-9]/g, "");
+            const unitLabelClean = u.label?.toUpperCase().replace(/[^A-Z0-9]/g, "");
+            return unitIdClean === cleanInput || unitLabelClean === cleanInput;
+        });
+
+        if (matchedUnit) {
+            const statusEmoji = matchedUnit.status === "Available" ? "✅" : matchedUnit.status === "Booked" ? "🟡" : "🔴";
+            const displayLabel = matchedUnit.label || matchedUnit.id;
+
+            response = `Baik! Berikut adalah detail untuk unit **${displayLabel}**:\n\n` +
+                `SPESIFIKASI|DETAIL\n` +
+                `Unit|${displayLabel}\n` +
+                `ID Sistem|${matchedUnit.id}\n` +
+                `Lokasi|${matchedUnit.propertyId}\n` +
+                `Tipe|${matchedUnit.type}\n` +
+                `Harga|Rp ${matchedUnit.price}\n` +
+                `Status|${statusEmoji} ${matchedUnit.status}\n` +
+                `Fasilitas|${matchedUnit.features.join(", ")}\n\n` +
+                `Apakah Anda tertarik untuk survey lokasi atau memesan unit ini? Anda bisa langsung chat Sales kami.`;
+        }
