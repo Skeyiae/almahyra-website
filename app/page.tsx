@@ -1,46 +1,63 @@
 import Link from "next/link";
-import Image from "next/image";
-import { getProperties } from "./lib/data";
-
-// app/page.tsx (Versi Awal)
+import ModelConfigurator from "./components/ModelConfigurator";
+import { getProperties, getUnitsByPropertyId } from "./lib/data";
+import Chatbot from "./components/Chatbot";
 
 export default async function Home() {
   const properties = await getProperties();
+  const activeProperty = properties[0]; // Home page displays the first property by default
+
+  // Fetch units for the first property to pass to configurator
+  const units = activeProperty ? await getUnitsByPropertyId(activeProperty.id) : [];
 
   return (
     <main className="min-h-screen">
       {/* HERO SECTION */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 py-10 overflow-hidden">
-        {/* Background Glow Effect */}
-        <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-accent/20 rounded-full blur-[120px] pointer-events-none z-0" />
+      <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 py-10 overflow-hidden" id="hero">
+        {/* Hero Background Glow */}
+        <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[800px] h-[800px] hero-gradient opacity-40 pointer-events-none z-0" />
 
-        <div className="relative z-[2] max-w-[800px] animate-fade-in-up">
-          <span className="inline-flex items-center gap-2 px-5 py-2 mb-8 bg-white/5 border border-white/10 rounded-full font-body text-[0.85rem] text-accent-light backdrop-blur-md">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+        {/* Bottom Fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-[200px] bg-gradient-to-t from-background-primary to-transparent pointer-events-none z-[1]" />
+
+        <div className="relative z-[2] max-width-[800px] animate-fade-in-up">
+          <span className="inline-flex items-center gap-2 px-5 py-2 mb-8 bg-bg-glass border border-border-glass rounded-full font-body text-[0.85rem] color-accent-light glass-blur">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_10px_var(--accent-glow)] animate-pulse-dot" />
             Almahya Property - Welcome
           </span>
 
-          <h1 className="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold tracking-[-2px] leading-[1.1] mb-6 text-white capitalize">
-            Modern Living <br />
-            <span className="opacity-60 font-light tracking-[8px] uppercase text-[0.35em]">Redefined</span>
+          <h1 className="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold tracking-[-2px] leading-[1.1] mb-6 text-gradient capitalize">
+            {activeProperty?.titleTop || "Modern Living"}
+            <span className="block text-[0.35em] font-light tracking-[8px] uppercase opacity-60 mt-3">
+              {activeProperty?.titleBottom || "Redefined"}
+            </span>
           </h1>
 
-          <p className="font-body text-[clamp(1rem,2vw,1.25rem)] text-gray-400 max-w-[550px] mx-auto mb-12 font-light leading-relaxed">
+          <p className="font-body text-[clamp(1rem,2vw,1.25rem)] text-text-secondary max-w-[550px] mx-auto mb-12 font-light leading-relaxed">
             Kami menghadirkan desain arsitektur dan interior yang memadukan
             estetika modern dengan fungsionalitas — menciptakan ruang yang
-            nyaman bagi keluarga Anda.
+            menginspirasi dan nyaman untuk ditinggali oleh keluarga Anda.
           </p>
 
-          <button className="inline-flex items-center gap-[10px] px-9 py-4 bg-accent text-[#0a0a0f] font-display font-semibold text-base rounded-full transition-all hover:translate-y-[-2px]">
+          <a href="#configurator" className="inline-flex items-center gap-[10px] px-9 py-4 bg-gradient-to-br from-accent to-accent-dark text-[#0a0a0f] font-display font-semibold text-base rounded-full transition-smooth hover:translate-y-[-2px] hover:shadow-[0_20px_40px_var(--accent-glow)] group">
             Lihat Proyek Kami
-          </button>
+            <svg className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[2] flex flex-col items-center gap-2 text-text-muted text-[0.75rem] tracking-[2px] uppercase">
+          <span>Scroll</span>
+          <div className="w-px h-10 bg-gradient-to-b from-accent to-transparent animate-scroll-pulse" />
         </div>
       </section>
+
       {/* PROPERTY SELECTION SECTION */}
       <section className="relative z-10 -mt-10 px-6">
         <div className="max-w-[1200px] mx-auto overflow-x-auto pb-4 no-scrollbar">
           <div className="flex gap-3 justify-start md:justify-center min-w-max">
-            {properties.map((prop: any) => (
+            {properties.map((prop) => (
               <Link
                 key={prop.id}
                 href={`/${prop.id}`}
@@ -53,13 +70,48 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* CONFIGURATOR SECTION */}
+      <section className="relative py-[var(--section-padding)]" id="configurator">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] hero-gradient opacity-[0.15] pointer-events-none" />
 
-      {/* SIMPLE FOOTER */}
-      <footer className="py-12 px-6 border-t border-white/10 text-center">
-        <p className="text-gray-500 text-[0.85rem]">
-          &copy; {new Date().getFullYear()} Almahyra Property. All rights reserved.
-        </p>
+        <div className="max-w-[1200px] mx-auto px-6 relative">
+          <div className="text-center mb-16">
+            <span className="inline-block font-body text-[0.8rem] font-medium text-accent uppercase tracking-[3px] mb-4">
+              Showcase Utama: {activeProperty?.name}
+            </span>
+            <h2 className="font-display text-[clamp(2rem,4vw,3rem)] font-bold tracking-[-1px] mb-4 text-text-primary">
+              Pilih &amp; Jelajahi Unit
+            </h2>
+            <p className="text-[1.05rem] text-text-secondary max-w-[500px] mx-auto font-light">
+              Klik nama perumahan di atas untuk melihat detail lengkap per lokasi,
+              atau jelajahi desain {activeProperty?.name} di bawah ini.
+            </p>
+          </div>
+
+          {activeProperty && (
+            <ModelConfigurator
+              key={activeProperty.id}
+              activePropertyId={activeProperty.id}
+              propertyName={activeProperty.name}
+              units={units as any}
+              sitePlanImage={activeProperty.sitePlanImage}
+            />
+          )}
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="py-12 px-6 border-t border-border-glass text-center">
+        <div className="max-w-[1200px] mx-auto flex flex-col items-center gap-4">
+          <div className="font-display text-2xl font-bold text-accent">
+            Almahyra <span className="text-text-primary opacity-50 font-light">| Property Research</span>
+          </div>
+          <p className="text-text-muted text-[0.85rem]">
+            &copy; {new Date().getFullYear()} Almahyra Property Research &amp; Development. All rights reserved.
+          </p>
+        </div>
       </footer>
+      <Chatbot />
     </main>
   );
 }
