@@ -42,3 +42,28 @@ export default function MortgageCalculator({
             maximumFractionDigits: 0
         }).format(val);
     };
+
+    // --- Advanced Calculations ---
+    const selectedBank = useMemo(() =>
+        activeSchemes.find((b: any) => b.id === selectedBankId) || activeSchemes[0]
+        , [selectedBankId, activeSchemes]);
+
+    const selectedOption = useMemo(() =>
+        selectedBank?.options[selectedOptionIndex] || selectedBank?.options[0]
+        , [selectedBank, selectedOptionIndex]);
+
+    const scalingFactor = useMemo(() => price / BASE_PRICE_KEIKO, [price]);
+
+    // --- Standard Calculations ---
+    const standardMonthlyPayment = useMemo(() => {
+        const monthlyInterest = (initialInterest / 100) / 12;
+        const numberOfPayments = tenor * 12;
+        const loanAmount = price;
+
+        if (monthlyInterest === 0) return Math.round(loanAmount / numberOfPayments);
+
+        const payment = (loanAmount * monthlyInterest * Math.pow(1 + monthlyInterest, numberOfPayments)) /
+            (Math.pow(1 + monthlyInterest, numberOfPayments) - 1);
+
+        return isNaN(payment) ? 0 : Math.round(payment);
+    }, [price, tenor]);
