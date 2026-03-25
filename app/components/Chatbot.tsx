@@ -106,3 +106,18 @@ export default function Chatbot({
                 `Fasilitas|${matchedUnit.features.join(", ")}\n\n` +
                 `Apakah Anda tertarik untuk survey lokasi atau memesan unit ini? Anda bisa langsung chat Sales kami.`;
         }
+        // 2. Cek keyword Harga
+        else if (input.includes("harga") || input.includes("price") || input.includes("biaya")) {
+            // Get unique properties from units in state
+            const props = Array.from(new Set(units.map(u => u.propertyId)));
+            const priceList = props.map(pId => {
+                const propUnits = units.filter(u => u.propertyId === pId);
+                const minPrice = propUnits.length > 0 ? propUnits.sort((a, b) => parseFloat(a.price.replace(/\D/g, "")) - parseFloat(b.price.replace(/\D/g, "")))[0].price : "Hubungi Sales";
+                return `${pId}|Rp ${minPrice}`;
+            }).join("\n");
+
+            response = "Tentu! Berikut adalah daftar harga terbaru dari database kami:\n\n" +
+                "PROPERTI|MULAI DARI\n" +
+                (priceList || "Data harga sedang diperbarui...") + "\n\n" +
+                "Ketik ID unit (contoh: **A-01**) untuk melihat detail spesifikasinya.";
+        }
