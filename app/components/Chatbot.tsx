@@ -121,3 +121,16 @@ export default function Chatbot({
                 (priceList || "Data harga sedang diperbarui...") + "\n\n" +
                 "Ketik ID unit (contoh: **A-01**) untuk melihat detail spesifikasinya.";
         }
+        // 3. Cek keyword Unit Kosong
+        else if (input.includes("kosong") || input.includes("stok") || input.includes("ready") || input.includes("sisa")) {
+            const available = units.filter(u => u.status === "Available").slice(0, 8);
+            if (available.length > 0) {
+                const list = available.map(u => `${u.label || u.id}|${u.propertyId} - Tipe ${u.type}`).join("\n");
+                response = "Berikut unit yang masih **TERSEDIA** saat ini:\n\n" +
+                    "KAPLING|PROPERTI & TIPE\n" +
+                    list + "\n\n" +
+                    "Ketik nomor kapling di atas (contoh: **A-01**) untuk melihat detail lengkapnya.";
+            } else {
+                response = "Wah, sepertinya saat ini unit kami sedang penuh. Silakan hubungi Sales kami untuk info daftar tunggu (waitlist).";
+            }
+        }
