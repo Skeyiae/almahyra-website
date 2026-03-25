@@ -196,3 +196,57 @@ export default function MortgageCalculator({
             </div>
         );
     }
+
+    // --- Render Standard Calculator (Fallback) ---
+    return (
+        <div className="p-8 pb-10 rounded-3xl bg-gradient-to-br from-bg-glass to-background-secondary border border-border-glass glass-blur shadow-2xl relative overflow-hidden">
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="relative z-10">
+                <div className="flex items-center gap-3 mb-8">
+                    <div className="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center text-accent">
+                        <Calculator size={22} />
+                    </div>
+                    <h3 className="font-display text-xl font-bold text-text-primary">Simulasi Angsuran</h3>
+                </div>
+
+                <div className="space-y-10">
+                    <div>
+                        <div className="flex justify-between items-center mb-4">
+                            <label className="text-text-secondary text-sm font-medium">Jangka Waktu (Tenor)</label>
+                            <span className="text-accent font-bold text-lg">{tenor} Tahun</span>
+                        </div>
+                        <input
+                            type="range"
+                            min="5"
+                            max="25"
+                            step="5"
+                            value={tenor}
+                            onChange={(e) => setTenor(parseInt(e.target.value))}
+                            className="w-full h-1.5 bg-border-glass rounded-lg appearance-none cursor-pointer accent-accent"
+                        />
+                        <div className="flex justify-between text-[0.7rem] text-text-muted mt-3 font-medium opacity-60 uppercase tracking-tighter">
+                            <span>5 Thn</span>
+                            <span>15 Thn</span>
+                            <span>25 Thn</span>
+                        </div>
+                    </div>
+
+                    <div className="p-6 rounded-2xl bg-white/5 border border-border-glass relative group overflow-hidden">
+                        <div className="flex items-center gap-2 text-text-muted text-[0.65rem] uppercase tracking-widest mb-3 font-semibold">
+                            <CreditCard size={12} />
+                            Estimasi Angsuran
+                        </div>
+                        <div className="text-3xl font-display font-extrabold text-white tracking-tight">
+                            {formatCurrency(standardMonthlyPayment)}
+                            <span className="text-[0.4em] font-light text-text-muted ml-2">/bulan*</span>
+                        </div>
+                        <p className="text-[0.6rem] text-text-muted mt-4 italic opacity-50 font-light">
+                            *Estimasi berdasarkan suku bunga {initialInterest}% per tahun. Perhitungan ini bersifat simulasi 0% DP.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
