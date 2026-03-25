@@ -278,3 +278,25 @@ export default function ModelConfigurator({
         );
     }
 
+    return (
+        <div className="flex flex-col gap-16">
+            {/* Model Showcase */}
+            {filteredModels.length > 0 && (
+                <div className="flex flex-col gap-12">
+                    {filteredModels.map((model) => (
+                        <ModelCard key={model.id} model={model} />
+                    ))}
+                </div>
+            )}
+
+            {/* Site Plan Visualization */}
+            {sitePlanImage && (
+                <div className="mt-8">
+                    <SitePlan
+                        imageUrl={sitePlanImage}
+                        propertyName={propertyName || activePropertyId || ""}
+                    />
+                </div>
+            )}
+
+
