@@ -244,3 +244,37 @@ export default function ModelConfigurator({
             });
         }
 
+
+        const premiumVariants = buildVariants(imagesPremium, 'premium');
+        if (premiumVariants.length > 0) {
+            models.push({
+                id: `db-model-premium-${activePropertyId}`,
+                propertyId: activePropertyId || "",
+                name: `${propertyName} - Tipe Premium`,
+                description: `Visualisasi lengkap unit tipe Premium`,
+                variants: premiumVariants,
+                category: "Premium"
+            });
+        }
+
+        return models;
+    }, [imagesStandard, imagesPremium, activePropertyId, propertyName]);
+
+    // Filter models based on the active property and unit type filter
+    const filteredModels = useMemo(() => {
+        const baseModels = dbModels.length > 0
+            ? dbModels
+            : models.filter((model) => model.propertyId === activePropertyId);
+
+        if (filter === "All") return baseModels;
+        return baseModels.filter((m: any) => m.category === filter || (m.variants && m.variants[0]?.category === filter));
+    }, [dbModels, activePropertyId, filter]);
+
+    if (filteredModels.length === 0 && units.length === 0) {
+        return (
+            <div className="text-center py-20 border border-dashed border-border-glass rounded-lg">
+                <p className="text-text-muted font-body">Belum ada model untuk perumahan ini.</p>
+            </div>
+        );
+    }
+
