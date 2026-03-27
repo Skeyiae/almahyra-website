@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { getProperties } from "../lib/data";
+import { prisma } from "../lib/prisma";
 import PromoBadge from "../components/PromoBadge";
 import PropertyInteractiveContent from "../components/PropertyInteractiveContent";
-import { PrismaClient } from "@prisma/client";
 import Chatbot from "../components/Chatbot";
 
-const prisma = new PrismaClient();
 
 interface PageProps {
     params: Promise<{ slug: string }>;

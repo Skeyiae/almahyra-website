@@ -5,9 +5,11 @@ import Chatbot from "./components/Chatbot";
 
 export default async function Home() {
   const properties = await getProperties();
-  const activeProperty = properties[0]; // Home page displays the first property by default
+  
+  // Default to Griya Keiko if it exists, otherwise use the first property
+  const activeProperty = properties.find(p => p.id === "griya-keiko") || properties[0];
 
-  // Fetch units for the first property to pass to configurator
+  // Fetch units for the active property to pass to configurator
   const units = activeProperty ? await getUnitsByPropertyId(activeProperty.id) : [];
 
   return (
@@ -23,13 +25,13 @@ export default async function Home() {
         <div className="relative z-[2] max-width-[800px] animate-fade-in-up">
           <span className="inline-flex items-center gap-2 px-5 py-2 mb-8 bg-bg-glass border border-border-glass rounded-full font-body text-[0.85rem] color-accent-light glass-blur">
             <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_10px_var(--accent-glow)] animate-pulse-dot" />
-            Almahya Property - Welcome
+            Almahyra Property - Bandar Lampung
           </span>
 
           <h1 className="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold tracking-[-2px] leading-[1.1] mb-6 text-gradient capitalize">
-            {activeProperty?.titleTop || "Modern Living"}
+            Almahyra Property
             <span className="block text-[0.35em] font-light tracking-[8px] uppercase opacity-60 mt-3">
-              {activeProperty?.titleBottom || "Redefined"}
+              Bandar Lampung
             </span>
           </h1>
 

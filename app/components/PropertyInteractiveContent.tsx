@@ -97,7 +97,7 @@ export default function PropertyInteractiveContent({
                                 <h4 className="font-display font-bold text-accent mb-2">Fasilitas Komplek</h4>
                                 <ul className="text-text-secondary text-sm space-y-2 font-light">
                                     <li>• Cluster One Gate System (Keamanan 24 Jam)</li>
-                                    <li>• Fasilitas Mushola di dalam komplek</li>
+                                    <li>• Fasilitas Masjid di dalam komplek</li>
                                     <li>• Jalan Lebar dan Lingkungan Asri</li>
                                 </ul>
                             </div>
