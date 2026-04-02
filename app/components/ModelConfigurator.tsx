@@ -215,10 +215,14 @@ export default function ModelConfigurator({
             const unitType = unit.type.toLowerCase();
             const filterType = filter.toLowerCase();
 
-            // Direct match (e.g., "Premium" in "Type 70 Premium")
+            // Rule 1: Based on number of bedrooms
+            if (filter === "Premium" && unit.bedrooms === 3) return true;
+            if (filter === "Standard" && (unit.bedrooms === 2 || unit.bedrooms === 1)) return true;
+
+            // Rule 2: Direct match in type string (e.g., "Premium" in "Type 70 Premium")
             if (unitType.includes(filterType)) return true;
 
-            // Custom mapping for dimension-based types
+            // Rule 3: Custom mapping for legacy dimension-based types
             if (filter === "Standard" && unitType.includes("60x84")) return true;
             if (filter === "Premium" && unitType.includes("80x105")) return true;
 
