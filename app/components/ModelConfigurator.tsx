@@ -207,22 +207,28 @@ export default function ModelConfigurator({
 }: ModelConfiguratorProps) {
     const [filter, setFilter] = useState<"All" | "Standard" | "Premium">("All");
 
-    // Filter units based on the selected type
-    const filteredUnits = units.filter((unit: any) => {
-        if (filter === "All") return true;
+    // Filter and Sort units based on the selected type and natural label order
+    const filteredUnits = units
+        .filter((unit: any) => {
+            if (filter === "All") return true;
 
-        const unitType = unit.type.toLowerCase();
-        const filterType = filter.toLowerCase();
+            const unitType = unit.type.toLowerCase();
+            const filterType = filter.toLowerCase();
 
-        // Direct match (e.g., "Premium" in "Type 70 Premium")
-        if (unitType.includes(filterType)) return true;
+            // Direct match (e.g., "Premium" in "Type 70 Premium")
+            if (unitType.includes(filterType)) return true;
 
-        // Custom mapping for dimension-based types
-        if (filter === "Standard" && unitType.includes("60x84")) return true;
-        if (filter === "Premium" && unitType.includes("80x105")) return true;
+            // Custom mapping for dimension-based types
+            if (filter === "Standard" && unitType.includes("60x84")) return true;
+            if (filter === "Premium" && unitType.includes("80x105")) return true;
 
-        return false;
-    });
+            return false;
+        })
+        .sort((a: any, b: any) => {
+            const labelA = a.label || a.id || "";
+            const labelB = b.label || b.id || "";
+            return labelA.localeCompare(labelB, undefined, { numeric: true, sensitivity: 'base' });
+        });
 
     // Build separate models for Standard and Premium types
     const dbModels = useMemo(() => {
