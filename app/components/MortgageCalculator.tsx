@@ -71,18 +71,18 @@ export default function MortgageCalculator({
     // --- Render Advanced Calculator (Keiko) ---
     if (isKeiko) {
         return (
-            <div className="p-8 pb-10 rounded-3xl bg-gradient-to-br from-bg-glass to-background-secondary border border-border-glass glass-blur shadow-2xl relative overflow-hidden">
+            <div className="p-5 md:p-8 md:pb-10 rounded-2xl md:rounded-3xl bg-gradient-to-br from-bg-glass to-background-secondary border border-border-glass glass-blur shadow-2xl relative overflow-hidden">
                 <div className="absolute -top-10 -right-10 w-40 h-40 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
 
                 <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-8">
-                        <div className="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center text-accent">
-                            <Landmark size={22} />
+                    <div className="flex items-center gap-3 mb-6 md:mb-8">
+                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-accent/20 flex items-center justify-center text-accent">
+                            <Landmark size={18} className="md:w-[22px] md:h-[22px]" />
                         </div>
-                        <h3 className="font-display text-xl font-bold text-text-primary">Simulasi Angsuran 0% DP</h3>
+                        <h3 className="font-display text-lg md:text-xl font-bold text-text-primary">Simulasi Angsuran 0% DP</h3>
                     </div>
 
-                    <div className="space-y-8">
+                    <div className="space-y-6 md:space-y-8">
                         {/* Bank Selection */}
                         <div className="space-y-3">
                             <label className="text-text-secondary text-[0.75rem] font-bold uppercase tracking-wider block">Pilih Bank</label>
@@ -127,18 +127,18 @@ export default function MortgageCalculator({
                         )}
 
                         {/* Main Pricing Insight */}
-                        <div className="p-6 rounded-2xl bg-white/5 border border-border-glass relative group overflow-hidden">
+                        <div className="p-4 md:p-6 rounded-2xl bg-white/5 border border-border-glass relative group overflow-hidden">
                             <div className="absolute top-0 right-0 p-3 opacity-20 group-hover:opacity-40 transition-opacity">
-                                <CreditCard size={40} />
+                                <CreditCard size={32} className="md:w-[40px] md:h-[40px]" />
                             </div>
 
-                            <div className="flex items-center gap-2 text-text-muted text-[0.65rem] uppercase tracking-widest mb-4 font-semibold">
+                            <div className="flex items-center gap-2 text-text-muted text-[0.6rem] md:text-[0.65rem] uppercase tracking-widest mb-3 md:mb-4 font-semibold">
                                 Estimasi Angsuran ({selectedOption.periods[0].label})
                             </div>
 
-                            <div className="text-3xl font-display font-extrabold text-white tracking-tight">
+                            <div className="text-2xl md:text-3xl font-display font-extrabold text-white tracking-tight">
                                 {formatCurrency(Math.round(selectedOption.periods[0].monthlyPayment * scalingFactor))}
-                                <span className="text-[0.4em] font-light text-text-muted ml-2">/bulan*</span>
+                                <span className="text-[0.4em] font-light text-text-muted ml-1 md:ml-2">/bulan*</span>
                             </div>
 
                             <button
@@ -199,22 +199,22 @@ export default function MortgageCalculator({
 
     // --- Render Standard Calculator (Fallback) ---
     return (
-        <div className="p-8 pb-10 rounded-3xl bg-gradient-to-br from-bg-glass to-background-secondary border border-border-glass glass-blur shadow-2xl relative overflow-hidden">
+        <div className="p-5 md:p-8 md:pb-10 rounded-2xl md:rounded-3xl bg-gradient-to-br from-bg-glass to-background-secondary border border-border-glass glass-blur shadow-2xl relative overflow-hidden">
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
 
             <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-8">
-                    <div className="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center text-accent">
-                        <Calculator size={22} />
+                <div className="flex items-center gap-3 mb-6 md:mb-8">
+                    <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-accent/20 flex items-center justify-center text-accent">
+                        <Calculator size={18} className="md:w-[22px] md:h-[22px]" />
                     </div>
-                    <h3 className="font-display text-xl font-bold text-text-primary">Simulasi Angsuran</h3>
+                    <h3 className="font-display text-lg md:text-xl font-bold text-text-primary">Simulasi Angsuran</h3>
                 </div>
 
-                <div className="space-y-10">
+                <div className="space-y-8 md:space-y-10">
                     <div>
-                        <div className="flex justify-between items-center mb-4">
-                            <label className="text-text-secondary text-sm font-medium">Jangka Waktu (Tenor)</label>
-                            <span className="text-accent font-bold text-lg">{tenor} Tahun</span>
+                        <div className="flex justify-between items-center mb-3 md:mb-4">
+                            <label className="text-text-secondary text-xs md:text-sm font-medium">Jangka Waktu (Tenor)</label>
+                            <span className="text-accent font-bold text-base md:text-lg">{tenor} Tahun</span>
                         </div>
                         <input
                             type="range"
@@ -223,23 +223,23 @@ export default function MortgageCalculator({
                             step="5"
                             value={tenor}
                             onChange={(e) => setTenor(parseInt(e.target.value))}
-                            className="w-full h-1.5 bg-border-glass rounded-lg appearance-none cursor-pointer accent-accent"
+                            className="w-full h-1 bg-border-glass rounded-lg appearance-none cursor-pointer accent-accent"
                         />
-                        <div className="flex justify-between text-[0.7rem] text-text-muted mt-3 font-medium opacity-60 uppercase tracking-tighter">
+                        <div className="flex justify-between text-[0.6rem] md:text-[0.7rem] text-text-muted mt-2 md:mt-3 font-medium opacity-60 uppercase tracking-tighter">
                             <span>5 Thn</span>
                             <span>15 Thn</span>
                             <span>25 Thn</span>
                         </div>
                     </div>
 
-                    <div className="p-6 rounded-2xl bg-white/5 border border-border-glass relative group overflow-hidden">
-                        <div className="flex items-center gap-2 text-text-muted text-[0.65rem] uppercase tracking-widest mb-3 font-semibold">
+                    <div className="p-4 md:p-6 rounded-2xl bg-white/5 border border-border-glass relative group overflow-hidden text-center md:text-left">
+                        <div className="flex items-center justify-center md:justify-start gap-2 text-text-muted text-[0.6rem] md:text-[0.65rem] uppercase tracking-widest mb-3 font-semibold">
                             <CreditCard size={12} />
                             Estimasi Angsuran
                         </div>
-                        <div className="text-3xl font-display font-extrabold text-white tracking-tight">
+                        <div className="text-2xl md:text-3xl font-display font-extrabold text-white tracking-tight">
                             {formatCurrency(standardMonthlyPayment)}
-                            <span className="text-[0.4em] font-light text-text-muted ml-2">/bulan*</span>
+                            <span className="text-[0.4em] font-light text-text-muted ml-1 md:ml-2">/bulan*</span>
                         </div>
                         <p className="text-[0.6rem] text-text-muted mt-4 italic opacity-50 font-light">
                             *Estimasi berdasarkan suku bunga {initialInterest}% per tahun. Perhitungan ini bersifat simulasi 0% DP.
