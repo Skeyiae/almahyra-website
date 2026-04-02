@@ -17,8 +17,8 @@ export const models: Model[] = [
     {
         id: "model-keiko-type-36",
         propertyId: "griya-keiko",
-        name: "Type 60/84 - Standard",
-        description: "Hunian nyaman dengan 2 Kamar Tidur dan 2 Kamar Mandi di Griya Keiko",
+        name: "Tipe Standard",
+        description: "",
         variants: [
             {
                 id: "white-36",
@@ -31,8 +31,8 @@ export const models: Model[] = [
     {
         id: "model-keiko-type-45",
         propertyId: "griya-keiko",
-        name: "Type 70/100 - Premium",
-        description: "Ruang lebih luas dengan 3 Kamar Tidur dan 2 Kamar Mandi di Griya Keiko",
+        name: "Tipe Premium",
+        description: "",
         variants: [
             {
                 id: "premium-brown",
@@ -45,8 +45,8 @@ export const models: Model[] = [
     {
         id: "model-kurnia-1",
         propertyId: "kurnia-jaya",
-        name: "Kurnia Jaya Luxury",
-        description: "Hunian mewah dengan konsep alam di Kurnia Jaya",
+        name: "Tipe Premium",
+        description: "",
         variants: [
             {
                 id: "natural",
@@ -60,8 +60,8 @@ export const models: Model[] = [
     {
         id: "model-albirruni-1",
         propertyId: "albirruni",
-        name: "Albirruni Modern",
-        description: "Hunian harmonis dengan desain modern di Albirruni",
+        name: "Tipe Standard",
+        description: "",
         variants: [
             {
                 id: "albirruni-v1",
@@ -74,8 +74,8 @@ export const models: Model[] = [
     {
         id: "model-arraz-1",
         propertyId: "arraz",
-        name: "ARRAZ Residence",
-        description: "Hunian asri di Srimahi City",
+        name: "Tipe Standard",
+        description: "",
         variants: [
             {
                 id: "arraz-v1",
@@ -88,8 +88,8 @@ export const models: Model[] = [
     {
         id: "model-arsy-1",
         propertyId: "arsy",
-        name: "ARSY Modern House",
-        description: "Desain masa kini untuk keluarga dinamis",
+        name: "Tipe Standard",
+        description: "",
         variants: [
             {
                 id: "arsy-v1",
@@ -102,8 +102,8 @@ export const models: Model[] = [
     {
         id: "model-nayra-1",
         propertyId: "nayra",
-        name: "Nayra House",
-        description: "Hunian minimalis dengan udara sejuk",
+        name: "Tipe Standard",
+        description: "",
         variants: [
             {
                 id: "nayra-v1",

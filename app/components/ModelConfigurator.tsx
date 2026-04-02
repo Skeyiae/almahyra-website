@@ -100,12 +100,14 @@ function ModelCard({ model }: ModelCardProps) {
             {/* Header */}
             <div className="p-5 md:p-8 pb-0 flex items-start justify-between gap-5">
                 <div className="model-info">
-                    <h3 className="font-display text-2xl font-semibold mb-1.5 text-text-primary">
+                    <h3 className="font-display text-2xl font-bold text-text-primary">
                         {model.name}
                     </h3>
-                    <p className="text-[0.9rem] text-text-secondary font-light">
-                        {model.description}
-                    </p>
+                    {model.description && (
+                        <p className="text-[0.9rem] text-text-secondary font-light">
+                            {model.description}
+                        </p>
+                    )}
                 </div>
             </div>
             {/* Image Viewer - Scroll Slider (Full width on mobile) */}
@@ -255,8 +257,8 @@ export default function ModelConfigurator({
             models.push({
                 id: `db-model-standard-${activePropertyId}`,
                 propertyId: activePropertyId || "",
-                name: `${propertyName} - Tipe Standard`,
-                description: `Visualisasi lengkap unit tipe Standard`,
+                name: `Tipe Standard`,
+                description: ``,
                 variants: standardVariants,
                 category: "Standard"
             });
@@ -268,8 +270,8 @@ export default function ModelConfigurator({
             models.push({
                 id: `db-model-premium-${activePropertyId}`,
                 propertyId: activePropertyId || "",
-                name: `${propertyName} - Tipe Premium`,
-                description: `Visualisasi lengkap unit tipe Premium`,
+                name: `Tipe Premium`,
+                description: ``,
                 variants: premiumVariants,
                 category: "Premium"
             });
