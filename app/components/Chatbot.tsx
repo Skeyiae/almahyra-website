@@ -23,12 +23,14 @@ interface ChatbotProps {
     salesPhone?: string;
     salesName?: string;
     propertyName?: string;
+    propertyId?: string;
 }
 
 export default function Chatbot({
     salesPhone = "62895610098292",
     salesName = "Almahyra Sales",
-    propertyName = "Almahyra"
+    propertyName = "Almahyra",
+    propertyId
 }: ChatbotProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState<Message[]>([
@@ -84,8 +86,11 @@ export default function Chatbot({
         let response = "";
         const cleanInput = input.trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
 
+        // Get units specifically for THIS property if propertyId is provided
+        const relevantUnits = propertyId ? units.filter(u => u.propertyId === propertyId) : units;
+
         // 1. Cek apakah input adalah ID Unit atau Label spesifik (misal: A-01)
-        const matchedUnit = units.find(u => {
+        const matchedUnit = relevantUnits.find(u => {
             const unitIdClean = u.id.toUpperCase().replace(/[^A-Z0-9]/g, "");
             const unitLabelClean = u.label?.toUpperCase().replace(/[^A-Z0-9]/g, "");
             return unitIdClean === cleanInput || unitLabelClean === cleanInput;
@@ -108,26 +113,26 @@ export default function Chatbot({
         }
         // 2. Cek keyword Harga
         else if (input.includes("harga") || input.includes("price") || input.includes("biaya")) {
-            // Get unique properties from units in state
-            const props = Array.from(new Set(units.map(u => u.propertyId)));
-            const priceList = props.map(pId => {
-                const propUnits = units.filter(u => u.propertyId === pId);
-                const minPrice = propUnits.length > 0 ? propUnits.sort((a, b) => parseFloat(a.price.replace(/\D/g, "")) - parseFloat(b.price.replace(/\D/g, "")))[0].price : "Hubungi Sales";
-                return `${pId}|Rp ${minPrice}`;
-            }).join("\n");
+            // Get prices for relevant units only
+            const minPrice = relevantUnits.length > 0 
+                ? [...relevantUnits].sort((a, b) => parseFloat(a.price.replace(/\D/g, "")) - parseFloat(b.price.replace(/\D/g, "")))[0].price 
+                : "Hubungi Sales";
+            
+            const displayTitle = propertyId ? propertyName : "Properti Kami";
+            const priceList = `${displayTitle}|Rp ${minPrice}`;
 
-            response = "Tentu! Berikut adalah daftar harga terbaru dari database kami:\n\n" +
+            response = "Tentu! Berikut adalah daftar harga terbaru untuk " + (propertyName || "hunian kami") + ":\n\n" +
                 "PROPERTI|MULAI DARI\n" +
-                (priceList || "Data harga sedang diperbarui...") + "\n\n" +
+                priceList + "\n\n" +
                 "Ketik ID unit (contoh: **A-01**) untuk melihat detail spesifikasinya.";
         }
         // 3. Cek keyword Unit Kosong
         else if (input.includes("kosong") || input.includes("stok") || input.includes("ready") || input.includes("sisa")) {
-            const available = units.filter(u => u.status === "Available").slice(0, 8);
+            const available = relevantUnits.filter(u => u.status === "Available").slice(0, 8);
             if (available.length > 0) {
-                const list = available.map(u => `${u.label || u.id}|${u.propertyId} - Tipe ${u.type}`).join("\n");
-                response = "Berikut unit yang masih **TERSEDIA** saat ini:\n\n" +
-                    "KAPLING|PROPERTI & TIPE\n" +
+                const list = available.map(u => `${u.label || u.id}|Tipe ${u.type}`).join("\n");
+                response = "Berikut adalah unit di **" + (propertyName || "lokasi ini") + "** yang masih **TERSEDIA**:\n\n" +
+                    "KAPLING|TIPE UNIT\n" +
                     list + "\n\n" +
                     "Ketik nomor kapling di atas (contoh: **A-01**) untuk melihat detail lengkapnya.";
             } else {

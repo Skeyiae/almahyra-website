@@ -146,6 +146,7 @@ export default async function PropertyPage({ params }: PageProps) {
                 salesPhone={(activeProperty as any).salesPhone || undefined}
                 salesName={(activeProperty as any).salesName || undefined}
                 propertyName={activeProperty.name}
+                propertyId={activeProperty.id}
             />
         </main>
     );
