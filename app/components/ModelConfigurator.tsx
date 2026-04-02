@@ -130,11 +130,11 @@ function ModelCard({ model }: ModelCardProps) {
                 </div>
 
                 {/* Overlay Info (Floating outside scroll) */}
-                <div className="absolute bottom-4 md:bottom-10 left-4 md:left-10 right-4 md:right-10 flex items-end justify-between pointer-events-none z-[5]">
-                    <span className="font-display text-[0.7rem] md:text-[0.9rem] font-medium text-white/90 px-3 py-1 md:px-4 md:py-1.5 bg-black/30 border border-white/5 rounded-full backdrop-blur-sm">
+                <div className="absolute bottom-3 md:bottom-6 left-4 md:left-8 right-4 md:right-8 flex items-end justify-between pointer-events-none z-[5]">
+                    <span className="font-display text-[0.65rem] md:text-[0.85rem] font-bold text-white uppercase tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                         {activeVariant.label}
                     </span>
-                    <span className="text-[0.6rem] md:text-[0.8rem] text-white/40 font-medium px-2 py-0.5 bg-black/10 rounded-full">
+                    <span className="text-[0.6rem] md:text-[0.75rem] text-white/60 font-medium drop-shadow-md">
                         {activeIndex + 1} / {model.variants.length}
                     </span>
                 </div>
