@@ -108,12 +108,12 @@ function ModelCard({ model }: ModelCardProps) {
                     </p>
                 </div>
             </div>
-            {/* Image Viewer - Scroll Slider */}
-            <div className="relative px-5 md:px-8 py-4 md:py-6">
+            {/* Image Viewer - Scroll Slider (Full width on mobile) */}
+            <div className="relative md:px-8 py-0 md:py-6">
                 <div 
                     ref={scrollRef}
                     onScroll={handleScroll}
-                    className="relative flex overflow-x-auto snap-x snap-mandatory no-scrollbar rounded-md aspect-[16/10] bg-background-secondary"
+                    className="relative flex overflow-x-auto snap-x snap-mandatory no-scrollbar md:rounded-md aspect-[16/10] bg-background-secondary"
                 >
                     {model.variants.map((variant, idx) => (
                         <div key={variant.id} className="relative flex-shrink-0 w-full h-full snap-center">
