@@ -100,7 +100,7 @@ function ModelCard({ model }: ModelCardProps) {
             {/* Header */}
             <div className="p-5 md:p-8 pb-0 flex items-start justify-between gap-5">
                 <div className="model-info">
-                    <h3 className="font-display text-2xl font-bold text-text-primary">
+                    <h3 className="font-display text-sm md:text-base font-bold text-text-primary uppercase tracking-[0.2em] opacity-80">
                         {model.name}
                     </h3>
                     {model.description && (
