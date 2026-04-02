@@ -71,7 +71,7 @@ function ModelCard({ model }: ModelCardProps) {
             ref={cardRef}
         >
             {/* Header */}
-            <div className="p-8 pb-0 flex items-start justify-between gap-5">
+            <div className="p-5 md:p-8 pb-0 flex items-start justify-between gap-5">
                 <div className="model-info">
                     <h3 className="font-display text-2xl font-semibold mb-1.5 text-text-primary">
                         {model.name}
@@ -82,7 +82,7 @@ function ModelCard({ model }: ModelCardProps) {
                 </div>
             </div>
             {/* Image Viewer */}
-            <div className="relative px-8 py-6">
+            <div className="relative px-5 md:px-8 py-4 md:py-6">
                 <div className="relative w-full aspect-[16/10] rounded-md overflow-hidden bg-background-secondary">
                     {model.variants.map((variant, idx) => (
                         <Image
@@ -133,19 +133,19 @@ function ModelCard({ model }: ModelCardProps) {
             </div>
 
             {/* Controls */}
-            <div className="px-8 pb-8">
-                <div className="text-[0.75rem] font-medium text-text-muted uppercase tracking-[2px] mb-4">
+            <div className="px-5 md:px-8 pb-8">
+                <div className="text-[0.65rem] md:text-[0.75rem] font-medium text-text-muted uppercase tracking-[2px] mb-4">
                     Pilih Varian
                 </div>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex overflow-x-auto md:flex-wrap gap-3 no-scrollbar -mx-5 px-5 md:mx-0 md:px-0 pb-2">
                     {model.variants.map((variant, idx) => (
                         <button
                             key={variant.id}
-                            className={`flex items-center gap-2.5 px-4.5 py-2.5 bg-bg-glass border-2 rounded-sm cursor-pointer transition-fast font-body text-[0.85rem] ${idx === activeIndex ? "border-accent bg-[rgba(201,169,110,0.08)] text-text-primary" : "border-transparent text-text-secondary hover:bg-white/10 hover:text-text-primary"}`}
+                            className={`flex items-center gap-2 px-3.5 py-2 md:px-4.5 md:py-2.5 bg-bg-glass border-2 rounded-sm cursor-pointer transition-fast font-body text-xs md:text-[0.85rem] whitespace-nowrap ${idx === activeIndex ? "border-accent bg-[rgba(201,169,110,0.08)] text-text-primary" : "border-transparent text-text-secondary hover:bg-white/10 hover:text-text-primary"}`}
                             onClick={() => setActiveIndex(idx)}
                         >
                             <span
-                                className={`w-6 h-6 rounded-full border-2 border-white/15 transition-fast flex-shrink-0 ${idx === activeIndex ? "border-accent shadow-[0_0_12px_var(--accent-glow)]" : ""}`}
+                                className={`w-4 h-4 md:w-6 md:h-6 rounded-full border-2 border-white/15 transition-fast flex-shrink-0 ${idx === activeIndex ? "border-accent shadow-[0_0_12px_var(--accent-glow)]" : ""}`}
                                 style={{ backgroundColor: variant.color }}
                             />
                             {variant.label}
@@ -154,11 +154,11 @@ function ModelCard({ model }: ModelCardProps) {
                 </div>
 
                 {/* Thumbnails */}
-                <div className="flex gap-2.5 mt-5 overflow-x-auto pb-1 scrollbar-hide">
+                <div className="flex gap-2.5 mt-5 overflow-x-auto pb-1 no-scrollbar -mx-5 px-5 md:mx-0 md:px-0">
                     {model.variants.map((variant, idx) => (
                         <button
                             key={variant.id}
-                            className={`w-20 h-[54px] rounded-sm overflow-hidden cursor-pointer border-2 transition-fast flex-shrink-0 ${idx === activeIndex ? "border-accent opacity-100" : "border-transparent opacity-50 hover:opacity-80"}`}
+                            className={`w-16 h-11 md:w-20 md:h-[54px] rounded-sm overflow-hidden cursor-pointer border-2 transition-fast flex-shrink-0 ${idx === activeIndex ? "border-accent opacity-100" : "border-transparent opacity-50 hover:opacity-80"}`}
                             onClick={() => setActiveIndex(idx)}
                         >
                             <Image
