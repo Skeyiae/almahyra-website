@@ -100,7 +100,7 @@ export default function PropertyInteractiveContent({
                                             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z" /><circle cx="12" cy="10" r="3" /></svg>
                                         </div>
                                         <p className="text-text-primary text-sm md:text-lg font-medium leading-relaxed">
-                                            <span className="text-accent font-black uppercase tracking-wider text-[0.65rem] md:text-[0.75rem] block mb-1">Lokasi Proyek</span> 
+                                            <span className="text-accent font-black uppercase tracking-wider text-[0.65rem] md:text-[0.75rem] block mb-1">Lokasi Perumahan</span> 
                                             {locationText}
                                         </p>
                                     </div>
