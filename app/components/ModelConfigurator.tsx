@@ -340,8 +340,9 @@ export default function ModelConfigurator({
                 </div>
 
                 {filteredUnits.length > 0 ? (
-                    <div className="bg-bg-card border border-border-glass rounded-xl overflow-hidden glass-blur shadow-2xl">
-                        <div className="overflow-x-auto">
+                    <div className="animate-fade-in-up">
+                        {/* VIEW DESKTOP: Tabel (Hidden on Mobile) */}
+                        <div className="hidden md:block bg-bg-card border border-border-glass rounded-xl overflow-hidden glass-blur shadow-2xl">
                             <table className="w-full text-left border-collapse">
                                 <thead>
                                     <tr className="bg-white/5 border-b border-white/10">
@@ -378,6 +379,51 @@ export default function ModelConfigurator({
                                     ))}
                                 </tbody>
                             </table>
+                        </div>
+
+                        {/* VIEW MOBILE: Card Layout (Hidden on Desktop) */}
+                        <div className="md:hidden flex flex-col gap-4">
+                            {filteredUnits.map((unit: any) => (
+                                <div
+                                    key={unit.id}
+                                    className={`p-5 rounded-xl border glass-blur transition-all duration-200 ${selectedUnitId === unit.id ? 'bg-accent/10 border-accent shadow-[0_10px_20px_rgba(201,169,110,0.1)]' : 'bg-bg-card border-border-glass'}`}
+                                    onClick={() => onUnitSelect?.(unit)}
+                                >
+                                    <div className="flex justify-between items-start mb-3">
+                                        <div className="flex flex-col">
+                                            <span className="text-[0.65rem] text-text-muted uppercase tracking-wider font-bold mb-0.5">Kapling</span>
+                                            <span className="font-display font-bold text-accent text-lg">{unit.label || unit.id}</span>
+                                        </div>
+                                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
+                                            unit.status === 'Available' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                                            (unit.status === 'Booked' || unit.status === 'Booking') ? 'bg-yellow-400/10 text-yellow-400 border border-yellow-400/30' :
+                                            'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                                            }`}>
+                                            {unit.status}
+                                        </span>
+                                    </div>
+                                    
+                                    <div className="grid grid-cols-2 gap-4 mb-3 pb-3 border-b border-white/5">
+                                        <div>
+                                            <span className="block text-[0.6rem] text-text-muted uppercase font-bold">Harga Paket</span>
+                                            <span className="font-body font-bold text-text-primary">Rp {unit.price}</span>
+                                        </div>
+                                        <div>
+                                            <span className="block text-[0.6rem] text-text-muted uppercase font-bold">Tipe Bangunan</span>
+                                            <span className="font-body text-text-secondary text-sm">{unit.type}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="flex flex-wrap gap-2">
+                                        {unit.features.slice(0, 3).map((f: string, i: number) => (
+                                            <span key={i} className="text-[10px] text-text-muted bg-white/5 px-2 py-0.5 rounded-sm">
+                                                {f}
+                                            </span>
+                                        ))}
+                                        {unit.features.length > 3 && <span className="text-[10px] text-text-muted">...</span>}
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 ) : (
