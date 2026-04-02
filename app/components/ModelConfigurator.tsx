@@ -144,9 +144,6 @@ function ModelCard({ model }: ModelCardProps) {
 
             {/* Controls */}
             <div className="px-5 md:px-8 pb-8">
-                <div className="text-[0.65rem] md:text-[0.75rem] font-medium text-text-muted uppercase tracking-[2px] mb-4">
-                    Pilih Varian
-                </div>
                 <div className="flex overflow-x-auto md:flex-wrap gap-3 no-scrollbar -mx-5 px-5 md:mx-0 md:px-0 pb-2">
                     {model.variants.map((variant, idx) => (
                         <button
