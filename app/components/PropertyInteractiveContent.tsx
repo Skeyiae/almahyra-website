@@ -82,12 +82,28 @@ export default function PropertyInteractiveContent({
                                 <SpecGrid specs={specs} />
                             </div>
 
-                            <div>
-                                <h3 className="font-display text-xl md:text-3xl font-bold text-white mb-4 md:mb-8">Lokasi Strategis</h3>
-                                <Landmarks landmarks={landmarks} />
-                                <p className="mt-6 text-text-muted text-sm font-light italic">
-                                    *Lokasi: {locationText}
-                                </p>
+                            <div className="p-6 md:p-8 rounded-3xl bg-white/[0.03] border border-white/10 glass-blur relative overflow-hidden shadow-2xl">
+                                <div className="absolute -top-10 -right-10 w-40 h-40 bg-accent/10 rounded-full blur-3xl pointer-events-none" />
+                                <div className="absolute bottom-4 right-4 opacity-10 pointer-events-none text-accent">
+                                    <svg className="w-24 h-24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                                </div>
+                                
+                                <h3 className="font-display text-xl md:text-3xl font-bold text-white mb-6 md:mb-8 flex items-center gap-3">
+                                    <span className="w-8 h-1 bg-accent rounded-full hidden md:block"></span>
+                                    Lokasi Strategis
+                                </h3>
+                                
+                                <div className="relative z-10">
+                                    <Landmarks landmarks={landmarks} />
+                                    <div className="mt-8 pt-6 border-t border-white/5 flex items-start gap-3">
+                                        <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center text-accent shrink-0 mt-0.5">
+                                            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                                        </div>
+                                        <p className="text-text-muted text-xs md:text-sm font-light leading-relaxed">
+                                            <span className="text-accent font-medium">Alamat:</span> {locationText}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
