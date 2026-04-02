@@ -76,14 +76,14 @@ export default function PropertyInteractiveContent({
                         {/* Left: Specs & Landmarks */}
                         <div className="space-y-16">
                             <div>
-                                <h3 className="font-display text-3xl font-bold text-white mb-8">
+                                <h3 className="font-display text-xl md:text-3xl font-bold text-white mb-4 md:mb-8">
                                     Kapling: <span className="text-accent">{selectedUnit?.label || selectedUnit?.type || "Unit"}</span>
                                 </h3>
                                 <SpecGrid specs={specs} />
                             </div>
 
                             <div>
-                                <h3 className="font-display text-3xl font-bold text-white mb-8">Lokasi Strategis</h3>
+                                <h3 className="font-display text-xl md:text-3xl font-bold text-white mb-4 md:mb-8">Lokasi Strategis</h3>
                                 <Landmarks landmarks={landmarks} />
                                 <p className="mt-6 text-text-muted text-sm font-light italic">
                                     *Lokasi: {locationText}
