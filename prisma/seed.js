@@ -6,36 +6,26 @@ async function main() {
     console.log('Starting seed...')
     console.log('Using DATABASE_URL from environment.')
 
-    // Clear existing data
-    try {
-        await prisma.unit.deleteMany({})
-        await prisma.property.deleteMany({})
-    } catch (e) {
-        console.log('Cleanup skipped or tables not found yet.')
-    }
-
-    const propertiesResult = [
-        { id: "griya-keiko", name: "Griya Keiko", titleTop: "Griya Keiko", titleBottom: "Smart Modern Living" },
-        { id: "kurnia-jaya", name: "Kurnia Jaya", titleTop: "Kurnia Jaya", titleBottom: "Minimalist Residence" },
-        { id: "jati-asri", name: "Jati Asri", titleTop: "Jati Asri", titleBottom: "Comfort & Natural" },
-        { id: "pandora-subsidi", name: "Pandora Subsidi", titleTop: "Pandora Subsidi", titleBottom: "Srimahi Residence" },
-        { id: "arraz", name: "ARRAZ", titleTop: "ARRAZ", titleBottom: "Srimahi City" },
-        { id: "griya-elok", name: "Griya Elok", titleTop: "Griya Elok", titleBottom: "Exclusive Residence" },
-        { id: "arsy", name: "ARSY", titleTop: "ARSY", titleBottom: "Modern House" },
-        { id: "nayra", name: "Nayra", titleTop: "Nayra", titleBottom: "Premium Living" },
-        { id: "reno", name: "Reno", titleTop: "Reno", titleBottom: "Green Living" },
-        { id: "green-permana", name: "Green Permana", titleTop: "Green Permana", titleBottom: "Eco Friendly City" },
+    // We no longer clear existing data to preserve manual edits in Supabase.
+    
+    const defaultFacilities = [
+        "Cluster One Gate System (Keamanan 24 Jam)",
+        "Fasilitas Masjid di dalam komplek",
+        "Jalan Lebar dan Lingkungan Asri"
     ]
 
-    for (const p of propertiesResult) {
-        await prisma.property.create({
-            data: p
-        })
-    }
+    const propertiesResult = [
+        { id: "griya-keiko", name: "Griya Keiko", titleTop: "Griya Keiko", titleBottom: "Smart Modern Living", facilities: defaultFacilities },
+        { id: "kurnia-jaya", name: "Kurnia Jaya", titleTop: "Kurnia Jaya", titleBottom: "Minimalist Residence", facilities: defaultFacilities },
+        { id: "albirruni", name: "Albirruni", titleTop: "Albirruni", titleBottom: "Modern Harmony", facilities: defaultFacilities },
+        { id: "arraz", name: "ARRAZ", titleTop: "ARRAZ", titleBottom: "Srimahi City", facilities: defaultFacilities },
+        { id: "arsy", name: "ARSY", titleTop: "ARSY", titleBottom: "Modern House", facilities: defaultFacilities },
+        { id: "nayra", name: "Nayra", titleTop: "Nayra", titleBottom: "Premium Living", facilities: defaultFacilities },
+    ]
 
     const unitsResult = [
         {
-            id: "A-01",
+            id: "GK-A01",
             propertyId: "griya-keiko",
             type: "36",
             price: "450.000.000",
@@ -43,7 +33,7 @@ async function main() {
             features: ["2 Kamar Tidur", "1 Kamar Mandi", "Carport"]
         },
         {
-            id: "A-02",
+            id: "GK-A02",
             propertyId: "griya-keiko",
             type: "36",
             price: "450.000.000",
@@ -51,43 +41,48 @@ async function main() {
             features: ["2 Kamar Tidur", "1 Kamar Mandi", "Carport"]
         },
         {
-            id: "B-01",
-            propertyId: "griya-keiko",
+            id: "AL-B01",
+            propertyId: "albirruni",
             type: "45",
-            price: "550.000.000",
+            price: "450.000.000",
             status: "Available",
-            features: ["3 Kamar Tidur", "1 Kamar Mandi", "Taman Belakang"]
-        },
-        {
-            id: "KJ-01",
-            propertyId: "kurnia-jaya",
-            type: "36",
-            price: "420.000.000",
-            status: "Booked",
-            features: ["2 Kamar Tidur", "1 Kamar Mandi"]
-        },
-        {
-            id: "KJ-02",
-            propertyId: "kurnia-jaya",
-            type: "36",
-            price: "420.000.000",
-            status: "Available",
-            features: ["2 Kamar Tidur", "1 Kamar Mandi"]
-        },
-        {
-            id: "JT-10",
-            propertyId: "jati-asri",
-            type: "45",
-            price: "580.000.000",
-            status: "Available",
-            features: ["3 Kamar Tidur", "2 Kamar Mandi"]
+            features: ["2 Kamar Tidur", "1 Kamar Mandi", "Carport"]
         }
     ]
 
-    for (const u of unitsResult) {
-        await prisma.unit.create({
-            data: u
+    for (const p of propertiesResult) {
+        const existing = await prisma.property.findUnique({
+            where: { id: p.id }
         })
+        if (!existing) {
+            await prisma.property.create({
+                data: p
+            })
+            console.log(`+ Added new property: ${p.name}`)
+        } else {
+            // Update facilities if already exists
+            await prisma.property.update({
+                where: { id: p.id },
+                data: {
+                    facilities: p.facilities
+                }
+            })
+            console.log(`~ Updated facilities for property ${p.name}`)
+        }
+    }
+
+    for (const u of unitsResult) {
+        const existing = await prisma.unit.findUnique({
+            where: { id: u.id }
+        })
+        if (!existing) {
+            await prisma.unit.create({
+                data: u
+            })
+            console.log(`+ Added new unit: ${u.id}`)
+        } else {
+            console.log(`~ Unit ${u.id} already exists, skipping.`)
+        }
     }
 
     console.log('Seed finished successfully!')

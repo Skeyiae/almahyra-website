@@ -33,6 +33,7 @@ interface PropertyInteractiveContentProps {
     imagesStandard?: any;
     imagesPremium?: any;
     mortgageSchemes?: any;
+    facilities?: string[];
 }
 
 export default function PropertyInteractiveContent({
@@ -45,20 +46,25 @@ export default function PropertyInteractiveContent({
     mapUrl,
     imagesStandard,
     imagesPremium,
-    mortgageSchemes
+    mortgageSchemes,
+    facilities = [
+        "Cluster One Gate System (Keamanan 24 Jam)",
+        "Fasilitas Masjid di dalam komplek",
+        "Jalan Lebar dan Lingkungan Asri"
+    ]
 }: PropertyInteractiveContentProps) {
     // State untuk unit yang sedang dipilih
     const [selectedUnit, setSelectedUnit] = useState<Unit | null>(units.length > 0 ? units[0] : null);
 
     // Fungsi untuk update specs berdasarkan unit yang dipilih
     const specs = selectedUnit ? [
-        { label: "Kamar Tidur", value: `${selectedUnit.bedrooms} Unit`, icon: "bed" as const },
-        { label: "Kamar Mandi", value: `${selectedUnit.bathrooms} Unit`, icon: "bath" as const },
-        { label: "Listrik", value: selectedUnit.electricity || "1300 VA", icon: "power" as const },
-        { label: "Sumber Air", value: selectedUnit.waterSource || "Sumur Bor", icon: "water" as const },
-        { label: "Luas Bangunan", value: `${selectedUnit.buildingArea} m²`, icon: "home" as const },
-        { label: "Luas Tanah", value: `${selectedUnit.landArea} m²`, icon: "layout" as const },
-    ] : [];
+        { label: "Kamar Tidur", value: selectedUnit.bedrooms ? `${selectedUnit.bedrooms} Unit` : null, icon: "bed" as const },
+        { label: "Kamar Mandi", value: selectedUnit.bathrooms ? `${selectedUnit.bathrooms} Unit` : null, icon: "bath" as const },
+        { label: "Listrik", value: selectedUnit.electricity || null, icon: "power" as const },
+        { label: "Sumber Air", value: selectedUnit.waterSource || null, icon: "water" as const },
+        { label: "Luas Bangunan", value: selectedUnit.buildingArea ? `${selectedUnit.buildingArea} m²` : null, icon: "home" as const },
+        { label: "Luas Tanah", value: selectedUnit.landArea ? `${selectedUnit.landArea} m²` : null, icon: "layout" as const },
+    ].filter(spec => spec.value !== null) as any[] : [];
 
     const priceInt = selectedUnit ? parseInt(selectedUnit.price.replace(/\./g, '')) : 350000000;
 
@@ -96,9 +102,11 @@ export default function PropertyInteractiveContent({
                             <div className="mt-8 p-6 rounded-2xl border border-border-glass bg-bg-glass animate-fade-in shadow-xl">
                                 <h4 className="font-display font-bold text-accent mb-2">Fasilitas Komplek</h4>
                                 <ul className="text-text-secondary text-sm space-y-2 font-light">
-                                    <li>• Cluster One Gate System (Keamanan 24 Jam)</li>
-                                    <li>• Fasilitas Masjid di dalam komplek</li>
-                                    <li>• Jalan Lebar dan Lingkungan Asri</li>
+                                    {(facilities && facilities.length > 0) ? facilities.map((facility, index) => (
+                                        <li key={index}>• {facility}</li>
+                                    )) : (
+                                        <li>• Fasilitas lengkap dan lingkungan asri</li>
+                                    )}
                                 </ul>
                             </div>
                         </div>

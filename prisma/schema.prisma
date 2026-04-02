@@ -9,8 +9,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 model Property {
   id              String   @id
@@ -29,6 +30,7 @@ model Property {
   imagesStandard      Json?    @default("[]")
   imagesPremium       Json?    @default("[]")
   mortgageSchemes    Json?    @default("[]")
+  facilities         Json?    @default("[\"Cluster One Gate System (Keamanan 24 Jam)\", \"Fasilitas Masjid di dalam komplek\", \"Jalan Lebar dan Lingkungan Asri\"]")
   units              Unit[]
 }
 
@@ -45,6 +47,6 @@ model Unit {
   bathrooms    Int?     @default(1)
   buildingArea Int?     @default(36)
   landArea     Int?     @default(72)
-  electricity  String?  @default("1300 VA")
-  waterSource  String?  @default("Sumur Bor")
+  electricity  String?
+  waterSource  String?
 }

@@ -1,69 +1,25 @@
-import Link from "next/link";
-import ModelConfigurator from "./components/ModelConfigurator";
-import { getProperties, getUnitsByPropertyId } from "./lib/data";
+import { getProperties } from "./lib/data";
 import Chatbot from "./components/Chatbot";
+import PropertySlider from "./components/PropertySlider";
+import BrandIntroduction from "./components/BrandIntroduction";
+import Link from "next/link";
 
 export default async function Home() {
   const properties = await getProperties();
-  
-  // Default to Griya Keiko if it exists, otherwise use the first property
-  const activeProperty = properties.find(p => p.id === "griya-keiko") || properties[0];
-
-  // Fetch units for the active property to pass to configurator
-  const units = activeProperty ? await getUnitsByPropertyId(activeProperty.id) : [];
 
   return (
-    <main className="min-h-screen">
-      {/* HERO SECTION */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 py-10 overflow-hidden" id="hero">
-        {/* Hero Background Glow */}
-        <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[800px] h-[800px] hero-gradient opacity-40 pointer-events-none z-0" />
+    <main className="min-h-screen bg-background-primary overflow-x-hidden">
+      <BrandIntroduction />
 
-        {/* Bottom Fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-[200px] bg-gradient-to-t from-background-primary to-transparent pointer-events-none z-[1]" />
-
-        <div className="relative z-[2] max-width-[800px] animate-fade-in-up">
-          <span className="inline-flex items-center gap-2 px-5 py-2 mb-8 bg-bg-glass border border-border-glass rounded-full font-body text-[0.85rem] color-accent-light glass-blur">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_10px_var(--accent-glow)] animate-pulse-dot" />
-            Almahyra Property - Bandar Lampung
-          </span>
-
-          <h1 className="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold tracking-[-2px] leading-[1.1] mb-6 text-gradient capitalize">
-            Almahyra Property
-            <span className="block text-[0.35em] font-light tracking-[8px] uppercase opacity-60 mt-3">
-              Bandar Lampung
-            </span>
-          </h1>
-
-          <p className="font-body text-[clamp(1rem,2vw,1.25rem)] text-text-secondary max-w-[550px] mx-auto mb-12 font-light leading-relaxed">
-            Kami menghadirkan desain arsitektur dan interior yang memadukan
-            estetika modern dengan fungsionalitas — menciptakan ruang yang
-            menginspirasi dan nyaman untuk ditinggali oleh keluarga Anda.
-          </p>
-
-          <a href="#configurator" className="inline-flex items-center gap-[10px] px-9 py-4 bg-gradient-to-br from-accent to-accent-dark text-[#0a0a0f] font-display font-semibold text-base rounded-full transition-smooth hover:translate-y-[-2px] hover:shadow-[0_20px_40px_var(--accent-glow)] group">
-            Lihat Proyek Kami
-            <svg className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </a>
-        </div>
-
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[2] flex flex-col items-center gap-2 text-text-muted text-[0.75rem] tracking-[2px] uppercase">
-          <span>Scroll</span>
-          <div className="w-px h-10 bg-gradient-to-b from-accent to-transparent animate-scroll-pulse" />
-        </div>
-      </section>
-
-      {/* PROPERTY SELECTION SECTION */}
-      <section className="relative z-10 -mt-10 px-6">
-        <div className="max-w-[1200px] mx-auto overflow-x-auto pb-4 no-scrollbar">
+      {/* PROPERTY SELECTION SECTION - RESTORED SPACING */}
+      <section className="relative z-10 py-12 px-6 bg-background-primary/50 border-y border-white/5">
+        <div className="max-w-[1200px] mx-auto overflow-x-auto no-scrollbar">
           <div className="flex gap-3 justify-start md:justify-center min-w-max">
             {properties.map((prop) => (
               <Link
                 key={prop.id}
                 href={`/${prop.id}`}
-                className="px-6 py-3 rounded-full font-display text-sm font-medium transition-all duration-300 border bg-bg-glass text-text-secondary border-border-glass hover:border-accent hover:text-accent-light hover:bg-white/5"
+                className="px-8 py-3.5 rounded-full font-display text-sm font-bold transition-all duration-300 border bg-white/5 text-white/70 border-white/10 hover:border-accent hover:text-accent hover:bg-white/10 hover:shadow-[0_0_20px_rgba(201,169,110,0.1)]"
               >
                 {prop.name}
               </Link>
@@ -72,44 +28,35 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* CONFIGURATOR SECTION */}
-      <section className="relative py-[var(--section-padding)]" id="configurator">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] hero-gradient opacity-[0.15] pointer-events-none" />
-
-        <div className="max-w-[1200px] mx-auto px-6 relative">
-          <div className="text-center mb-16">
-            <span className="inline-block font-body text-[0.8rem] font-medium text-accent uppercase tracking-[3px] mb-4">
-              Showcase Utama: {activeProperty?.name}
-            </span>
-            <h2 className="font-display text-[clamp(2rem,4vw,3rem)] font-bold tracking-[-1px] mb-4 text-text-primary">
-              Pilih &amp; Jelajahi Unit
+      {/* PROPERTY REVIEW SLIDER SECTION */}
+      <section id="projects" className="relative z-10 py-20 bg-background-primary border-t border-white/5">
+        <div className="max-w-[1400px] mx-auto px-6 mb-12 text-center lg:text-left">
+            <h2 className="font-display text-4xl lg:text-5xl font-bold text-white mb-4">
+                Review Program <span className="text-accent underline underline-offset-[12px] decoration-accent/30 decoration-4">Perumahan</span>
             </h2>
-            <p className="text-[1.05rem] text-text-secondary max-w-[500px] mx-auto font-light">
-              Klik nama perumahan di atas untuk melihat detail lengkap per lokasi,
-              atau jelajahi desain {activeProperty?.name} di bawah ini.
+            <p className="text-text-muted max-w-xl font-light text-lg">
+                Jelajahi berbagai proyek hunian prestisius kami di lokasi strategis Bandar Lampung dan sekitarnya.
             </p>
-          </div>
-
-          {activeProperty && (
-            <ModelConfigurator
-              key={activeProperty.id}
-              activePropertyId={activeProperty.id}
-              propertyName={activeProperty.name}
-              units={units as any}
-              sitePlanImage={activeProperty.sitePlanImage}
-            />
-          )}
         </div>
+        
+        <PropertySlider properties={properties as any} />
       </section>
 
       {/* FOOTER */}
-      <footer className="py-12 px-6 border-t border-border-glass text-center">
-        <div className="max-w-[1200px] mx-auto flex flex-col items-center gap-4">
-          <div className="font-display text-2xl font-bold text-accent">
-            Almahyra <span className="text-text-primary opacity-50 font-light">| Property Research</span>
+      <footer className="py-20 px-6 border-t border-white/5 text-center bg-black/20">
+        <div className="max-w-[1200px] mx-auto flex flex-col items-center gap-8">
+          <div className="font-display text-4xl font-black tracking-tighter text-accent italic">
+            ALMAHYRA
           </div>
-          <p className="text-text-muted text-[0.85rem]">
-            &copy; {new Date().getFullYear()} Almahyra Property Research &amp; Development. All rights reserved.
+          <div className="flex gap-8 text-text-muted text-sm font-medium uppercase tracking-widest">
+              <a href="#" className="hover:text-accent transition-colors">Instagram</a>
+              <a href="#" className="hover:text-accent transition-colors">Facebook</a>
+              <a href="#" className="hover:text-accent transition-colors">YouTube</a>
+          </div>
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-4" />
+          <p className="text-text-muted text-[0.8rem] opacity-50 tracking-wider">
+            &copy; {new Date().getFullYear()} ALMAHYRA PROPERTY RESEARCH & DEVELOPMENT.<br />
+            ALL RIGHTS RESERVED. BANDAR LAMPUNG, INDONESIA.
           </p>
         </div>
       </footer>

@@ -327,13 +327,13 @@ export default function ModelConfigurator({
 
                         <div className="flex gap-4 text-[0.7rem] font-medium uppercase tracking-wider text-text-muted">
                             <div className="flex items-center gap-1.5">
-                                <span className="w-2 h-2 rounded-full bg-emerald-500"></span> Available
+                                <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"></span> Available
                             </div>
                             <div className="flex items-center gap-1.5">
-                                <span className="w-2 h-2 rounded-full bg-amber-500"></span> Booked
+                                <span className="w-2 h-2 rounded-full bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.4)]"></span> Booking
                             </div>
                             <div className="flex items-center gap-1.5">
-                                <span className="w-2 h-2 rounded-full bg-rose-500"></span> Sold
+                                <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.4)]"></span> Terjual / Akad
                             </div>
                         </div>
                     </div>
@@ -363,9 +363,10 @@ export default function ModelConfigurator({
                                             <td className="px-6 py-4 font-body text-sm text-text-secondary">{unit.type}</td>
                                             <td className="px-6 py-4 font-body text-sm text-text-primary font-semibold">Rp {unit.price}</td>
                                             <td className="px-6 py-4">
-                                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${unit.status === 'Available' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
-                                                    unit.status === 'Booked' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
-                                                        'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                                                    unit.status === 'Available' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                                                    (unit.status === 'Booked' || unit.status === 'Booking') ? 'bg-yellow-400/10 text-yellow-400 border border-yellow-400/30' :
+                                                    'bg-rose-500/10 text-rose-400 border border-rose-500/20'
                                                     }`}>
                                                     {unit.status}
                                                 </span>

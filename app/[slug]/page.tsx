@@ -40,9 +40,9 @@ export default async function PropertyPage({ params }: PageProps) {
                     {activeProperty.promoBadge ? (
                         <PromoBadge text={activeProperty.promoBadge} subtext={activeProperty.promoSubtext || ""} />
                     ) : (
-                        <span className="inline-flex items-center gap-2 px-5 py-2 mb-8 bg-bg-glass border border-border-glass rounded-full font-body text-[0.85rem] color-accent-light glass-blur">
-                            <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_10px_var(--accent-glow)] animate-pulse-dot" />
-                            Almahya Property - {activeProperty.name}
+                        <span className="inline-flex items-center gap-2 px-5 py-2 mb-8 bg-white/5 border border-white/10 rounded-full font-body text-[0.85rem] text-accent glass-blur">
+                            <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_10px_var(--accent-glow)] animate-pulse" />
+                            Almahyra Property - {activeProperty.name}
                         </span>
                     )}
 
@@ -116,6 +116,7 @@ export default async function PropertyPage({ params }: PageProps) {
                 imagesStandard={(activeProperty as any).imagesStandard}
                 imagesPremium={(activeProperty as any).imagesPremium}
                 mortgageSchemes={(activeProperty as any).mortgageSchemes}
+                facilities={(activeProperty as any).facilities}
             />
 
             {/* FOOTER */}

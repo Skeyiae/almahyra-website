@@ -58,30 +58,16 @@ export const models: Model[] = [
     },
     // Tambahkan model untuk perumahan lain di sini dengan propertyId yang sesuai
     {
-        id: "model-jati-1",
-        propertyId: "jati-asri",
-        name: "Jati Asri Classic",
-        description: "Nuansa kayu klasik di Jati Asri",
+        id: "model-albirruni-1",
+        propertyId: "albirruni",
+        name: "Albirruni Modern",
+        description: "Hunian harmonis dengan desain modern di Albirruni",
         variants: [
             {
-                id: "oak",
-                label: "Oak",
-                color: "#4a3728",
-                image: "https://res.cloudinary.com/daoubepeo/image/upload/v1/models/interior-bedroom.png",
-            },
-        ],
-    },
-    {
-        id: "model-pandora-1",
-        propertyId: "pandora-subsidi",
-        name: "Pandora Residence",
-        description: "Hunian mewah dengan konsep alam di Pandora Residence",
-        variants: [
-            {
-                id: "natural",
-                label: "Natural",
-                color: "#7a6b5d",
-                image: "https://res.cloudinary.com/daoubepeo/image/upload/v1/models/interior-living.png",
+                id: "albirruni-v1",
+                label: "Standard",
+                color: "#c9a96e",
+                image: "https://res.cloudinary.com/daoubepeo/image/upload/v1/models/model-exterior-white.png",
             },
         ],
     },
@@ -96,20 +82,6 @@ export const models: Model[] = [
                 label: "Modern",
                 color: "#c9a96e",
                 image: "https://res.cloudinary.com/daoubepeo/image/upload/v1/models/model-exterior-white.png",
-            },
-        ],
-    },
-    {
-        id: "model-elok-1",
-        propertyId: "griya-elok",
-        name: "Griya Elok Luxury",
-        description: "Kenyamanan eksklusif di Griya Elok",
-        variants: [
-            {
-                id: "elok-v1",
-                label: "Premium",
-                color: "#8B6914",
-                image: "https://res.cloudinary.com/daoubepeo/image/upload/v1/models/model-exterior-brown.png",
             },
         ],
     },
@@ -141,32 +113,4 @@ export const models: Model[] = [
             },
         ],
     },
-    {
-        id: "model-reno-1",
-        propertyId: "reno",
-        name: "Reno Residence",
-        description: "Pilihan tepat untuk investasi masa depan",
-        variants: [
-            {
-                id: "reno-v1",
-                label: "Classic",
-                color: "#4a3728",
-                image: "https://res.cloudinary.com/daoubepeo/image/upload/v1/models/model-exterior-brown.png",
-            },
-        ],
-    },
-    {
-        id: "model-green-1",
-        propertyId: "green-permana",
-        name: "Green Permana Eco",
-        description: "Konsep ramah lingkungan di Green Permana",
-        variants: [
-            {
-                id: "green-v1",
-                label: "Eco",
-                color: "#2d5a27",
-                image: "https://res.cloudinary.com/daoubepeo/image/upload/v1/models/model-exterior-white.png",
-            },
-        ],
-    }
 ];
