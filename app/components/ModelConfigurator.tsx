@@ -30,19 +30,46 @@ interface ModelCardProps {
 function ModelCard({ model }: ModelCardProps) {
     const [activeIndex, setActiveIndex] = useState(0);
     const cardRef = useRef<HTMLDivElement>(null);
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const isScrollingRef = useRef(false);
 
     const activeVariant = model.variants[activeIndex];
 
-    const handlePrev = () => {
-        setActiveIndex((prev) =>
-            prev === 0 ? model.variants.length - 1 : prev - 1
-        );
+    // Handle button click - scroll to that image
+    const handleVariantClick = (idx: number) => {
+        if (!scrollRef.current) return;
+        
+        isScrollingRef.current = true;
+        setActiveIndex(idx);
+        
+        const container = scrollRef.current;
+        const targetScroll = idx * container.offsetWidth;
+        
+        container.scrollTo({
+            left: targetScroll,
+            behavior: 'smooth'
+        });
+        
+        // Unlock auto-sync after animation
+        setTimeout(() => {
+            isScrollingRef.current = false;
+        }, 600);
     };
 
-    const handleNext = () => {
-        setActiveIndex((prev) =>
-            prev === model.variants.length - 1 ? 0 : prev + 1
-        );
+    // Auto-sync index on scroll
+    const handleScroll = () => {
+        if (isScrollingRef.current || !scrollRef.current) return;
+        
+        const container = scrollRef.current;
+        const scrollPosition = container.scrollLeft;
+        const itemWidth = container.offsetWidth;
+        
+        if (itemWidth > 0) {
+            const newIndex = Math.round(scrollPosition / itemWidth);
+            if (newIndex !== activeIndex && newIndex >= 0 && newIndex < model.variants.length) {
+                setActiveIndex(newIndex);
+            }
+        }
     };
 
     // Intersection Observer for reveal animation
@@ -81,55 +108,36 @@ function ModelCard({ model }: ModelCardProps) {
                     </p>
                 </div>
             </div>
-            {/* Image Viewer */}
+            {/* Image Viewer - Scroll Slider */}
             <div className="relative px-5 md:px-8 py-4 md:py-6">
-                <div className="relative w-full aspect-[16/10] rounded-md overflow-hidden bg-background-secondary">
+                <div 
+                    ref={scrollRef}
+                    onScroll={handleScroll}
+                    className="relative flex overflow-x-auto snap-x snap-mandatory no-scrollbar rounded-md aspect-[16/10] bg-background-secondary"
+                >
                     {model.variants.map((variant, idx) => (
-                        <Image
-                            key={variant.id}
-                            src={variant.image}
-                            alt={`${model.name} - ${variant.label}`}
-                            fill
-                            sizes="(max-width: 768px) 100vw, 1200px"
-                            className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out ${idx === activeIndex ? "opacity-100" : "opacity-0"}`}
-                            priority={idx === 0}
-                        />
+                        <div key={variant.id} className="relative flex-shrink-0 w-full h-full snap-center">
+                            <Image
+                                src={variant.image}
+                                alt={`${model.name} - ${variant.label}`}
+                                fill
+                                sizes="(max-width: 768px) 100vw, 1200px"
+                                className="object-cover"
+                                priority={idx === 0}
+                            />
+                        </div>
                     ))}
-
-                    {/* Overlay Info */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/70 to-transparent flex items-end justify-between">
-                        <span className="font-display text-[0.9rem] font-medium text-white px-4 py-1.5 bg-white/15 rounded-full backdrop-blur-md">
-                            {activeVariant.label}
-                        </span>
-                        <span className="text-[0.8rem] text-white/60 font-normal">
-                            {activeIndex + 1} / {model.variants.length}
-                        </span>
-                    </div>
                 </div>
 
-                {/* Navigation Arrows */}
-                {model.variants.length > 1 && (
-                    <div className="absolute top-1/2 left-8 right-8 -translate-y-1/2 flex justify-between pointer-events-none z-[5]">
-                        <button
-                            className="w-11 h-11 rounded-full bg-black/50 border border-white/10 text-white flex items-center justify-center cursor-pointer pointer-events-auto transition-fast backdrop-blur-md hover:bg-[rgba(201,169,110,0.3)] hover:border-accent hover:scale-110"
-                            onClick={handlePrev}
-                            aria-label="Previous"
-                        >
-                            <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M15 19l-7-7 7-7" />
-                            </svg>
-                        </button>
-                        <button
-                            className="w-11 h-11 rounded-full bg-black/50 border border-white/10 text-white flex items-center justify-center cursor-pointer pointer-events-auto transition-fast backdrop-blur-md hover:bg-[rgba(201,169,110,0.3)] hover:border-accent hover:scale-110"
-                            onClick={handleNext}
-                            aria-label="Next"
-                        >
-                            <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M9 5l7 7-7 7" />
-                            </svg>
-                        </button>
-                    </div>
-                )}
+                {/* Overlay Info (Floating outside scroll) */}
+                <div className="absolute bottom-10 left-10 right-10 flex items-end justify-between pointer-events-none z-[5]">
+                    <span className="font-display text-[0.8rem] md:text-[0.9rem] font-medium text-white px-4 py-1.5 bg-black/40 border border-white/10 rounded-full backdrop-blur-md">
+                        {activeVariant.label}
+                    </span>
+                    <span className="text-[0.7rem] md:text-[0.8rem] text-white/60 font-medium px-3 py-1 bg-black/20 rounded-full backdrop-blur-sm">
+                        {activeIndex + 1} / {model.variants.length}
+                    </span>
+                </div>
             </div>
 
             {/* Controls */}
@@ -142,7 +150,7 @@ function ModelCard({ model }: ModelCardProps) {
                         <button
                             key={variant.id}
                             className={`flex items-center gap-2 px-3.5 py-2 md:px-4.5 md:py-2.5 bg-bg-glass border-2 rounded-sm cursor-pointer transition-fast font-body text-xs md:text-[0.85rem] whitespace-nowrap ${idx === activeIndex ? "border-accent bg-[rgba(201,169,110,0.08)] text-text-primary" : "border-transparent text-text-secondary hover:bg-white/10 hover:text-text-primary"}`}
-                            onClick={() => setActiveIndex(idx)}
+                            onClick={() => handleVariantClick(idx)}
                         >
                             <span
                                 className={`w-4 h-4 md:w-6 md:h-6 rounded-full border-2 border-white/15 transition-fast flex-shrink-0 ${idx === activeIndex ? "border-accent shadow-[0_0_12px_var(--accent-glow)]" : ""}`}
@@ -159,7 +167,7 @@ function ModelCard({ model }: ModelCardProps) {
                         <button
                             key={variant.id}
                             className={`w-16 h-11 md:w-20 md:h-[54px] rounded-sm overflow-hidden cursor-pointer border-2 transition-fast flex-shrink-0 ${idx === activeIndex ? "border-accent opacity-100" : "border-transparent opacity-50 hover:opacity-80"}`}
-                            onClick={() => setActiveIndex(idx)}
+                            onClick={() => handleVariantClick(idx)}
                         >
                             <Image
                                 src={variant.image}
