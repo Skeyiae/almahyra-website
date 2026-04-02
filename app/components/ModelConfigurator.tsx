@@ -390,19 +390,33 @@ export default function ModelConfigurator({
                         </div>
 
                         {/* VIEW MOBILE: Card Layout (Hidden on Desktop) */}
-                        <div className="md:hidden flex flex-col gap-4">
+                        <div className="md:hidden flex flex-col gap-3">
                             {filteredUnits.map((unit: any) => (
                                 <div
                                     key={unit.id}
-                                    className={`p-5 rounded-xl border glass-blur transition-all duration-200 ${selectedUnitId === unit.id ? 'bg-accent/10 border-accent shadow-[0_10px_20px_rgba(201,169,110,0.1)]' : 'bg-bg-card border-border-glass'}`}
+                                    className={`p-4 rounded-xl border glass-blur transition-all duration-200 ${selectedUnitId === unit.id ? 'bg-accent/10 border-accent shadow-[0_10px_20px_rgba(201,169,110,0.1)]' : 'bg-bg-card border-border-glass'}`}
                                     onClick={() => onUnitSelect?.(unit)}
                                 >
-                                    <div className="flex justify-between items-start mb-3">
-                                        <div className="flex flex-col">
-                                            <span className="text-[0.65rem] text-text-muted uppercase tracking-wider font-bold mb-0.5">Kapling</span>
-                                            <span className="font-display font-bold text-accent text-lg">{unit.label || unit.id}</span>
+                                    <div className="flex justify-between items-center mb-3">
+                                        <div className="flex items-center gap-3">
+                                            <div className="flex flex-col">
+                                                <span className="font-display font-black text-accent text-lg leading-tight">{unit.label || unit.id}</span>
+                                                <span className="text-[10px] text-text-secondary font-medium">{unit.type}</span>
+                                            </div>
+                                            <div className="h-6 w-px bg-white/10 mx-1"></div>
+                                            <div className="flex items-center gap-2.5">
+                                                {/* Mini Icons for Specs */}
+                                                <div className="flex items-center gap-1 text-text-primary">
+                                                    <svg className="w-3.5 h-3.5 text-accent/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M3 20v-8a2 2 0 012-2h14a2 2 0 012 2v8" /><path d="M5 10V6a2 2 0 012-2h10a2 2 0 012 2v4" /><path d="M3 18h18" /></svg>
+                                                    <span className="text-xs font-bold">{unit.bedrooms || 0}</span>
+                                                </div>
+                                                <div className="flex items-center gap-1 text-text-primary">
+                                                    <svg className="w-3.5 h-3.5 text-accent/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M7 12c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8-8 3.582-8 8z" /><path d="M7 12L3 9" /><path d="M7 12L3 15" /></svg>
+                                                    <span className="text-xs font-bold">{unit.bathrooms || 0}</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
+                                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-tighter ${
                                             unit.status === 'Available' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
                                             (unit.status === 'Booked' || unit.status === 'Booking') ? 'bg-yellow-400/10 text-yellow-400 border border-yellow-400/30' :
                                             'bg-rose-500/10 text-rose-400 border border-rose-500/20'
@@ -411,24 +425,18 @@ export default function ModelConfigurator({
                                         </span>
                                     </div>
                                     
-                                    <div className="grid grid-cols-2 gap-4 mb-3 pb-3 border-b border-white/5">
-                                        <div>
-                                            <span className="block text-[0.6rem] text-text-muted uppercase font-bold">Harga Paket</span>
-                                            <span className="font-body font-bold text-text-primary">Rp {unit.price}</span>
+                                    <div className="flex justify-between items-center bg-white/5 px-3 py-2 rounded-lg">
+                                        <div className="flex flex-col">
+                                            <span className="text-[10px] text-text-muted font-bold uppercase leading-none">Harga</span>
+                                            <span className="font-body font-black text-text-primary text-[0.95rem]">Rp {unit.price}</span>
                                         </div>
-                                        <div>
-                                            <span className="block text-[0.6rem] text-text-muted uppercase font-bold">Tipe Bangunan</span>
-                                            <span className="font-body text-text-secondary text-sm">{unit.type}</span>
+                                        <div className="flex gap-2">
+                                            {unit.features.slice(0, 2).map((f: string, i: number) => (
+                                                <span key={i} className="text-[9px] text-text-muted bg-white/5 px-2 py-0.5 rounded-sm border border-white/5">
+                                                    {f}
+                                                </span>
+                                            ))}
                                         </div>
-                                    </div>
-                                    
-                                    <div className="flex flex-wrap gap-2">
-                                        {unit.features.slice(0, 3).map((f: string, i: number) => (
-                                            <span key={i} className="text-[10px] text-text-muted bg-white/5 px-2 py-0.5 rounded-sm">
-                                                {f}
-                                            </span>
-                                        ))}
-                                        {unit.features.length > 3 && <span className="text-[10px] text-text-muted">...</span>}
                                     </div>
                                 </div>
                             ))}
