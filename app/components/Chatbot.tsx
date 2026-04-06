@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useMarketing } from "../context/MarketingContext";
 
 interface Unit {
     id: string;
@@ -44,6 +45,8 @@ export default function Chatbot({
     const [inputValue, setInputValue] = useState("");
     const [units, setUnits] = useState<Unit[]>([]);
     const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    const { openMarketing } = useMarketing();
 
     // Fetch units from Supabase on mount
     useEffect(() => {
@@ -254,8 +257,8 @@ export default function Chatbot({
                         <button onClick={() => handleQuickAction("Unit Kosong")} className="whitespace-nowrap px-3 py-1.5 bg-white/5 hover:bg-accent/20 border border-white/10 hover:border-accent/30 rounded-full text-[11px] text-text-secondary transition-all">
                             🏠 Unit Kosong
                         </button>
-                        <button onClick={() => window.open(`https://wa.me/${salesPhone}?text=Halo ${salesName}, saya ingin tanya tentang properti ini`, '_blank')} className="whitespace-nowrap px-3 py-1.5 bg-green-500/10 hover:bg-green-500/20 border border-green-500/20 rounded-full text-[11px] text-green-400 transition-all">
-                            📞 Chat {salesName}
+                        <button onClick={openMarketing} className="whitespace-nowrap px-3 py-1.5 bg-green-500/10 hover:bg-green-500/20 border border-green-500/20 rounded-full text-[11px] text-green-400 transition-all">
+                            📞 Hubungi Marketing
                         </button>
                     </div>
 

@@ -4,6 +4,7 @@ import { prisma } from "../lib/prisma";
 import PromoBadge from "../components/PromoBadge";
 import PropertyInteractiveContent from "../components/PropertyInteractiveContent";
 import Chatbot from "../components/Chatbot";
+import MarketingButton from "../components/MarketingButton";
 
 
 interface PageProps {
@@ -79,14 +80,11 @@ export default async function PropertyPage({ params }: PageProps) {
                                 <path d="M5 12h14M12 5l7 7-7 7" />
                             </svg>
                         </a>
-                        <a
-                            href={`https://wa.me/628123456789?text=Halo Almahyra, saya tertarik dengan ${activeProperty.name}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="w-full sm:w-auto inline-flex items-center justify-center gap-[10px] px-7 md:px-9 py-3.5 md:py-4 bg-white/5 border border-border-glass text-white font-display font-semibold text-sm md:text-base rounded-full transition-smooth hover:bg-white/10"
+                        <MarketingButton
+                            className="w-full sm:w-auto inline-flex items-center justify-center gap-[10px] px-7 md:px-9 py-3.5 md:py-4 bg-white/5 border border-border-glass text-white font-display font-semibold text-sm md:text-base rounded-full transition-smooth hover:bg-white/10 cursor-pointer"
                         >
                             Hubungi Marketing
-                        </a>
+                        </MarketingButton>
                     </div>
                 </div>
 

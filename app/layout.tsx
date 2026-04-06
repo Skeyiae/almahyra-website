@@ -1,19 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { MarketingProvider } from "./context/MarketingContext";
+import MarketingPopup from "./components/MarketingPopup";
 
 export const metadata: Metadata = {
-  title: "Almahyra Property — Pilihan Hunian & Investasi Properti Terbaik",
-  description:
-    "Cari rumah impian Anda di Almahyra Property. Menghadirkan berbagai pilihan perumahan dengan desain modern, fitur interior configurator, dan lokasi strategis.",
-  keywords: ["Almahyra Property", "perumahan", "rumah dijual", "investasi properti", "interior configurator", "almahyra"],
-  openGraph: {
-    title: "Almahyra Property — Hunian Modern & Strategis",
-    description: "Jelajahi koleksi perumahan eksklusif Almahyra. Pilih unit, lihat simulasi angsuran, dan temukan rumah impian Anda.",
-    type: "website",
-    url: "https://almahyra-property.com",
-    siteName: "Almahyra Property",
-    locale: "id_ID",
-  },
+// ... existing metadata ...
   alternates: {
     canonical: "https://almahyra-property.com",
   },
@@ -27,7 +18,10 @@ export default function RootLayout({
   return (
     <html lang="id">
       <body className="antialiased">
-        {children}
+        <MarketingProvider>
+          {children}
+          <MarketingPopup />
+        </MarketingProvider>
       </body>
     </html>
   );

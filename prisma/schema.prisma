@@ -50,3 +50,11 @@ model Unit {
   electricity  String?
   waterSource  String?
 }
+
+model Marketing {
+  id        Int      @id @default(autoincrement())
+  name      String
+  photo     String?
+  whatsapp  String
+  position  String?  @default("Marketing Executive")
+}

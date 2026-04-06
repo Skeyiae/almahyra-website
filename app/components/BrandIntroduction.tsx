@@ -1,8 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useMarketing } from "../context/MarketingContext";
 
 export default function BrandIntroduction() {
+    const { openMarketing } = useMarketing();
+
     return (
         <section className="relative min-h-[60vh] flex flex-col items-center justify-center text-center px-6 pt-32 pb-16 overflow-hidden" id="hero">
             {/* Background Elements */}
@@ -35,9 +38,12 @@ export default function BrandIntroduction() {
                         <a href="#projects" className="px-10 py-4 bg-white text-background-primary font-display font-bold rounded-full transition-all hover:scale-105 hover:shadow-2xl active:scale-95">
                             Mulai Eksplorasi
                         </a>
-                        <a href="https://wa.me/62895610098292" target="_blank" className="px-10 py-4 bg-transparent border-2 border-white/20 text-white font-display font-bold rounded-full transition-all hover:bg-white/5 hover:border-white/40">
+                        <button 
+                            onClick={openMarketing}
+                            className="px-10 py-4 bg-transparent border-2 border-white/20 text-white font-display font-bold rounded-full transition-all hover:bg-white/5 hover:border-white/40 cursor-pointer"
+                        >
                             Hubungi Kami
-                        </a>
+                        </button>
                     </div>
                 </motion.div>
             </div>

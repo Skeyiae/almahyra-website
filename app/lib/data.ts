@@ -56,3 +56,41 @@ export async function getPriceByType(propertyId: string, type: string) {
     });
     return unit?.price;
 }
+
+/**
+ * Mengambil semua data marketing dari Supabase
+ */
+export async function getMarketingContacts() {
+    try {
+        // Gunakan raw query sebagai fallback jika prisma client belum terupdate
+        const marketing = await (prisma as any).$queryRawUnsafe('SELECT * FROM "Marketing" ORDER BY id ASC');
+        if (marketing && marketing.length > 0) return marketing;
+    } catch (error) {
+        console.error("Prisma Raw Query Error:", error);
+    }
+
+    // Hardcoded fallback agar tidak kosong (Permintaan User)
+    return [
+        {
+            id: 1,
+            name: "Marketing Almahyra 1",
+            position: "Senior Marketing",
+            whatsapp: "089638279827",
+            photo: "https://res.cloudinary.com/daoubepeo/image/upload/v1/models/model-exterior-white.png"
+        },
+        {
+            id: 2,
+            name: "Marketing Almahyra 2",
+            position: "Marketing Executive",
+            whatsapp: "089638279827",
+            photo: "https://res.cloudinary.com/daoubepeo/image/upload/v1/models/model-exterior-white.png"
+        },
+        {
+            id: 3,
+            name: "Marketing Almahyra 3",
+            position: "Marketing Consultant",
+            whatsapp: "089638279827",
+            photo: "https://res.cloudinary.com/daoubepeo/image/upload/v1/models/model-exterior-white.png"
+        }
+    ];
+}
