@@ -18,7 +18,13 @@ export default async function PropertyPage({ params }: PageProps) {
     // Fetch properti lengkap dengan unitnya
     const activeProperty = await prisma.property.findUnique({
         where: { id: slug },
-        include: { units: true }
+        include: { 
+            units: {
+                orderBy: {
+                    label: 'asc'
+                }
+            } 
+        }
     });
 
     if (!activeProperty) {
