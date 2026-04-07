@@ -34,6 +34,8 @@ interface PropertyInteractiveContentProps {
     imagesPremium?: any;
     mortgageSchemes?: any;
     facilities?: string[];
+    defaultDpAmount?: number;
+    defaultBookingAmount?: number;
 }
 
 export default function PropertyInteractiveContent({
@@ -51,10 +53,12 @@ export default function PropertyInteractiveContent({
         "Cluster One Gate System (Keamanan 24 Jam)",
         "Fasilitas Masjid di dalam komplek",
         "Jalan Lebar dan Lingkungan Asri"
-    ]
+    ],
+    defaultDpAmount = 0,
+    defaultBookingAmount = 2000000
 }: PropertyInteractiveContentProps) {
     // State untuk unit yang sedang dipilih
-    const [selectedUnit, setSelectedUnit] = useState<Unit | null>(units.length > 0 ? units[0] : null);
+    const [selectedUnit, setSelectedUnit] = useState<any | null>(units.length > 0 ? units[0] : null);
 
     // Fungsi untuk update specs berdasarkan unit yang dipilih
     const specs = selectedUnit ? [
@@ -68,11 +72,15 @@ export default function PropertyInteractiveContent({
 
     const priceInt = selectedUnit ? parseInt(selectedUnit.price.replace(/\./g, '')) : 350000000;
 
-    // Logic for DP and Booking fee as requested by user
-    // 3 Rooms or 455 Million price units get DP 50M and Booking 5M
-    const isPremiumUnit = Number(selectedUnit?.bedrooms) === 3 || priceInt === 455000000;
-    const dpAmount = isPremiumUnit ? 50000000 : 0;
-    const bookingAmount = isPremiumUnit ? 5000000 : 2000000;
+    // Logic for DP and Booking fee from Database
+    // Priority: Unit-specific value > Property default value
+    const dpAmount = selectedUnit?.dpAmount !== null && selectedUnit?.dpAmount !== undefined 
+        ? selectedUnit.dpAmount 
+        : defaultDpAmount;
+        
+    const bookingAmount = selectedUnit?.bookingAmount !== null && selectedUnit?.bookingAmount !== undefined 
+        ? selectedUnit.bookingAmount 
+        : defaultBookingAmount;
 
     return (
         <>

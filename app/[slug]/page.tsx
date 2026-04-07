@@ -127,6 +127,8 @@ export default async function PropertyPage({ params }: PageProps) {
                 imagesPremium={(activeProperty as any).imagesPremium}
                 mortgageSchemes={(activeProperty as any).mortgageSchemes}
                 facilities={(activeProperty as any).facilities}
+                defaultDpAmount={(activeProperty as any).defaultDpAmount ?? 0}
+                defaultBookingAmount={(activeProperty as any).defaultBookingAmount ?? 2000000}
             />
 
             {/* FOOTER */}

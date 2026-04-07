@@ -23,6 +23,8 @@ async function main() {
                 "Fasilitas Masjid di dalam komplek",
                 "Jalan Lebar dan Lingkungan Asri"
             ],
+            defaultDpAmount: 0,
+            defaultBookingAmount: 2000000,
             sitePlanImage: "/siteplans/griya-keiko.png",
             salesPhone: "62895610098292",
             salesName: "Sales Griya Keiko",
@@ -136,6 +138,8 @@ async function main() {
                 "Fasilitas Masjid di dalam komplek",
                 "Jalan Lebar dan Lingkungan Asri"
             ],
+            defaultDpAmount: 0,
+            defaultBookingAmount: 2000000,
             sitePlanImage: "/siteplans/kurnia-jaya.png",
             salesPhone: "628123456789", // Placeholder
             salesName: "Sales Kurnia Jaya",
@@ -162,6 +166,8 @@ async function main() {
                 "Fasilitas Masjid di dalam komplek",
                 "Jalan Lebar dan Lingkungan Asri"
             ],
+            defaultDpAmount: 0,
+            defaultBookingAmount: 2000000,
             sitePlanImage: null,
             salesPhone: "628123456789",
             salesName: "Sales Albirruni",
@@ -188,6 +194,8 @@ async function main() {
                 "Fasilitas Masjid di dalam komplek",
                 "Jalan Lebar dan Lingkungan Asri"
             ],
+            defaultDpAmount: 0,
+            defaultBookingAmount: 2000000,
             sitePlanImage: null,
             salesPhone: "62895610098292",
             salesName: "Sales Nayra",
@@ -214,14 +222,16 @@ async function main() {
             });
             console.log(`+ Added new property: ${p.name}`);
         } else {
-            // Update existing property with new fields (facilities)
+            // Update existing property with new fields (facilities, dp, booking)
             await prisma.property.update({
                 where: { id: p.id },
                 data: {
-                    facilities: p.facilities || []
+                    facilities: p.facilities || [],
+                    defaultDpAmount: p.defaultDpAmount ?? 0,
+                    defaultBookingAmount: p.defaultBookingAmount ?? 2000000
                 } as any
             });
-            console.log(`~ Updated facilities for property: ${p.name}`);
+            console.log(`~ Updated fields for property: ${p.name}`);
         }
     }
 
@@ -247,7 +257,9 @@ async function main() {
             buildingArea: isPremium ? 70 : 60,
             landArea: isPremium ? 100 : 84,
             electricity: "1300 VA",
-            waterSource: "Sumur Bor"
+            waterSource: "Sumur Bor",
+            dpAmount: isPremium ? 50000000 : null,
+            bookingAmount: isPremium ? 5000000 : null
         });
     }
 
