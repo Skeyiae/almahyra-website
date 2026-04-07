@@ -25,7 +25,7 @@ export const propertyDetails: Record<string, PropertyDetail> = {
         id: "griya-keiko",
         description: "Hunian elegan di Sabah Balau yang memadukan estetika modern dengan fungsionalitas — menciptakan ruang yang menginspirasi dan nyaman untuk ditinggali oleh keluarga Anda.",
         locationText: "Sabah Balau, Lampung (Pinggir Jalan Tugu Perahu)",
-        basePrice: 340000000,
+        basePrice: 354000000,
         installments: "2,6 Jutaan",
         promoBadge: {
             text: "Promo Tanpa DP",

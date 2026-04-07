@@ -68,6 +68,12 @@ export default function PropertyInteractiveContent({
 
     const priceInt = selectedUnit ? parseInt(selectedUnit.price.replace(/\./g, '')) : 350000000;
 
+    // Logic for DP and Booking fee as requested by user
+    // 3 Rooms or 455 Million price units get DP 50M and Booking 5M
+    const isPremiumUnit = Number(selectedUnit?.bedrooms) === 3 || priceInt === 455000000;
+    const dpAmount = isPremiumUnit ? 50000000 : 0;
+    const bookingAmount = isPremiumUnit ? 5000000 : 2000000;
+
     return (
         <>
             <section className="py-24 px-6 relative overflow-hidden">
@@ -114,6 +120,8 @@ export default function PropertyInteractiveContent({
                                 price={priceInt}
                                 propertyId={propertyId}
                                 dbSchemes={mortgageSchemes}
+                                dpAmount={dpAmount}
+                                bookingAmount={bookingAmount}
                             />
 
                             <div className="mt-8 p-6 rounded-2xl border border-border-glass bg-bg-glass animate-fade-in shadow-xl">

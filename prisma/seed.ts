@@ -237,7 +237,7 @@ async function main() {
             propertyId: "griya-keiko",
             label: label,
             type: isPremium ? "Type 70/100 (3BR Premium)" : "Type 60/84 (2BR Standard)",
-            price: isPremium ? "425.000.000" : "354.000.000", // Adjusted from 365m to 354m as requested
+            price: isPremium ? "455.000.000" : "354.000.000", // Adjusted to 455m for 3BR as requested
             status: i % 7 === 0 ? "Sold" : (i % 4 === 0 ? "Booked" : "Available"),
             features: isPremium
                 ? ["3 Kamar Tidur", "2 Kamar Mandi", "Dapur Luas", "Carport 2 Mobil"]
@@ -255,18 +255,12 @@ async function main() {
     let skippedCount = 0;
 
     for (const u of keikoUnits) {
-        const existing = await prisma.unit.findUnique({
-            where: { id: u.id }
+        await prisma.unit.upsert({
+            where: { id: u.id },
+            update: u,
+            create: u
         });
-
-        if (!existing) {
-            await prisma.unit.create({
-                data: u
-            });
-            createdCount++;
-        } else {
-            skippedCount++;
-        }
+        createdCount++;
     }
 
     console.log(`Seeding realistic units for Griya Keiko... Done (+${createdCount} added, ~${skippedCount} already exist)`);

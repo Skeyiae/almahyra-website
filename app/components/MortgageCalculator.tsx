@@ -9,12 +9,16 @@ interface MortgageCalculatorProps {
     price: number;
     propertyId?: string;
     dbSchemes?: any;
+    dpAmount?: number;
+    bookingAmount?: number;
 }
 
 export default function MortgageCalculator({
     price,
     propertyId,
-    dbSchemes
+    dbSchemes,
+    dpAmount = 0,
+    bookingAmount = 2000000
 }: MortgageCalculatorProps) {
     const isKeiko = propertyId === "griya-keiko";
 
@@ -52,13 +56,14 @@ export default function MortgageCalculator({
         selectedBank?.options[selectedOptionIndex] || selectedBank?.options[0]
         , [selectedBank, selectedOptionIndex]);
 
-    const scalingFactor = useMemo(() => price / BASE_PRICE_KEIKO, [price]);
+    const loanAmountForScaling = useMemo(() => price - dpAmount, [price, dpAmount]);
+    const scalingFactor = useMemo(() => loanAmountForScaling / BASE_PRICE_KEIKO, [loanAmountForScaling]);
 
     // --- Standard Calculations ---
     const standardMonthlyPayment = useMemo(() => {
         const monthlyInterest = (initialInterest / 100) / 12;
         const numberOfPayments = tenor * 12;
-        const loanAmount = price;
+        const loanAmount = price - dpAmount;
 
         if (monthlyInterest === 0) return Math.round(loanAmount / numberOfPayments);
 
@@ -66,7 +71,7 @@ export default function MortgageCalculator({
             (Math.pow(1 + monthlyInterest, numberOfPayments) - 1);
 
         return isNaN(payment) ? 0 : Math.round(payment);
-    }, [price, tenor]);
+    }, [price, tenor, dpAmount]);
 
     // --- Render Advanced Calculator (Keiko) ---
     if (isKeiko) {
@@ -79,7 +84,21 @@ export default function MortgageCalculator({
                         <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-accent/20 flex items-center justify-center text-accent">
                             <Landmark size={18} className="md:w-[22px] md:h-[22px]" />
                         </div>
-                        <h3 className="font-display text-lg md:text-xl font-bold text-text-primary">Simulasi Angsuran 0% DP</h3>
+                        <h3 className="font-display text-lg md:text-xl font-bold text-text-primary">
+                            Simulasi Angsuran {dpAmount > 0 ? `(DP ${dpAmount / 1000000} Juta)` : "0% DP"}
+                        </h3>
+                    </div>
+
+                    {/* DP & Booking Summary */}
+                    <div className="grid grid-cols-2 gap-3 mb-8">
+                        <div className="p-3 rounded-xl bg-white/5 border border-white/10">
+                            <div className="text-[0.6rem] text-text-muted uppercase font-bold mb-1">Uang Muka (DP)</div>
+                            <div className="text-sm font-display font-bold text-white">{formatCurrency(dpAmount)}</div>
+                        </div>
+                        <div className="p-3 rounded-xl bg-white/5 border border-white/10">
+                            <div className="text-[0.6rem] text-text-muted uppercase font-bold mb-1">Booking Fee</div>
+                            <div className="text-sm font-display font-bold text-accent">{formatCurrency(bookingAmount)}</div>
+                        </div>
                     </div>
 
                     <div className="space-y-6 md:space-y-8">
@@ -188,7 +207,7 @@ export default function MortgageCalculator({
                         </AnimatePresence>
 
                         <p className="text-[0.6rem] text-text-muted italic opacity-50 font-light leading-relaxed">
-                            *Estimasi angsuran dihitung berdasarkan harga unit {formatCurrency(price)}.
+                            *Estimasi angsuran dihitung berdasarkan harga {formatCurrency(price)} {dpAmount > 0 ? `dikurangi DP ${formatCurrency(dpAmount)}` : "tanpa DP"}.
                             Angka di atas bersifat simulasi dan dapat berubah sesuai kebijakan bank.
                         </p>
                     </div>
@@ -207,7 +226,9 @@ export default function MortgageCalculator({
                     <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-accent/20 flex items-center justify-center text-accent">
                         <Calculator size={18} className="md:w-[22px] md:h-[22px]" />
                     </div>
-                    <h3 className="font-display text-lg md:text-xl font-bold text-text-primary">Simulasi Angsuran</h3>
+                    <h3 className="font-display text-lg md:text-xl font-bold text-text-primary">
+                        Simulasi Angsuran {dpAmount > 0 ? `(DP ${dpAmount / 1000000} Juta)` : ""}
+                    </h3>
                 </div>
 
                 <div className="space-y-8 md:space-y-10">
@@ -242,7 +263,7 @@ export default function MortgageCalculator({
                             <span className="text-[0.4em] font-light text-text-muted ml-1 md:ml-2">/bulan*</span>
                         </div>
                         <p className="text-[0.6rem] text-text-muted mt-4 italic opacity-50 font-light">
-                            *Estimasi berdasarkan suku bunga {initialInterest}% per tahun. Perhitungan ini bersifat simulasi 0% DP.
+                            *Estimasi berdasarkan suku bunga {initialInterest}% per tahun. Perhitungan ini bersifat simulasi {dpAmount > 0 ? `DP ${formatCurrency(dpAmount)}` : "0% DP"}.
                         </p>
                     </div>
                 </div>
