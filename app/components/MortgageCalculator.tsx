@@ -76,8 +76,11 @@ export default function MortgageCalculator({
         return isNaN(payment) ? 0 : Math.round(payment);
     }, [price, tenor, dpAmount]);
 
-    // --- Render Advanced Calculator (Keiko) ---
-    if (isKeiko) {
+    // --- Render Advanced Calculator ---
+    // Gunakan tampilan advanced jika properti adalah Keiko ATAU memiliki skema bank di database
+    const showAdvanced = isKeiko || (dbSchemes && Array.isArray(dbSchemes) && dbSchemes.length > 0);
+
+    if (showAdvanced) {
         return (
             <div className="p-5 md:p-8 md:pb-10 rounded-2xl md:rounded-3xl bg-gradient-to-br from-bg-glass to-background-secondary border border-border-glass glass-blur shadow-2xl relative overflow-hidden">
                 <div className="absolute -top-10 -right-10 w-40 h-40 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
