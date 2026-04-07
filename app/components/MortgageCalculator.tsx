@@ -57,7 +57,10 @@ export default function MortgageCalculator({
         , [selectedBank, selectedOptionIndex]);
 
     const loanAmountForScaling = useMemo(() => price - dpAmount, [price, dpAmount]);
-    const scalingFactor = useMemo(() => loanAmountForScaling / BASE_PRICE_KEIKO, [loanAmountForScaling]);
+    const scalingFactor = useMemo(() => {
+        if (selectedBank?.isSubsidi) return 1;
+        return loanAmountForScaling / BASE_PRICE_KEIKO;
+    }, [loanAmountForScaling, selectedBank]);
 
     // --- Standard Calculations ---
     const standardMonthlyPayment = useMemo(() => {

@@ -10,6 +10,7 @@ export interface BankOption {
 export interface BankScheme {
     id: string;
     name: string;
+    isSubsidi?: boolean;
     options: BankOption[];
 }
 
