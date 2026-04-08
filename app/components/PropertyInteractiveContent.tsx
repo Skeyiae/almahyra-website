@@ -74,12 +74,12 @@ export default function PropertyInteractiveContent({
 
     // Logic for DP and Booking fee from Database
     // Priority: Unit-specific value > Property default value
-    const dpAmount = selectedUnit?.dpAmount !== null && selectedUnit?.dpAmount !== undefined 
-        ? selectedUnit.dpAmount 
+    const dpAmount = selectedUnit?.dpAmount !== null && selectedUnit?.dpAmount !== undefined
+        ? selectedUnit.dpAmount
         : defaultDpAmount;
-        
-    const bookingAmount = selectedUnit?.bookingAmount !== null && selectedUnit?.bookingAmount !== undefined 
-        ? selectedUnit.bookingAmount 
+
+    const bookingAmount = selectedUnit?.bookingAmount !== null && selectedUnit?.bookingAmount !== undefined
+        ? selectedUnit.bookingAmount
         : defaultBookingAmount;
 
     return (
@@ -101,12 +101,12 @@ export default function PropertyInteractiveContent({
                                 <div className="absolute bottom-4 right-4 opacity-10 pointer-events-none text-accent">
                                     <svg className="w-24 h-24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z" /><circle cx="12" cy="10" r="3" /></svg>
                                 </div>
-                                
+
                                 <h3 className="font-display text-xl md:text-3xl font-bold text-white mb-6 md:mb-8 flex items-center gap-3">
                                     <span className="w-8 h-1 bg-accent rounded-full hidden md:block"></span>
                                     Lokasi Strategis
                                 </h3>
-                                
+
                                 <div className="relative z-10">
                                     <Landmarks landmarks={landmarks} />
                                     <div className="mt-8 pt-8 border-t border-white/10 flex items-start gap-4">
@@ -114,7 +114,7 @@ export default function PropertyInteractiveContent({
                                             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z" /><circle cx="12" cy="10" r="3" /></svg>
                                         </div>
                                         <p className="text-text-primary text-sm md:text-lg font-medium leading-relaxed">
-                                            <span className="text-accent font-black uppercase tracking-wider text-[0.65rem] md:text-[0.75rem] block mb-1">Lokasi Perumahan</span> 
+                                            <span className="text-accent font-black uppercase tracking-wider text-[0.65rem] md:text-[0.75rem] block mb-1">Lokasi Perumahan</span>
                                             {locationText}
                                         </p>
                                     </div>
@@ -153,7 +153,7 @@ export default function PropertyInteractiveContent({
                 </div>
             </section>
 
-            <section className="relative py-[var(--section-padding)]" id="configurator">
+            <section className="relative py-[var(--section-padding)] overflow-hidden" id="configurator">
                 <div className="max-w-[1200px] mx-auto px-6 relative">
                     <div className="text-center mb-16">
                         <span className="inline-block font-body text-[0.8rem] font-medium text-accent uppercase tracking-[3px] mb-4">

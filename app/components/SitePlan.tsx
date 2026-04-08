@@ -65,7 +65,7 @@ export default function SitePlan({ imageUrl, propertyName }: SitePlanProps) {
             </div>
 
             {/* Background Decorative Element */}
-            <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-accent/5 blur-[100px] rounded-full pointer-events-none opacity-50" />
+            <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-accent/5 blur-[100px] rounded-full pointer-events-none opacity-50" />
         </div>
     );
 }

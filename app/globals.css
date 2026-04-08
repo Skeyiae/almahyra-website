@@ -23,11 +23,11 @@
   }
 
   html {
-    @apply scroll-smooth antialiased;
+    @apply scroll-smooth antialiased overflow-x-hidden;
   }
 
   body {
-    @apply font-body bg-background-primary text-text-primary leading-relaxed overflow-x-hidden;
+    @apply font-body bg-background-primary text-text-primary leading-relaxed overflow-x-hidden w-full;
   }
 
   /* Custom Scrollbar */

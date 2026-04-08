@@ -18,12 +18,12 @@ export default async function PropertyPage({ params }: PageProps) {
     // Fetch properti lengkap dengan unitnya
     const activeProperty = await prisma.property.findUnique({
         where: { id: slug },
-        include: { 
+        include: {
             units: {
                 orderBy: {
                     label: 'asc'
                 }
-            } 
+            }
         }
     });
 
@@ -34,7 +34,7 @@ export default async function PropertyPage({ params }: PageProps) {
     const allProperties = await getProperties();
 
     return (
-        <main className="min-h-screen">
+        <main className="min-h-screen overflow-x-hidden">
             {/* HERO SECTION */}
             <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 py-10 overflow-hidden" id="hero">
                 {/* Hero Background Glow */}
@@ -45,8 +45,8 @@ export default async function PropertyPage({ params }: PageProps) {
 
                 {/* Back Button (Top-Left) */}
                 <div className="absolute top-6 left-6 z-[10] md:top-10 md:left-10 animate-fade-in">
-                    <Link 
-                        href="/" 
+                    <Link
+                        href="/"
                         className="inline-flex items-center gap-2 text-text-muted hover:text-accent transition-all duration-300 group"
                     >
                         <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-accent">
@@ -101,7 +101,7 @@ export default async function PropertyPage({ params }: PageProps) {
             </section>
 
             {/* PROPERTY SELECTION SECTION */}
-            <section className="relative z-10 -mt-10 px-6">
+            <section className="relative z-10 -mt-10 px-6 overflow-hidden">
                 <div className="max-w-[1200px] mx-auto overflow-x-auto pb-4 no-scrollbar">
                     <div className="flex gap-3 justify-start md:justify-center min-w-max">
                         {allProperties.map((prop) => (
