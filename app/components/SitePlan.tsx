@@ -77,46 +77,47 @@ export default function SitePlan({ imageUrl, propertyName }: SitePlanProps) {
             {/* Background Decorative Element */}
             <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-accent/5 blur-[100px] rounded-full pointer-events-none opacity-50" />
 
-            {/* FLOATING MINI-MAP OVERLAY */}
+            {/* STICKY TOP SITE PLAN OVERLAY */}
             <AnimatePresence>
                 {isPinned && (
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.8, y: 20 }}
-                        className="fixed bottom-6 right-6 z-[999] w-[280px] md:w-[400px] aspect-video bg-background-primary/80 backdrop-blur-xl border border-accent/30 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col group/pin"
+                        initial={{ y: -100, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: -100, opacity: 0 }}
+                        className="fixed top-0 left-0 right-0 z-[9999] h-[35vh] md:h-[45vh] bg-background-primary/90 backdrop-blur-2xl border-b border-accent/30 shadow-[0_10px_40px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden"
                     >
-                        {/* Floating Header */}
-                        <div className="flex items-center justify-between px-4 py-3 bg-white/5 border-b border-white/10">
-                            <div className="flex items-center gap-2">
-                                <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                                <span className="text-[0.7rem] font-black uppercase tracking-widest text-text-primary">Live Mini-Map</span>
+                        {/* Header Panel */}
+                        <div className="flex items-center justify-between px-6 py-3 bg-white/5 border-b border-white/10">
+                            <div className="flex items-center gap-3">
+                                <div className="w-2.5 h-2.5 rounded-full bg-accent animate-pulse shadow-[0_0_10px_var(--accent-glow)]" />
+                                <div className="flex flex-col">
+                                    <span className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-accent">Peta Kapling Aktif</span>
+                                    <span className="text-[0.6rem] text-text-muted font-bold uppercase tracking-widest">{propertyName}</span>
+                                </div>
                             </div>
-                            <div className="flex items-center gap-1">
-                                <button 
-                                    onClick={() => setIsPinned(false)}
-                                    className="p-1.5 hover:bg-white/10 rounded-lg text-text-muted transition-colors"
-                                >
-                                    <X size={16} />
-                                </button>
-                            </div>
+                            <button 
+                                onClick={() => setIsPinned(false)}
+                                className="group flex items-center gap-2 px-4 py-2 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 rounded-full text-rose-500 text-xs font-black transition-all hover:scale-105"
+                            >
+                                <X size={14} className="transition-transform group-hover:rotate-90" />
+                                TUTUP PETA
+                            </button>
                         </div>
 
-                        {/* Floating Content */}
-                        <div className="relative flex-1 bg-black/20 p-2 overflow-hidden">
+                        {/* Image Panel */}
+                        <div className="relative flex-1 bg-black/40 overflow-hidden cursor-move">
                             <Image
                                 src={imageUrl}
-                                alt={`Floating Site Plan`}
+                                alt={`Pinned Site Plan`}
                                 fill
-                                className="object-contain p-2"
+                                className="object-contain p-4 md:p-6"
+                                priority
                             />
                             
-                            {/* Drag Indicator Overlay (Visual only to keep it simple) */}
-                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/pin:opacity-100 bg-black/40 transition-opacity pointer-events-none overflow-hidden">
-                                <div className="flex flex-col items-center gap-2 text-white/70">
-                                    <Move size={24} />
-                                    <span className="text-[0.6rem] font-bold uppercase tracking-widest">Pinned View</span>
-                                </div>
+                            {/* Drag Indicator */}
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-background-primary/60 backdrop-blur-md border border-white/10 rounded-full flex items-center gap-2 pointer-events-none opacity-40">
+                                <Move size={12} className="text-accent" />
+                                <span className="text-[0.6rem] font-bold text-white uppercase tracking-widest">Gunakan Denah Sebagai Panduan</span>
                             </div>
                         </div>
                     </motion.div>
