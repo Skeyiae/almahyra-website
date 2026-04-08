@@ -98,7 +98,7 @@ function ModelCard({ model }: ModelCardProps) {
             ref={cardRef}
         >
             {/* Image Viewer - Scroll Slider (Full width on mobile) */}
-            <div className="relative md:px-8 py-4 md:py-6">
+            <div className="relative md:px-8 py-0 md:py-6">
                 <div 
                     ref={scrollRef}
                     onScroll={handleScroll}
@@ -115,6 +115,37 @@ function ModelCard({ model }: ModelCardProps) {
                                 priority={idx === 0}
                             />
                         </div>
+                    ))}
+                </div>
+
+                {/* Overlay Info (Centered at the bottom) - RESTORED */}
+                <div className="absolute bottom-4 md:bottom-8 left-0 right-0 flex flex-col items-center justify-center pointer-events-none z-[5] gap-1 md:gap-2">
+                    <span className="font-display text-[0.65rem] md:text-[0.85rem] font-black text-white uppercase tracking-[0.2em] drop-shadow-[0_2px_8px_rgba(0,0,0,1)]">
+                        {activeVariant.label}
+                    </span>
+                    <span className="text-[0.55rem] md:text-[0.65rem] text-white/40 font-bold tracking-widest drop-shadow-md">
+                        {activeIndex + 1} &nbsp;|&nbsp; {model.variants.length}
+                    </span>
+                </div>
+            </div>
+
+            {/* Thumbnails - RESTORED */}
+            <div className="px-5 md:px-8 pb-8">
+                <div className="flex gap-2.5 mt-2 overflow-x-auto pb-1 no-scrollbar -mx-5 px-5 md:mx-0 md:px-0">
+                    {model.variants.map((variant, idx) => (
+                        <button
+                            key={variant.id}
+                            className={`w-16 h-11 md:w-20 md:h-[54px] rounded-sm overflow-hidden cursor-pointer border-2 transition-fast flex-shrink-0 ${idx === activeIndex ? "border-accent opacity-100" : "border-transparent opacity-50 hover:opacity-80"}`}
+                            onClick={() => handleVariantClick(idx)}
+                        >
+                            <Image
+                                src={variant.image}
+                                alt={variant.label}
+                                width={80}
+                                height={54}
+                                className="w-full h-full object-cover"
+                            />
+                        </button>
                     ))}
                 </div>
             </div>
