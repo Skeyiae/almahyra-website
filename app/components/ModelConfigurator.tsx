@@ -97,25 +97,12 @@ function ModelCard({ model }: ModelCardProps) {
             className="bg-bg-card border border-border-glass rounded-lg overflow-hidden glass-blur transition-smooth hover:border-[rgba(201,169,110,0.15)] reveal"
             ref={cardRef}
         >
-            {/* Header */}
-            <div className="p-5 md:p-8 pb-0 flex items-start justify-between gap-5">
-                <div className="model-info">
-                    <h3 className="font-display text-sm md:text-base font-bold text-text-primary uppercase tracking-[0.2em] opacity-80">
-                        {model.name}
-                    </h3>
-                    {model.description && (
-                        <p className="text-[0.9rem] text-text-secondary font-light">
-                            {model.description}
-                        </p>
-                    )}
-                </div>
-            </div>
             {/* Image Viewer - Scroll Slider (Full width on mobile) */}
-            <div className="relative md:px-8 py-0 md:py-6">
+            <div className="relative md:px-8 py-4 md:py-6">
                 <div 
                     ref={scrollRef}
                     onScroll={handleScroll}
-                    className="relative flex overflow-x-auto snap-x snap-mandatory no-scrollbar md:rounded-md aspect-[16/10] bg-background-secondary"
+                    className="relative flex overflow-x-auto snap-x snap-mandatory no-scrollbar md:rounded-md aspect-[16/10] bg-background-secondary shadow-lg"
                 >
                     {model.variants.map((variant, idx) => (
                         <div key={variant.id} className="relative flex-shrink-0 w-full h-full snap-center">
@@ -128,54 +115,6 @@ function ModelCard({ model }: ModelCardProps) {
                                 priority={idx === 0}
                             />
                         </div>
-                    ))}
-                </div>
-
-                {/* Overlay Info (Centered at the bottom) */}
-                <div className="absolute bottom-4 md:bottom-8 left-0 right-0 flex flex-col items-center justify-center pointer-events-none z-[5] gap-1 md:gap-2">
-                    <span className="font-display text-[0.65rem] md:text-[0.85rem] font-black text-white uppercase tracking-[0.2em] drop-shadow-[0_2px_8px_rgba(0,0,0,1)]">
-                        {activeVariant.label}
-                    </span>
-                    <span className="text-[0.55rem] md:text-[0.65rem] text-white/40 font-bold tracking-widest drop-shadow-md">
-                        {activeIndex + 1} &nbsp;|&nbsp; {model.variants.length}
-                    </span>
-                </div>
-            </div>
-
-            {/* Controls */}
-            <div className="px-5 md:px-8 pb-8">
-                <div className="flex overflow-x-auto md:flex-wrap gap-3 no-scrollbar -mx-5 px-5 md:mx-0 md:px-0 pb-2">
-                    {model.variants.map((variant, idx) => (
-                        <button
-                            key={variant.id}
-                            className={`flex items-center gap-2 px-3.5 py-2 md:px-4.5 md:py-2.5 bg-bg-glass border-2 rounded-sm cursor-pointer transition-fast font-body text-xs md:text-[0.85rem] whitespace-nowrap ${idx === activeIndex ? "border-accent bg-[rgba(201,169,110,0.08)] text-text-primary" : "border-transparent text-text-secondary hover:bg-white/10 hover:text-text-primary"}`}
-                            onClick={() => handleVariantClick(idx)}
-                        >
-                            <span
-                                className={`w-4 h-4 md:w-6 md:h-6 rounded-full border-2 border-white/15 transition-fast flex-shrink-0 ${idx === activeIndex ? "border-accent shadow-[0_0_12px_var(--accent-glow)]" : ""}`}
-                                style={{ backgroundColor: variant.color }}
-                            />
-                            {variant.label}
-                        </button>
-                    ))}
-                </div>
-
-                {/* Thumbnails */}
-                <div className="flex gap-2.5 mt-5 overflow-x-auto pb-1 no-scrollbar -mx-5 px-5 md:mx-0 md:px-0">
-                    {model.variants.map((variant, idx) => (
-                        <button
-                            key={variant.id}
-                            className={`w-16 h-11 md:w-20 md:h-[54px] rounded-sm overflow-hidden cursor-pointer border-2 transition-fast flex-shrink-0 ${idx === activeIndex ? "border-accent opacity-100" : "border-transparent opacity-50 hover:opacity-80"}`}
-                            onClick={() => handleVariantClick(idx)}
-                        >
-                            <Image
-                                src={variant.image}
-                                alt={variant.label}
-                                width={80}
-                                height={54}
-                                className="w-full h-full object-cover"
-                            />
-                        </button>
                     ))}
                 </div>
             </div>
