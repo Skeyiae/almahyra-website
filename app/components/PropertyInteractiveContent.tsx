@@ -110,7 +110,7 @@ export default function PropertyInteractiveContent({
                                 <div className="relative z-10">
                                     <Landmarks landmarks={landmarks} />
                                     <div className="mt-8 pt-8 border-t border-white/10 flex items-start gap-4">
-                                        <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent shrink-0 -mt-1 shadow-[0_0_15px_rgba(201,169,110,0.2)]">
+                                        <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent shrink-0 -mt-1 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
                                             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z" /><circle cx="12" cy="10" r="3" /></svg>
                                         </div>
                                         <p className="text-text-primary text-sm md:text-lg font-medium leading-relaxed">
@@ -133,12 +133,18 @@ export default function PropertyInteractiveContent({
                             />
 
                             <div className="mt-8 p-6 rounded-2xl border border-border-glass bg-bg-glass animate-fade-in shadow-xl">
-                                <h4 className="font-display font-bold text-accent mb-2">Fasilitas Komplek</h4>
-                                <ul className="text-text-secondary text-sm space-y-2 font-light">
+                                <h4 className="font-display font-bold text-accent mb-4 text-lg">Fasilitas Komplek</h4>
+                                <ul className="text-text-primary text-base space-y-4 font-medium">
                                     {(facilities && facilities.length > 0) ? facilities.map((facility, index) => (
-                                        <li key={index}>• {facility}</li>
+                                        <li key={index} className="flex items-start gap-3">
+                                            <span className="text-accent shrink-0 mt-1.5">•</span>
+                                            <span>{facility}</span>
+                                        </li>
                                     )) : (
-                                        <li>• Fasilitas lengkap dan lingkungan asri</li>
+                                        <li className="flex items-start gap-3">
+                                            <span className="text-accent shrink-0 mt-1.5">•</span>
+                                            <span>Fasilitas lengkap dan lingkungan asri</span>
+                                        </li>
                                     )}
                                 </ul>
                             </div>

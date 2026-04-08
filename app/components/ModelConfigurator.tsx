@@ -321,7 +321,7 @@ export default function ModelConfigurator({
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
                     <div>
                         <h3 className="font-display text-2xl font-bold text-text-primary">Status & Stok Unit</h3>
-                        <p className="text-text-secondary text-sm font-light mt-1">Klik pada baris unit untuk melihat detail spesifikasi</p>
+                        <p className="text-text-primary text-sm font-medium mt-1">Klik pada baris unit untuk melihat detail spesifikasi</p>
                     </div>
 
                     <div className="flex flex-wrap items-center gap-3">
@@ -389,7 +389,7 @@ export default function ModelConfigurator({
                                                     {unit.status}
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-4 font-body text-[11px] text-text-muted leading-relaxed">
+                                            <td className="px-6 py-4 font-body text-[11px] text-text-primary font-bold leading-relaxed">
                                                 {unit.features.join(", ")}
                                             </td>
                                         </tr>
@@ -410,8 +410,8 @@ export default function ModelConfigurator({
                                         <span className="font-display font-black text-accent text-sm whitespace-nowrap">{unit.label || unit.id}</span>
                                         <div className="h-4 w-px bg-white/10"></div>
                                         <div className="flex flex-col min-w-0">
-                                            <span className="font-body font-bold text-text-primary text-[0.75rem] leading-none truncate">Rp {unit.price}</span>
-                                            <span className="text-[0.6rem] text-text-muted font-medium leading-tight truncate">{unit.type} | {unit.bedrooms}KT {unit.bathrooms}KM</span>
+                                            <span className="font-body font-black text-text-primary text-[0.85rem] leading-none mb-1">Rp {unit.price}</span>
+                                            <span className="text-[0.6rem] text-text-secondary font-black leading-tight truncate">{unit.type} | {unit.bedrooms}KT {unit.bathrooms}KM</span>
                                         </div>
                                     </div>
                                     

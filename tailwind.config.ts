@@ -10,19 +10,20 @@ const config: Config = {
         extend: {
             colors: {
                 background: {
-                    primary: "#0a0a0f",
-                    secondary: "#12121a",
+                    primary: "#020617",
+                    secondary: "#022c22",
                 },
                 accent: {
-                    DEFAULT: "#c9a96e",
-                    light: "#e0c992",
-                    dark: "#9a7d4e",
-                    glow: "rgba(201, 169, 110, 0.3)",
+                    DEFAULT: "#10b981",
+                    light: "#34d399",
+                    dark: "#065f46",
+                    glow: "rgba(59, 130, 246, 0.3)",
+                    blue: "#3b82f6",
                 },
                 text: {
-                    primary: "#f0f0f5",
-                    secondary: "#8a8a9a",
-                    muted: "#55556a",
+                    primary: "#f8fafc",
+                    secondary: "#94a3b8",
+                    muted: "#64748b",
                 },
             },
             fontFamily: {

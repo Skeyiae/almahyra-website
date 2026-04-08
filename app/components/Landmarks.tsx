@@ -38,8 +38,8 @@ export default function Landmarks({ landmarks }: LandmarksProps) {
                         {getIcon(landmark.type)}
                     </div>
                     <div>
-                        <h4 className="text-text-primary font-display font-medium text-[0.75rem] md:text-sm leading-tight">{landmark.label}</h4>
-                        <p className="text-accent-light text-[0.6rem] md:text-[0.75rem] font-medium opacity-70">{landmark.time}</p>
+                        <h4 className="text-text-primary font-display font-bold text-sm md:text-base leading-tight">{landmark.label}</h4>
+                        <p className="text-accent-light text-[0.75rem] md:text-sm font-bold mt-1">{landmark.time}</p>
                     </div>
                 </motion.div>
             ))}
