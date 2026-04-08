@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Maximize2, Minimize2, Pin, X, Move } from "lucide-react";
 
@@ -13,8 +14,61 @@ interface SitePlanProps {
 export default function SitePlan({ imageUrl, propertyName }: SitePlanProps) {
     const [isZoomed, setIsZoomed] = useState(false);
     const [isPinned, setIsPinned] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     if (!imageUrl) return null;
+
+    const stickyOverlay = (
+        <AnimatePresence>
+            {isPinned && (
+                <motion.div
+                    initial={{ y: -100, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -100, opacity: 0 }}
+                    className="fixed top-0 left-0 right-0 z-[9999] h-[35vh] md:h-[45vh] bg-background-primary/95 backdrop-blur-2xl border-b border-accent/30 shadow-[0_10px_40px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden"
+                >
+                    {/* Header Panel */}
+                    <div className="flex items-center justify-between px-6 py-3 bg-white/5 border-b border-white/10">
+                        <div className="flex items-center gap-3">
+                            <div className="w-2.5 h-2.5 rounded-full bg-accent animate-pulse shadow-[0_0_10px_var(--accent-glow)]" />
+                            <div className="flex flex-col">
+                                <span className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-accent leading-none mb-1">Peta Kapling Aktif</span>
+                                <span className="text-[0.6rem] text-text-muted font-bold uppercase tracking-widest leading-none">{propertyName}</span>
+                            </div>
+                        </div>
+                        <button 
+                            onClick={() => setIsPinned(false)}
+                            className="group flex items-center gap-2 px-4 py-2 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 rounded-full text-rose-500 text-[10px] md:text-xs font-black transition-all hover:scale-105"
+                        >
+                            <X size={14} className="transition-transform group-hover:rotate-90" />
+                            TUTUP PETA
+                        </button>
+                    </div>
+
+                    {/* Image Panel */}
+                    <div className="relative flex-1 bg-black/40 overflow-hidden">
+                        <Image
+                            src={imageUrl}
+                            alt={`Pinned Site Plan`}
+                            fill
+                            className="object-contain p-4 md:p-6"
+                            priority
+                        />
+                        
+                        {/* Status Bar Indicator */}
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-background-primary/60 backdrop-blur-md border border-white/10 rounded-full flex items-center gap-2 pointer-events-none opacity-60">
+                            <Move size={12} className="text-accent" />
+                            <span className="text-[0.6rem] font-bold text-white uppercase tracking-widest whitespace-nowrap">Scroll daftar unit di bawah</span>
+                        </div>
+                    </div>
+                </motion.div>
+            )}
+        </AnimatePresence>
+    );
 
     return (
         <div className="relative w-full mb-16 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
@@ -77,52 +131,8 @@ export default function SitePlan({ imageUrl, propertyName }: SitePlanProps) {
             {/* Background Decorative Element */}
             <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-accent/5 blur-[100px] rounded-full pointer-events-none opacity-50" />
 
-            {/* STICKY TOP SITE PLAN OVERLAY */}
-            <AnimatePresence>
-                {isPinned && (
-                    <motion.div
-                        initial={{ y: -100, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: -100, opacity: 0 }}
-                        className="fixed top-0 left-0 right-0 z-[9999] h-[35vh] md:h-[45vh] bg-background-primary/90 backdrop-blur-2xl border-b border-accent/30 shadow-[0_10px_40px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden"
-                    >
-                        {/* Header Panel */}
-                        <div className="flex items-center justify-between px-6 py-3 bg-white/5 border-b border-white/10">
-                            <div className="flex items-center gap-3">
-                                <div className="w-2.5 h-2.5 rounded-full bg-accent animate-pulse shadow-[0_0_10px_var(--accent-glow)]" />
-                                <div className="flex flex-col">
-                                    <span className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-accent">Peta Kapling Aktif</span>
-                                    <span className="text-[0.6rem] text-text-muted font-bold uppercase tracking-widest">{propertyName}</span>
-                                </div>
-                            </div>
-                            <button 
-                                onClick={() => setIsPinned(false)}
-                                className="group flex items-center gap-2 px-4 py-2 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 rounded-full text-rose-500 text-xs font-black transition-all hover:scale-105"
-                            >
-                                <X size={14} className="transition-transform group-hover:rotate-90" />
-                                TUTUP PETA
-                            </button>
-                        </div>
-
-                        {/* Image Panel */}
-                        <div className="relative flex-1 bg-black/40 overflow-hidden cursor-move">
-                            <Image
-                                src={imageUrl}
-                                alt={`Pinned Site Plan`}
-                                fill
-                                className="object-contain p-4 md:p-6"
-                                priority
-                            />
-                            
-                            {/* Drag Indicator */}
-                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-background-primary/60 backdrop-blur-md border border-white/10 rounded-full flex items-center gap-2 pointer-events-none opacity-40">
-                                <Move size={12} className="text-accent" />
-                                <span className="text-[0.6rem] font-bold text-white uppercase tracking-widest">Gunakan Denah Sebagai Panduan</span>
-                            </div>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            {/* Teleport the sticky overlay to the body to avoid containing block issues */}
+            {mounted && createPortal(stickyOverlay, document.body)}
         </div>
     );
 }
