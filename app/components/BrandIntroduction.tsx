@@ -9,7 +9,7 @@ export default function BrandIntroduction() {
     return (
         <section className="relative min-h-[60vh] flex flex-col items-center justify-center text-center px-6 pt-32 pb-16 overflow-hidden" id="hero">
             {/* Background Elements */}
-            <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[1000px] h-[1000px] hero-gradient opacity-30 pointer-events-none z-0 blur-[120px]" />
+            <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[1000px] h-[1000px] hero-gradient opacity-30 pointer-events-none z-0 md:blur-[120px] hidden md:block" />
             
             <div className="relative z-[2] max-w-[900px]">
                 <motion.div

@@ -97,8 +97,8 @@ export default function PropertyInteractiveContent({
                             </div>
 
                             <div className="p-6 md:p-8 rounded-3xl bg-white/[0.03] border border-white/10 glass-blur relative overflow-hidden shadow-2xl">
-                                <div className="absolute -top-10 -right-10 w-40 h-40 bg-accent/10 rounded-full blur-3xl pointer-events-none" />
-                                <div className="absolute bottom-4 right-4 opacity-10 pointer-events-none text-accent">
+                                <div className="absolute -top-10 -right-10 w-40 h-40 bg-accent/10 rounded-full blur-2xl md:blur-3xl pointer-events-none hidden md:block" />
+                                <div className="absolute bottom-4 right-4 opacity-10 pointer-events-none text-accent hidden md:block">
                                     <svg className="w-24 h-24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z" /><circle cx="12" cy="10" r="3" /></svg>
                                 </div>
 

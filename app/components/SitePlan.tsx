@@ -129,7 +129,7 @@ export default function SitePlan({ imageUrl, propertyName }: SitePlanProps) {
             </div>
 
             {/* Background Decorative Element */}
-            <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-accent/5 blur-3xl rounded-full pointer-events-none opacity-30" />
+            <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-accent/5 md:blur-3xl rounded-full pointer-events-none opacity-30 hidden md:block" />
 
             {/* Teleport the sticky overlay to the body to avoid containing block issues */}
             {mounted && createPortal(stickyOverlay, document.body)}

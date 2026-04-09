@@ -142,7 +142,7 @@ export default function PropertySlider({ properties }: PropertySliderProps) {
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}
                     >
-                        <div className="absolute inset-0 bg-accent/5 rounded-[2.5rem] blur-3xl z-0" />
+                        <div className="absolute inset-0 bg-accent/5 rounded-[2.5rem] md:blur-3xl z-0 hidden md:block" />
                         
                         <div className="relative w-full h-full overflow-hidden rounded-[2.5rem] border border-white/10 glass-blur shadow-2xl z-10 group">
                             <AnimatePresence initial={false} custom={direction}>

@@ -26,7 +26,7 @@ export default function PromoBadge({ text, subtext }: PromoBadgeProps) {
                     ease: "easeInOut"
                 }
             }}
-            className="inline-flex flex-col items-center gap-2 px-10 py-5 bg-gradient-to-br from-accent/30 to-accent-dark/20 border-2 border-accent/50 rounded-[2rem] glass-blur shadow-[0_0_40px_rgba(16,185,129,0.25)] mb-10 relative overflow-hidden group"
+            className="inline-flex flex-col items-center gap-2 px-10 py-5 bg-gradient-to-br from-accent/30 to-accent-dark/20 border-2 border-accent/50 rounded-[2rem] bg-black/20 md:bg-transparent md:glass-blur md:shadow-[0_0_40px_rgba(16,185,129,0.25)] mb-10 relative overflow-hidden group"
         >
             {/* Animated Flare effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-flare pointer-events-none" />
