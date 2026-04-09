@@ -29,7 +29,7 @@ export default function SitePlan({ imageUrl, propertyName }: SitePlanProps) {
                     initial={{ y: -100, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: -100, opacity: 0 }}
-                    className="fixed top-0 left-0 right-0 z-[9999] h-[35vh] md:h-[45vh] bg-background-primary/95 backdrop-blur-2xl border-b border-accent/30 shadow-[0_10px_40px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden"
+                    className="fixed top-0 left-0 right-0 z-[9999] h-[35vh] md:h-[45vh] bg-background-primary/95 backdrop-blur-sm border-b border-accent/30 shadow-2xl flex flex-col overflow-hidden"
                 >
                     {/* Header Panel */}
                     <div className="flex items-center justify-between px-6 py-3 bg-white/5 border-b border-white/10">
@@ -129,7 +129,7 @@ export default function SitePlan({ imageUrl, propertyName }: SitePlanProps) {
             </div>
 
             {/* Background Decorative Element */}
-            <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-accent/5 blur-[100px] rounded-full pointer-events-none opacity-50" />
+            <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-accent/5 blur-3xl rounded-full pointer-events-none opacity-30" />
 
             {/* Teleport the sticky overlay to the body to avoid containing block issues */}
             {mounted && createPortal(stickyOverlay, document.body)}

@@ -50,7 +50,7 @@
   }
 
   .glass-blur {
-    @apply backdrop-blur-[20px];
+    @apply backdrop-blur-[6px];
   }
 
   .text-gradient {
