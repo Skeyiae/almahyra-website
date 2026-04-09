@@ -11,6 +11,9 @@ const Chatbot = dynamic(() => import("../components/Chatbot"), { ssr: false });
 import MarketingButton from "../components/MarketingButton";
 
 
+import Loading from "./loading";
+import { Suspense } from "react";
+
 interface PageProps {
     params: Promise<{ slug: string }>;
 }
@@ -19,6 +22,15 @@ export default async function PropertyPage({ params }: PageProps) {
     const resolvedParams = await params;
     const slug = resolvedParams.slug;
 
+    // Gunakan Suspense dengan key=slug agar animasi Loading terpicu paksa saat ganti slug
+    return (
+        <Suspense key={slug} fallback={<Loading />}>
+            <PropertyData slug={slug} />
+        </Suspense>
+    );
+}
+
+async function PropertyData({ slug }: { slug: string }) {
     // Fetch properti lengkap dengan unitnya
     const activeProperty = await prisma.property.findUnique({
         where: { id: slug },
