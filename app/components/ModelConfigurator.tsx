@@ -99,11 +99,11 @@ function ModelCard({ model }: ModelCardProps) {
         >
             {/* Image Viewer - Scroll Slider (Full width on mobile) */}
             <div className="relative md:px-8 py-0 md:py-6">
-                {/* Type Dimension Label Above Image */}
-                <div className="absolute -top-6 md:-top-4 left-0 right-0 flex justify-center z-[10] pointer-events-none">
-                    <h2 className="font-display text-[2.5rem] md:text-[4rem] font-black text-accent/20 tracking-tighter italic leading-none whitespace-nowrap select-none">
+                {/* Type Dimension Label Inside Image (Top Left) */}
+                <div className="absolute top-2 md:top-8 left-2 md:left-10 z-[15] pointer-events-none">
+                    <span className="font-display text-[0.6rem] md:text-[0.75rem] font-black text-black/90 bg-white/70 backdrop-blur-md px-2 py-0.5 rounded-sm tracking-[0.1em] uppercase shadow-sm">
                         {model.category === "Standard" ? "60/84" : "80/105"}
-                    </h2>
+                    </span>
                 </div>
                 <div 
                     ref={scrollRef}
