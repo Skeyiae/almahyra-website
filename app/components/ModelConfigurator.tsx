@@ -381,7 +381,7 @@ export default function ModelConfigurator({
                             {filteredUnits.map((unit: any) => (
                                 <div
                                     key={unit.id}
-                                    className={`px-3 py-2.5 rounded-lg border glass-blur transition-all duration-200 flex items-center justify-between gap-3 ${selectedUnitId === unit.id ? 'bg-accent/10 border-accent' : 'bg-bg-card border-border-glass'}`}
+                                    className={`px-3 py-2.5 rounded-lg border transition-all duration-200 flex items-center justify-between gap-3 ${selectedUnitId === unit.id ? 'bg-accent/10 border-accent' : 'bg-bg-card border-border-glass'}`}
                                     onClick={() => onUnitSelect?.(unit)}
                                 >
                                     <div className="flex items-center gap-3 flex-1 min-w-0">
