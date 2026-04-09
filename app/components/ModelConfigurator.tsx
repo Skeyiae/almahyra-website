@@ -102,7 +102,9 @@ function ModelCard({ model }: ModelCardProps) {
                 {/* Type Dimension Label Inside Image (Top Left) */}
                 <div className="absolute top-2 md:top-8 left-2 md:left-10 z-[15] pointer-events-none">
                     <span className="font-display text-[0.6rem] md:text-[0.75rem] font-black text-black/90 bg-white/70 backdrop-blur-md px-2 py-0.5 rounded-sm tracking-[0.1em] uppercase shadow-sm">
-                        {model.category === "Standard" ? "60/84" : "80/105"}
+                        {model.propertyId === "griya-keiko" 
+                            ? (model.category === "Standard" ? "60/84" : "80/105")
+                            : (model.category === "Standard" ? "Tipe Standard" : "Tipe Premium")}
                     </span>
                 </div>
                 <div 
