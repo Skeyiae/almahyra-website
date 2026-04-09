@@ -109,15 +109,24 @@ export default function PropertyInteractiveContent({
 
                                 <div className="relative z-10">
                                     <Landmarks landmarks={landmarks} />
-                                    <div className="mt-8 pt-8 border-t border-white/10 flex items-start gap-4">
-                                        <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent shrink-0 -mt-1 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+                                    <a
+                                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationText)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="mt-8 pt-8 border-t border-white/10 flex items-start gap-4 group cursor-pointer hover:bg-white/[0.02] transition-colors duration-300 rounded-xl p-2 -ml-2"
+                                        title="Buka di Google Maps"
+                                    >
+                                        <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent shrink-0 -mt-1 shadow-[0_0_15px_rgba(16,185,129,0.2)] group-hover:scale-110 transition-transform duration-300">
                                             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z" /><circle cx="12" cy="10" r="3" /></svg>
                                         </div>
-                                        <p className="text-text-primary text-sm md:text-lg font-medium leading-relaxed">
-                                            <span className="text-accent font-black uppercase tracking-wider text-[0.65rem] md:text-[0.75rem] block mb-1">Lokasi Perumahan</span>
-                                            {locationText}
-                                        </p>
-                                    </div>
+                                        <div className="text-text-primary text-sm md:text-lg font-medium leading-relaxed flex-1">
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <span className="text-accent font-black uppercase tracking-wider text-[0.65rem] md:text-[0.75rem]">Lokasi Perumahan</span>
+                                                <svg className="w-3 h-3 text-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300 -translate-x-2 group-hover:translate-x-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" /></svg>
+                                            </div>
+                                            <p className="group-hover:text-white transition-colors duration-300">{locationText}</p>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>
