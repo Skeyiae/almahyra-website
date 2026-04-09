@@ -99,6 +99,12 @@ function ModelCard({ model }: ModelCardProps) {
         >
             {/* Image Viewer - Scroll Slider (Full width on mobile) */}
             <div className="relative md:px-8 py-0 md:py-6">
+                {/* Type Dimension Label Above Image */}
+                <div className="absolute -top-6 md:-top-4 left-0 right-0 flex justify-center z-[10] pointer-events-none">
+                    <h2 className="font-display text-[2.5rem] md:text-[4rem] font-black text-accent/20 tracking-tighter italic leading-none whitespace-nowrap select-none">
+                        {model.category === "Standard" ? "60/84" : "80/105"}
+                    </h2>
+                </div>
                 <div 
                     ref={scrollRef}
                     onScroll={handleScroll}
@@ -215,7 +221,7 @@ export default function ModelConfigurator({
                 label: img.label || `Tampilan ${idx + 1}`,
                 color: suffix === 'standard' ? "#f5f0e8" : "#8B6914",
                 image: img.url,
-                category: suffix === 'standard' ? "Standard" : "Premium"
+                category: (suffix === 'standard' ? "Standard" : "Premium") as "Standard" | "Premium"
             }));
         };
 
@@ -227,7 +233,7 @@ export default function ModelConfigurator({
                 name: `Tipe Standard`,
                 description: ``,
                 variants: standardVariants,
-                category: "Standard"
+                category: "Standard" as const
             });
         }
 
@@ -240,7 +246,7 @@ export default function ModelConfigurator({
                 name: `Tipe Premium`,
                 description: ``,
                 variants: premiumVariants,
-                category: "Premium"
+                category: "Premium" as const
             });
         }
 

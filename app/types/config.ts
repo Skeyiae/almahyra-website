@@ -3,6 +3,7 @@ export interface Variant {
     label: string;
     color: string;
     image: string;
+    category?: "Standard" | "Premium";
 }
 
 export interface Model {
@@ -11,6 +12,7 @@ export interface Model {
     name: string;
     description: string;
     variants: Variant[];
+    category?: "Standard" | "Premium";
 }
 
 export interface Unit {
