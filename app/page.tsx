@@ -1,6 +1,10 @@
 import { getProperties } from "./lib/data";
-import Chatbot from "./components/Chatbot";
-import PropertySlider from "./components/PropertySlider";
+import dynamic from "next/dynamic";
+
+const Chatbot = dynamic(() => import("./components/Chatbot"), { ssr: false });
+const PropertySlider = dynamic(() => import("./components/PropertySlider"), {
+  loading: () => <div className="min-h-[400px] w-full flex items-center justify-center py-20 text-accent opacity-50">Memuat Data Property...</div>
+});
 import BrandIntroduction from "./components/BrandIntroduction";
 import Link from "next/link";
 

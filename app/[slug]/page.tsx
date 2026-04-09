@@ -2,8 +2,12 @@ import Link from "next/link";
 import { getProperties } from "../lib/data";
 import { prisma } from "../lib/prisma";
 import PromoBadge from "../components/PromoBadge";
-import PropertyInteractiveContent from "../components/PropertyInteractiveContent";
-import Chatbot from "../components/Chatbot";
+import dynamic from "next/dynamic";
+
+const PropertyInteractiveContent = dynamic(() => import("../components/PropertyInteractiveContent"), {
+    loading: () => <div className="min-h-screen flex items-center justify-center text-accent/50 py-20">Memuat Visualisasi Data...</div>
+});
+const Chatbot = dynamic(() => import("../components/Chatbot"), { ssr: false });
 import MarketingButton from "../components/MarketingButton";
 
 
