@@ -134,14 +134,6 @@ function ModelCard({ model }: ModelCardProps) {
                     </span>
                 </div>
 
-                {/* Type Badge (Top Left) */}
-                <div className="absolute top-4 left-4 md:top-6 md:left-10 z-[5]">
-                    <div className="px-3 py-1.5 bg-accent/90 backdrop-blur-md border border-white/20 rounded-md shadow-xl">
-                        <span className="text-[0.65rem] font-black text-background-primary uppercase tracking-wider">
-                            Tipe {model.category}
-                        </span>
-                    </div>
-                </div>
             </div>
 
             {/* Thumbnails - RESTORED */}
