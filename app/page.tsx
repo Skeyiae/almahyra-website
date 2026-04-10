@@ -21,7 +21,7 @@ export default async function Home() {
       <section className="relative z-10 py-12 px-6 bg-background-primary/50 border-y border-white/5">
         <div className="max-w-[1200px] mx-auto overflow-x-auto no-scrollbar">
           <div className="flex gap-3 justify-start md:justify-center min-w-max">
-            {properties.map((prop) => (
+            {properties.map((prop: any) => (
               <TransitionLink
                 key={prop.id}
                 href={`/${prop.id}`}
