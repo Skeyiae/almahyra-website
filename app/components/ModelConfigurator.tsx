@@ -254,7 +254,7 @@ export default function ModelConfigurator({
             }
         } else {
             // Otherwise, keep them separate but with correct type labels
-            if (standardVariants.length > 0) {
+            if (standardUnit && standardVariants.length > 0) {
                 models.push({
                     id: `db-model-standard-${activePropertyId}`,
                     propertyId: activePropertyId || "",
@@ -265,7 +265,7 @@ export default function ModelConfigurator({
                 });
             }
 
-            if (premiumVariants.length > 0) {
+            if (premiumUnit && premiumVariants.length > 0) {
                 models.push({
                     id: `db-model-premium-${activePropertyId}`,
                     propertyId: activePropertyId || "",
