@@ -55,7 +55,7 @@ export default function SpecGrid({ specs }: SpecGridProps) {
             case "water":
             case "sumur":
             case "air":
-                return <Fc.FcBiomass size={22} />;
+                return <Io5.IoWaterSharp size={22} />;
             case "power":
             case "listrik":
                 return <Fc.FcFlashOn size={22} />;
