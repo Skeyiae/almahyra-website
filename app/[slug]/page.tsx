@@ -50,7 +50,7 @@ async function PropertyData({ slug }: { slug: string }) {
 
                 {/* Back Button (Top-Left) */}
                 <div className="absolute top-6 left-6 z-[10] md:top-10 md:left-10 animate-fade-in">
-                    <Link
+                    <TransitionLink
                         href="/"
                         className="inline-flex items-center gap-2 text-text-muted hover:text-accent transition-all duration-300 group"
                     >
@@ -60,7 +60,7 @@ async function PropertyData({ slug }: { slug: string }) {
                             </svg>
                         </div>
                         <span className="font-display text-[0.7rem] md:text-sm font-medium tracking-wider uppercase">Home</span>
-                    </Link>
+                    </TransitionLink>
                 </div>
 
                 <div className="relative z-[2] max-width-[800px] animate-fade-in-up flex flex-col items-center">
