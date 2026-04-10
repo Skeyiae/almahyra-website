@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FcGraduationCap, FcShop, FcAutomotive, FcBusiness } from "react-icons/fc";
+import * as Fc from "react-icons/fc";
 
 interface Landmark {
     label: string;
@@ -28,20 +28,20 @@ export default function Landmarks({ landmarks }: LandmarksProps) {
             case "school": 
             case "sekolah":
             case "education":
-                return <FcGraduationCap size={22} />;
+                return <Fc.FcGraduationCap size={22} />;
             case "mall": 
             case "perbelanjaan":
             case "store":
-                return <FcShop size={22} />;
+                return <Fc.FcShop size={22} />;
             case "transport": 
             case "perjalanan":
             case "akses":
-                return <FcAutomotive size={22} />;
+                return <Fc.FcAutomotive size={22} />;
             case "hospital":
             case "kesehatan":
             case "medical":
-                return <FcBusiness size={22} />;
-            default: return <FcBusiness size={22} />;
+                return <Fc.FcBusiness size={22} />;
+            default: return <Fc.FcBusiness size={22} />;
         }
     };
 

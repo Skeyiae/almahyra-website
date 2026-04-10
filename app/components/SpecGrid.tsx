@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FcHome, FcFlashOn, FcGrid, FcInspection, FcPrivacy, FcBiomass } from "react-icons/fc";
+import * as Fc from "react-icons/fc";
 
 interface Spec {
     label: string;
@@ -27,21 +27,37 @@ export default function SpecGrid({ specs }: SpecGridProps) {
         switch (t) {
             case "bed": 
             case "kamar":
-                return <FcHome size={22} />;
+                return <Fc.FcHome size={22} />;
             case "bath": 
             case "toilet":
-                return <FcInspection size={22} />;
+                return <Fc.FcInspection size={22} />;
             case "water": 
             case "sumur":
             case "air":
-                return <FcBiomass size={22} />;
+                return <Fc.FcBiomass size={22} />;
             case "power": 
             case "listrik":
-                return <FcFlashOn size={22} />;
+                return <Fc.FcFlashOn size={22} />;
             case "layout": 
             case "tanah":
-                return <FcGrid size={22} />;
-            default: return <FcPrivacy size={22} />;
+                return <Fc.FcGrid size={22} />;
+            case "school": 
+            case "sekolah":
+            case "education":
+                return <Fc.FcGraduationCap size={22} />;
+            case "mall": 
+            case "perbelanjaan":
+            case "store":
+                return <Fc.FcShop size={22} />;
+            case "transport": 
+            case "perjalanan":
+            case "akses":
+                return <Fc.FcAutomotive size={22} />;
+            case "hospital":
+            case "kesehatan":
+            case "medical":
+                return <Fc.FcBusiness size={22} />;
+            default: return <Fc.FcPrivacy size={22} />;
         }
     };
 
