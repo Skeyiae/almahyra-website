@@ -14,7 +14,7 @@ export const getProperties = unstable_cache(
         return properties;
     },
     ["all-properties"],
-    { revalidate: 3600, tags: ["properties"] }
+    { revalidate: 60, tags: ["properties"] }
 );
 
 /**
@@ -37,7 +37,7 @@ export const getPropertyBySlug = (slug: string) => {
             return property;
         },
         [`property-${slug}`],
-        { revalidate: 3600, tags: [`property-${slug}`] }
+        { revalidate: 60, tags: [`property-${slug}`] }
     )();
 };
 
