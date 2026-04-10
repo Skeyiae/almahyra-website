@@ -9,7 +9,9 @@ import BrandIntroduction from "./components/BrandIntroduction";
 import TransitionLink from "./components/TransitionLink";
 
 export default async function Home() {
-  const properties = await getProperties();
+  const rawProperties = await getProperties();
+  // SANITIZATION: Plain objects prevent hydrate crashes on Vercel
+  const properties = JSON.parse(JSON.stringify(rawProperties));
 
   return (
     <main className="min-h-screen bg-background-primary overflow-x-hidden">

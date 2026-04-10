@@ -21,7 +21,7 @@ export const getProperties = unstable_cache(
  * Mengambil satu properti berdasarkan slug/id
  * Dicache per request dan secara global dengan tag slug
  */
-export const getPropertyBySlug = cache(async (slug: string) => {
+export const getPropertyBySlug = (slug: string) => {
     return unstable_cache(
         async () => {
             const property = await prisma.property.findUnique({
@@ -39,7 +39,7 @@ export const getPropertyBySlug = cache(async (slug: string) => {
         [`property-${slug}`],
         { revalidate: 3600, tags: [`property-${slug}`] }
     )();
-});
+};
 
 /**
  * Mengambil unit yang tersedia untuk properti tertentu

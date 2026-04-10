@@ -29,14 +29,22 @@ export default async function PropertyPage({ params }: PageProps) {
 }
 
 async function PropertyData({ slug }: { slug: string }) {
-    // Fetch properti lengkap dengan unitnya menggunakan cache
-    const activeProperty = await getPropertyBySlug(slug);
-
-    if (!activeProperty) {
-        return <div className="min-h-screen flex items-center justify-center text-white">Property Not Found</div>;
+    let rawProperty = await getPropertyBySlug(slug);
+    
+    // Safety check for slug mismatch (al-birruni vs albirruni)
+    if (!rawProperty && slug.includes('-')) {
+        const altSlug = slug.replace(/-/g, '');
+        rawProperty = await getPropertyBySlug(altSlug);
     }
 
-    const allProperties = await getProperties();
+    if (!rawProperty) {
+        return <div className="min-h-screen flex items-center justify-center text-white font-display uppercase tracking-widest bg-background-primary">Property Not Found</div>;
+    }
+
+    // SANITIZATION: Convert to plain JS objects to prevent hydration/caching errors on Vercel
+    const activeProperty = JSON.parse(JSON.stringify(rawProperty));
+    const allPropertiesRaw = await getProperties();
+    const allProperties = JSON.parse(JSON.stringify(allPropertiesRaw));
 
     return (
         <main className="min-h-screen overflow-x-hidden">
@@ -109,7 +117,7 @@ async function PropertyData({ slug }: { slug: string }) {
             <section className="relative z-10 -mt-10 px-6 overflow-hidden">
                 <div className="max-w-[1200px] mx-auto overflow-x-auto pb-4 no-scrollbar">
                     <div className="flex gap-3 justify-start md:justify-center min-w-max">
-                        {allProperties.map((prop) => (
+                        {allProperties.map((prop: any) => (
                             <TransitionLink
                                 key={prop.id}
                                 href={`/${prop.id}`}
@@ -140,12 +148,12 @@ async function PropertyData({ slug }: { slug: string }) {
                     locationText={activeProperty.locationText || "Lokasi Strategis"}
                     sitePlanImage={activeProperty.sitePlanImage}
                     mapUrl={activeProperty.mapUrl}
-                    imagesStandard={(activeProperty as any).imagesStandard}
-                    imagesPremium={(activeProperty as any).imagesPremium}
-                    mortgageSchemes={(activeProperty as any).mortgageSchemes}
-                    facilities={(activeProperty as any).facilities}
-                    defaultDpAmount={(activeProperty as any).defaultDpAmount ?? 0}
-                    defaultBookingAmount={(activeProperty as any).defaultBookingAmount ?? 2000000}
+                    imagesStandard={activeProperty.imagesStandard}
+                    imagesPremium={activeProperty.imagesPremium}
+                    mortgageSchemes={activeProperty.mortgageSchemes}
+                    facilities={activeProperty.facilities}
+                    defaultDpAmount={activeProperty.defaultDpAmount ?? 0}
+                    defaultBookingAmount={activeProperty.defaultBookingAmount ?? 2000000}
                 />
             </Suspense>
 
@@ -161,8 +169,8 @@ async function PropertyData({ slug }: { slug: string }) {
                 </div>
             </footer>
             <ClientOnlyChatbot
-                salesPhone={(activeProperty as any).salesPhone || undefined}
-                salesName={(activeProperty as any).salesName || undefined}
+                salesPhone={activeProperty.salesPhone || undefined}
+                salesName={activeProperty.salesName || undefined}
                 propertyName={activeProperty.name}
                 propertyId={activeProperty.id}
             />
