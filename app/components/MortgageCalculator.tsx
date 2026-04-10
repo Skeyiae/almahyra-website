@@ -24,10 +24,16 @@ export default function MortgageCalculator({
 
     // Normalize and prefer DB schemes if valid
     const activeSchemes = useMemo(() => {
+        let schemes = BANK_SCHEMES;
         if (dbSchemes && Array.isArray(dbSchemes) && dbSchemes.length > 0) {
-            return dbSchemes;
+            // Defensive: Flatten if nested like [[{...}]]
+            if (Array.isArray(dbSchemes[0])) {
+                schemes = dbSchemes.flat();
+            } else {
+                schemes = dbSchemes;
+            }
         }
-        return BANK_SCHEMES;
+        return schemes;
     }, [dbSchemes]);
 
     // --- State for Advanced mode (Keiko) ---
@@ -49,11 +55,11 @@ export default function MortgageCalculator({
 
     // --- Advanced Calculations ---
     const selectedBank = useMemo(() =>
-        activeSchemes.find((b: any) => b.id === selectedBankId) || activeSchemes[0]
+        activeSchemes.find((b: any) => b?.id === selectedBankId) || activeSchemes[0]
         , [selectedBankId, activeSchemes]);
 
     const selectedOption = useMemo(() =>
-        selectedBank?.options[selectedOptionIndex] || selectedBank?.options[0]
+        selectedBank?.options?.[selectedOptionIndex] || selectedBank?.options?.[0]
         , [selectedBank, selectedOptionIndex]);
 
     const loanAmountForScaling = useMemo(() => price - dpAmount, [price, dpAmount]);
@@ -131,7 +137,7 @@ export default function MortgageCalculator({
                         </div>
 
                         {/* Option Selection */}
-                        {selectedBank.options.length > 1 && (
+                        {selectedBank?.options && selectedBank.options.length > 1 && (
                             <div className="space-y-3">
                                 <label className="text-text-secondary text-[0.75rem] font-bold uppercase tracking-wider block">Skema Pembayaran</label>
                                 <div className="flex gap-2">
@@ -144,7 +150,7 @@ export default function MortgageCalculator({
                                                 : "bg-transparent text-text-muted border-white/10 hover:bg-white/5"
                                                 }`}
                                         >
-                                            {opt.label.split(" (")[0]}
+                                            {opt.label?.split(" (")[0] || "Opsi"}
                                         </button>
                                     ))}
                                 </div>
@@ -158,11 +164,11 @@ export default function MortgageCalculator({
                             </div>
 
                             <div className="flex items-center gap-2 text-text-primary text-[0.8rem] uppercase tracking-widest mb-3 md:mb-4 font-bold">
-                                Estimasi Angsuran ({selectedOption.periods[0].label})
+                                Estimasi Angsuran ({selectedOption?.periods?.[0]?.label || "Periode"})
                             </div>
 
                             <div className="text-2xl md:text-4xl font-display font-extrabold text-white tracking-tight">
-                                {formatCurrency(Math.round(selectedOption.periods[0].monthlyPayment * scalingFactor))}
+                                {formatCurrency(Math.round((selectedOption?.periods?.[0]?.monthlyPayment || 0) * scalingFactor))}
                                 <span className="text-[0.4em] font-medium text-text-secondary ml-1 md:ml-2">/bulan*</span>
                             </div>
 
@@ -187,7 +193,7 @@ export default function MortgageCalculator({
                                     <div className="mt-4 p-5 rounded-2xl bg-black/30 border border-white/5">
                                         <div className="flex items-center gap-2 mb-4 text-[0.7rem] font-bold text-text-secondary uppercase">
                                             <Table size={14} />
-                                            Rincian {selectedBank.name}
+                                            Rincian {selectedBank?.name || "Bank"}
                                         </div>
                                         <table className="w-full text-left">
                                             <thead>
@@ -197,11 +203,11 @@ export default function MortgageCalculator({
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-white/[0.05]">
-                                                {selectedOption.periods.map((period: any, idx: number) => (
+                                                {selectedOption?.periods?.map((period: any, idx: number) => (
                                                     <tr key={idx} className="group">
                                                         <td className="py-3 text-sm text-text-secondary font-medium">{period.label}</td>
                                                         <td className="py-3 text-sm text-white font-bold text-right">
-                                                            {formatCurrency(Math.round(period.monthlyPayment * scalingFactor))}
+                                                            {formatCurrency(Math.round((period.monthlyPayment || 0) * scalingFactor))}
                                                         </td>
                                                     </tr>
                                                 ))}
