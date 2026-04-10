@@ -9,6 +9,7 @@ import * as Ci from "react-icons/ci";
 import * as Ai from "react-icons/ai";
 import * as Fa from "react-icons/fa";
 import * as Io5 from "react-icons/io5";
+import * as Lu from "react-icons/lu";
 
 interface Spec {
     label: string;
@@ -31,6 +32,7 @@ export default function SpecGrid({ specs }: SpecGridProps) {
         const AnyAi = Ai as any;
         const AnyFa = Fa as any;
         const AnyIo5 = Io5 as any;
+        const AnyLu = Lu as any;
 
         // Mendukung input nama icon langsung dari Supabase
         if (AnyFc[type]) { const Icon = AnyFc[type]; return <Icon size={22} />; }
@@ -41,33 +43,34 @@ export default function SpecGrid({ specs }: SpecGridProps) {
         if (AnyAi[type]) { const Icon = AnyAi[type]; return <Icon size={22} />; }
         if (AnyFa[type]) { const Icon = AnyFa[type]; return <Icon size={22} />; }
         if (AnyIo5[type]) { const Icon = AnyIo5[type]; return <Icon size={22} />; }
+        if (AnyLu[type]) { const Icon = AnyLu[type]; return <Icon size={22} />; }
 
         switch (t) {
-            case "bed": 
+            case "bed":
             case "kamar":
-                return <Fc.FcHome size={22} />;
-            case "bath": 
+                return <Fa.FaBed size={22} />;
+            case "bath":
             case "toilet":
-                return <Fc.FcInspection size={22} />;
-            case "water": 
+                return <Lu.LuToilet size={22} />;
+            case "water":
             case "sumur":
             case "air":
                 return <Fc.FcBiomass size={22} />;
-            case "power": 
+            case "power":
             case "listrik":
                 return <Fc.FcFlashOn size={22} />;
-            case "layout": 
+            case "layout":
             case "tanah":
                 return <Fc.FcGrid size={22} />;
-            case "school": 
+            case "school":
             case "sekolah":
             case "education":
                 return <Fc.FcGraduationCap size={22} />;
-            case "mall": 
+            case "mall":
             case "perbelanjaan":
             case "store":
                 return <Fc.FcShop size={22} />;
-            case "transport": 
+            case "transport":
             case "perjalanan":
             case "akses":
                 return <Fc.FcAutomotive size={22} />;

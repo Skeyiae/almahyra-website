@@ -9,6 +9,7 @@ import * as Ci from "react-icons/ci";
 import * as Ai from "react-icons/ai";
 import * as Fa from "react-icons/fa";
 import * as Io5 from "react-icons/io5";
+import * as Lu from "react-icons/lu";
 
 interface Landmark {
     label: string;
@@ -33,6 +34,7 @@ export default function Landmarks({ landmarks }: LandmarksProps) {
         const AnyAi = Ai as any;
         const AnyFa = Fa as any;
         const AnyIo5 = Io5 as any;
+        const AnyLu = Lu as any;
 
         if (AnyFc[type]) { const Icon = AnyFc[type]; return <Icon size={22} />; }
         if (AnyGi[type]) { const Icon = AnyGi[type]; return <Icon size={22} />; }
@@ -42,6 +44,7 @@ export default function Landmarks({ landmarks }: LandmarksProps) {
         if (AnyAi[type]) { const Icon = AnyAi[type]; return <Icon size={22} />; }
         if (AnyFa[type]) { const Icon = AnyFa[type]; return <Icon size={22} />; }
         if (AnyIo5[type]) { const Icon = AnyIo5[type]; return <Icon size={22} />; }
+        if (AnyLu[type]) { const Icon = AnyLu[type]; return <Icon size={22} />; }
 
         switch (t) {
             case "school": 
