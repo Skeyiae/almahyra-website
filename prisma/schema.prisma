@@ -33,7 +33,6 @@ model Property {
   facilities         Json?    @default("[\"Cluster One Gate System (Keamanan 24 Jam)\", \"Fasilitas Masjid di dalam komplek\", \"Jalan Lebar dan Lingkungan Asri\"]")
   defaultDpAmount    Int?     @default(0)
   defaultBookingAmount Int?   @default(2000000)
-  specIcons          Json?    @default("{}")
   units              Unit[]
 }
 

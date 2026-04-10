@@ -25,10 +25,22 @@ export default function SpecGrid({ specs }: SpecGridProps) {
         const AnyMd = Md as any;
 
         // Mendukung input nama icon langsung dari Supabase
-        if (AnyFc[type]) return <AnyFc[type] size={22} />;
-        if (AnyGi[type]) return <AnyGi[type] size={22} />;
-        if (AnyHi2[type]) return <AnyHi2[type] size={22} />;
-        if (AnyMd[type]) return <AnyMd[type] size={22} />;
+        if (AnyFc[type]) {
+            const IconComponent = AnyFc[type];
+            return <IconComponent size={22} />;
+        }
+        if (AnyGi[type]) {
+            const IconComponent = AnyGi[type];
+            return <IconComponent size={22} />;
+        }
+        if (AnyHi2[type]) {
+            const IconComponent = AnyHi2[type];
+            return <IconComponent size={22} />;
+        }
+        if (AnyMd[type]) {
+            const IconComponent = AnyMd[type];
+            return <IconComponent size={22} />;
+        }
 
         switch (t) {
             case "bed": 

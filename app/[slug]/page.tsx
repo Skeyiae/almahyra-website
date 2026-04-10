@@ -154,7 +154,6 @@ async function PropertyData({ slug }: { slug: string }) {
                     facilities={activeProperty.facilities}
                     defaultDpAmount={activeProperty.defaultDpAmount ?? 0}
                     defaultBookingAmount={activeProperty.defaultBookingAmount ?? 2000000}
-                    specIcons={activeProperty.specIcons}
                 />
             </Suspense>
 
