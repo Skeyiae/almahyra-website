@@ -150,7 +150,7 @@ async function PropertyData({ slug }: { slug: string }) {
             </Suspense>
 
             {/* FOOTER */}
-            <footer className="py-12 px-6 border-t border-border-glass text-center">
+            <footer className="py-20 px-6 border-t border-border-glass text-center mt-12">
                 <div className="max-w-[1200px] mx-auto flex flex-col items-center gap-4">
                     <div className="font-display text-2xl font-bold text-accent">
                         Almahyra <span className="text-text-primary opacity-50 font-light">| {activeProperty.name}</span>

@@ -162,7 +162,7 @@ export default function PropertyInteractiveContent({
                 </div>
             </section>
 
-            <section className="relative py-[var(--section-padding)] overflow-hidden" id="configurator">
+            <section className="relative py-24 pb-32 overflow-hidden" id="configurator">
                 <div className="max-w-[1200px] mx-auto px-6 relative">
                     <div className="text-center mb-16">
                         <span className="inline-block font-body text-[0.8rem] font-medium text-accent uppercase tracking-[3px] mb-4">
