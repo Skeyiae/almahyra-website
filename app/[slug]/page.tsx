@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 const PropertyInteractiveContent = dynamic(() => import("../components/PropertyInteractiveContent"), {
     loading: () => <div className="min-h-screen flex items-center justify-center text-accent/50 py-20">Memuat Visualisasi Data...</div>
 });
-const Chatbot = dynamic(() => import("../components/Chatbot"), { ssr: false });
+import ClientOnlyChatbot from "../components/ClientOnlyChatbot";
 import MarketingButton from "../components/MarketingButton";
 
 import Loading from "./loading";
@@ -160,7 +160,7 @@ async function PropertyData({ slug }: { slug: string }) {
                     </p>
                 </div>
             </footer>
-            <Chatbot
+            <ClientOnlyChatbot
                 salesPhone={(activeProperty as any).salesPhone || undefined}
                 salesName={(activeProperty as any).salesName || undefined}
                 propertyName={activeProperty.name}

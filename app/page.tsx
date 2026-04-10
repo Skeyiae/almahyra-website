@@ -1,7 +1,7 @@
 import { getProperties } from "./lib/data";
 import dynamic from "next/dynamic";
+import ClientOnlyChatbot from "./components/ClientOnlyChatbot";
 
-const Chatbot = dynamic(() => import("./components/Chatbot"), { ssr: false });
 const PropertySlider = dynamic(() => import("./components/PropertySlider"), {
   loading: () => <div className="min-h-[400px] w-full flex items-center justify-center py-20 text-accent opacity-50">Memuat Data Property...</div>
 });
@@ -64,7 +64,7 @@ export default async function Home() {
           </p>
         </div>
       </footer>
-      <Chatbot />
+      <ClientOnlyChatbot />
     </main>
   );
 }
