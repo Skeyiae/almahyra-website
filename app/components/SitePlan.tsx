@@ -29,15 +29,15 @@ export default function SitePlan({ imageUrl, propertyName }: SitePlanProps) {
                     initial={{ y: -100, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: -100, opacity: 0 }}
-                    className="fixed top-0 left-0 right-0 z-[9999] h-[35vh] md:h-[45vh] bg-background-primary/95 backdrop-blur-sm border-b border-accent/30 shadow-2xl flex flex-col overflow-hidden"
+                    className="fixed top-0 left-0 right-0 z-[9999] h-[40vh] md:h-[75vh] bg-background-primary/98 backdrop-blur-md border-b border-accent/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] flex flex-col overflow-hidden"
                 >
                     {/* Header Panel */}
                     <div className="flex items-center justify-between px-6 py-3 bg-white/5 border-b border-white/10">
                         <div className="flex items-center gap-3">
                             <div className="w-2.5 h-2.5 rounded-full bg-accent animate-pulse shadow-[0_0_10px_var(--accent-glow)]" />
                             <div className="flex flex-col">
-                                <span className="text-[0.7rem] font-black uppercase tracking-[0.2em] text-accent leading-none mb-1">Peta Kapling Aktif</span>
-                                <span className="text-[0.6rem] text-text-muted font-bold uppercase tracking-widest leading-none">{propertyName}</span>
+                                <span className="text-[0.7rem] md:text-[0.85rem] font-black uppercase tracking-[0.3em] text-accent leading-none mb-1">Site Plan Aktif</span>
+                                <span className="text-[0.6rem] md:text-[0.7rem] text-text-muted font-bold uppercase tracking-widest leading-none">{propertyName}</span>
                             </div>
                         </div>
                         <button 
@@ -76,12 +76,9 @@ export default function SitePlan({ imageUrl, propertyName }: SitePlanProps) {
                 {/* Header Container */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                     <div>
-                        <h3 className="font-display text-2xl font-bold text-text-primary capitalize">
-                            Site Plan {propertyName}
+                        <h3 className="font-display text-3xl md:text-4xl font-black tracking-[0.1em] text-accent uppercase italic">
+                            SITE PLAN
                         </h3>
-                        <p className="text-text-secondary text-sm font-light mt-1">
-                            Denah tata ruang dan posisi unit dalam kawasan perumahan.
-                        </p>
                     </div>
                     <div className="flex gap-2">
                         <button
