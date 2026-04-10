@@ -102,9 +102,7 @@ function ModelCard({ model }: ModelCardProps) {
                 {/* Type Dimension Label Inside Image (Top Left) */}
                 <div className="absolute top-2 md:top-8 left-2 md:left-10 z-[15] pointer-events-none">
                     <span className="font-display text-[0.6rem] md:text-[0.75rem] font-black text-black/90 bg-white/70 backdrop-blur-md px-2 py-0.5 rounded-sm tracking-[0.1em] uppercase shadow-sm">
-                        {model.propertyId === "griya-keiko" 
-                            ? (model.category === "Standard" ? "60/84" : "80/105")
-                            : (model.category === "Standard" ? "Tipe Standard" : "Tipe Premium")}
+                        {model.category}
                     </span>
                 </div>
                 <div 
@@ -247,28 +245,44 @@ export default function ModelConfigurator({
         const premiumTypeName = premiumUnit ? formatType(premiumUnit) : "Premium";
 
         const standardVariants = buildVariants(imagesStandard, 'standard', standardTypeName);
-        if (standardVariants.length > 0) {
-            models.push({
-                id: `db-model-standard-${activePropertyId}`,
-                propertyId: activePropertyId || "",
-                name: `Tipe ${standardTypeName}`,
-                description: ``,
-                variants: standardVariants,
-                category: standardTypeName
-            });
-        }
-
-
         const premiumVariants = buildVariants(imagesPremium, 'premium', premiumTypeName);
-        if (premiumVariants.length > 0) {
-            models.push({
-                id: `db-model-premium-${activePropertyId}`,
-                propertyId: activePropertyId || "",
-                name: `Tipe ${premiumTypeName}`,
-                description: ``,
-                variants: premiumVariants,
-                category: premiumTypeName
-            });
+
+        // Merge logic: If both types are the same, combine their images into one card
+        if (standardTypeName === premiumTypeName) {
+            const combinedVariants = [...standardVariants, ...premiumVariants];
+            if (combinedVariants.length > 0) {
+                models.push({
+                    id: `db-model-combined-${activePropertyId}`,
+                    propertyId: activePropertyId || "",
+                    name: `Tipe ${standardTypeName}`,
+                    description: ``,
+                    variants: combinedVariants,
+                    category: standardTypeName
+                });
+            }
+        } else {
+            // Otherwise, keep them separate but with correct type labels
+            if (standardVariants.length > 0) {
+                models.push({
+                    id: `db-model-standard-${activePropertyId}`,
+                    propertyId: activePropertyId || "",
+                    name: `Tipe ${standardTypeName}`,
+                    description: ``,
+                    variants: standardVariants,
+                    category: standardTypeName
+                });
+            }
+
+            if (premiumVariants.length > 0) {
+                models.push({
+                    id: `db-model-premium-${activePropertyId}`,
+                    propertyId: activePropertyId || "",
+                    name: `Tipe ${premiumTypeName}`,
+                    description: ``,
+                    variants: premiumVariants,
+                    category: premiumTypeName
+                });
+            }
         }
 
         return models;
