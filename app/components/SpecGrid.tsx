@@ -2,11 +2,14 @@
 
 import { motion } from "framer-motion";
 import * as Fc from "react-icons/fc";
+import * as Gi from "react-icons/gi";
+import * as Hi2 from "react-icons/hi2";
+import * as Md from "react-icons/md";
 
 interface Spec {
     label: string;
     value: string;
-    icon: "bed" | "bath" | "water" | "power" | "home" | "layout";
+    icon: string;
 }
 
 interface SpecGridProps {
@@ -17,12 +20,15 @@ export default function SpecGrid({ specs }: SpecGridProps) {
     const getIcon = (type: string) => {
         const t = type.toLowerCase().trim();
         const AnyFc = Fc as any;
+        const AnyGi = Gi as any;
+        const AnyHi2 = Hi2 as any;
+        const AnyMd = Md as any;
 
         // Mendukung input nama icon langsung dari Supabase
-        if (AnyFc[type]) {
-            const IconComponent = AnyFc[type];
-            return <IconComponent size={22} />;
-        }
+        if (AnyFc[type]) return <AnyFc[type] size={22} />;
+        if (AnyGi[type]) return <AnyGi[type] size={22} />;
+        if (AnyHi2[type]) return <AnyHi2[type] size={22} />;
+        if (AnyMd[type]) return <AnyMd[type] size={22} />;
 
         switch (t) {
             case "bed": 

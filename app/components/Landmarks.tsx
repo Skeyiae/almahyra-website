@@ -2,11 +2,14 @@
 
 import { motion } from "framer-motion";
 import * as Fc from "react-icons/fc";
+import * as Gi from "react-icons/gi";
+import * as Hi2 from "react-icons/hi2";
+import * as Md from "react-icons/md";
 
 interface Landmark {
     label: string;
     time: string;
-    type: "school" | "mall" | "transport" | "other";
+    type: string;
 }
 
 interface LandmarksProps {
@@ -17,12 +20,16 @@ export default function Landmarks({ landmarks }: LandmarksProps) {
     const getIcon = (type: string) => {
         const t = type.toLowerCase().trim();
         
-        // Cek jika user memasukkan nama icon langsung dari Supabase (misal: FcShop)
+        // Dynamic icon lookup from supported sets
         const AnyFc = Fc as any;
-        if (AnyFc[type]) {
-            const IconComponent = AnyFc[type];
-            return <IconComponent size={22} />;
-        }
+        const AnyGi = Gi as any;
+        const AnyHi2 = Hi2 as any;
+        const AnyMd = Md as any;
+
+        if (AnyFc[type]) return <AnyFc[type] size={22} />;
+        if (AnyGi[type]) return <AnyGi[type] size={22} />;
+        if (AnyHi2[type]) return <AnyHi2[type] size={22} />;
+        if (AnyMd[type]) return <AnyMd[type] size={22} />;
 
         switch (t) {
             case "school": 
