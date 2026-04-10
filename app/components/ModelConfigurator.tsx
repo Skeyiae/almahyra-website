@@ -135,6 +135,15 @@ function ModelCard({ model }: ModelCardProps) {
                         {activeIndex + 1} &nbsp;|&nbsp; {model.variants.length}
                     </span>
                 </div>
+
+                {/* Type Badge (Top Left) */}
+                <div className="absolute top-4 left-4 md:top-6 md:left-10 z-[5]">
+                    <div className="px-3 py-1.5 bg-accent/90 backdrop-blur-md border border-white/20 rounded-md shadow-xl">
+                        <span className="text-[0.65rem] font-black text-background-primary uppercase tracking-wider">
+                            Tipe {model.category}
+                        </span>
+                    </div>
+                </div>
             </div>
 
             {/* Thumbnails - RESTORED */}
@@ -182,28 +191,28 @@ export default function ModelConfigurator({
     imagesStandard,
     imagesPremium
 }: ModelConfiguratorProps) {
-    const [filter, setFilter] = useState<"All" | "Standard" | "Premium">("All");
+    const [filter, setFilter] = useState<string>("All");
+
+    // Helper to format type as LB/LT
+    const formatType = (u: any) => {
+        if (u.buildingArea && u.landArea) return `${u.buildingArea}/${u.landArea}`;
+        return u.type;
+    };
+
+    // Extract unique types available in this property
+    const availableTypes = useMemo(() => {
+        const types = new Set<string>();
+        units.forEach(u => {
+            types.add(formatType(u));
+        });
+        return Array.from(types).sort();
+    }, [units]);
 
     // Filter and Sort units based on the selected type and natural label order
     const filteredUnits = units
         .filter((unit: any) => {
             if (filter === "All") return true;
-
-            const unitType = unit.type.toLowerCase();
-            const filterType = filter.toLowerCase();
-
-            // Rule 1: Based on number of bedrooms
-            if (filter === "Premium" && unit.bedrooms === 3) return true;
-            if (filter === "Standard" && (unit.bedrooms === 2 || unit.bedrooms === 1)) return true;
-
-            // Rule 2: Direct match in type string (e.g., "Premium" in "Type 70 Premium")
-            if (unitType.includes(filterType)) return true;
-
-            // Rule 3: Custom mapping for legacy dimension-based types
-            if (filter === "Standard" && unitType.includes("60x84")) return true;
-            if (filter === "Premium" && unitType.includes("80x105")) return true;
-
-            return false;
+            return formatType(unit) === filter;
         })
         .sort((a: any, b: any) => {
             const labelA = a.label || a.id || "";
@@ -211,49 +220,56 @@ export default function ModelConfigurator({
             return labelA.localeCompare(labelB, undefined, { numeric: true, sensitivity: 'base' });
         });
 
-    // Build separate models for Standard and Premium types
+    // Build separate models for each type found
     const dbModels = useMemo(() => {
         const models = [];
 
         // Helper to convert arrays of {label, url} to variants
-        const buildVariants = (data: any, suffix: string) => {
+        const buildVariants = (data: any, suffix: string, typeName: string) => {
             if (!data || !Array.isArray(data)) return [];
             return data.map((img: any, idx: number) => ({
                 id: `db-${suffix}-${idx}`,
-                label: img.label || `Tampilan ${idx + 1}`,
+                label: img.label || `${typeName} - View ${idx + 1}`,
                 color: suffix === 'standard' ? "#f5f0e8" : "#8B6914",
                 image: img.url,
-                category: (suffix === 'standard' ? "Standard" : "Premium") as "Standard" | "Premium"
+                category: typeName // Use typeName instead of Standard/Premium
             }));
         };
 
-        const standardVariants = buildVariants(imagesStandard, 'standard');
+        // Find which unit types correspond to Standard and Premium images
+        const standardUnit = units.find(u => (u.bedrooms === 2 || u.bedrooms === 1) || u.type.includes("60/84") || u.type.toLowerCase().includes("standard"));
+        const premiumUnit = units.find(u => u.bedrooms === 3 || u.type.includes("80/105") || u.type.toLowerCase().includes("premium"));
+        
+        const standardTypeName = standardUnit ? formatType(standardUnit) : "Standard";
+        const premiumTypeName = premiumUnit ? formatType(premiumUnit) : "Premium";
+
+        const standardVariants = buildVariants(imagesStandard, 'standard', standardTypeName);
         if (standardVariants.length > 0) {
             models.push({
                 id: `db-model-standard-${activePropertyId}`,
                 propertyId: activePropertyId || "",
-                name: `Tipe Standard`,
+                name: `Tipe ${standardTypeName}`,
                 description: ``,
                 variants: standardVariants,
-                category: "Standard" as const
+                category: standardTypeName
             });
         }
 
 
-        const premiumVariants = buildVariants(imagesPremium, 'premium');
+        const premiumVariants = buildVariants(imagesPremium, 'premium', premiumTypeName);
         if (premiumVariants.length > 0) {
             models.push({
                 id: `db-model-premium-${activePropertyId}`,
                 propertyId: activePropertyId || "",
-                name: `Tipe Premium`,
+                name: `Tipe ${premiumTypeName}`,
                 description: ``,
                 variants: premiumVariants,
-                category: "Premium" as const
+                category: premiumTypeName
             });
         }
 
         return models;
-    }, [imagesStandard, imagesPremium, activePropertyId, propertyName]);
+    }, [imagesStandard, imagesPremium, activePropertyId, units]);
 
     // Filter models based on the active property and unit type filter
     const filteredModels = useMemo(() => {
@@ -303,17 +319,26 @@ export default function ModelConfigurator({
                     </div>
 
                     <div className="flex flex-wrap items-center gap-3">
-                        <div className="flex bg-white/5 p-1 rounded-lg border border-white/10">
-                            {(["All", "Standard", "Premium"] as const).map((t) => (
+                        <div className="flex bg-white/5 p-1 rounded-lg border border-white/10 overflow-x-auto no-scrollbar max-w-full">
+                            <button
+                                onClick={() => setFilter("All")}
+                                className={`px-4 py-1.5 rounded-md text-[0.7rem] font-bold transition-all whitespace-nowrap ${filter === "All"
+                                    ? "bg-accent text-background-primary shadow-lg"
+                                    : "text-text-secondary hover:text-text-primary hover:bg-white/5"
+                                    }`}
+                            >
+                                SEMUA
+                            </button>
+                            {availableTypes.map((t) => (
                                 <button
                                     key={t}
                                     onClick={() => setFilter(t)}
-                                    className={`px-4 py-1.5 rounded-md text-[0.75rem] font-bold transition-all ${filter === t
+                                    className={`px-4 py-1.5 rounded-md text-[0.7rem] font-bold transition-all whitespace-nowrap ${filter === t
                                         ? "bg-accent text-background-primary shadow-lg"
                                         : "text-text-secondary hover:text-text-primary hover:bg-white/5"
                                         }`}
                                 >
-                                    {t === "All" ? "SEMUA" : t.toUpperCase()}
+                                    {t.toUpperCase()}
                                 </button>
                             ))}
                         </div>
@@ -356,7 +381,12 @@ export default function ModelConfigurator({
                                             onClick={() => onUnitSelect?.(unit)}
                                         >
                                             <td className="px-6 py-4 font-body text-sm font-bold text-accent">{unit.label || unit.id}</td>
-                                            <td className="px-6 py-4 font-body text-sm text-text-secondary">{unit.type}</td>
+                                            <td className="px-6 py-4 font-body text-sm text-text-secondary">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="font-bold text-text-primary">Tipe {formatType(unit)}</span>
+                                                    <span className="text-[10px] opacity-50 px-1.5 py-0.5 border border-white/10 rounded uppercase">{unit.type}</span>
+                                                </div>
+                                            </td>
                                             <td className="px-6 py-4 font-body text-sm text-text-primary font-semibold">Rp {unit.price}</td>
                                             <td className="px-6 py-4">
                                                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
@@ -389,7 +419,7 @@ export default function ModelConfigurator({
                                         <div className="h-4 w-px bg-white/10"></div>
                                         <div className="flex flex-col min-w-0">
                                             <span className="font-body font-black text-text-primary text-[0.85rem] leading-none mb-1">Rp {unit.price}</span>
-                                            <span className="text-[0.6rem] text-text-secondary font-black leading-tight truncate">{unit.type} | {unit.bedrooms}KT {unit.bathrooms}KM</span>
+                                            <span className="text-[0.6rem] text-text-secondary font-black leading-tight truncate">Tipe {formatType(unit)} | {unit.bedrooms}KT {unit.bathrooms}KM</span>
                                         </div>
                                     </div>
                                     
@@ -415,6 +445,3 @@ export default function ModelConfigurator({
         </div>
     );
 }
-
-
-

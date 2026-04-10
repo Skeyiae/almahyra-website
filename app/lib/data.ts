@@ -1,25 +1,45 @@
+import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { prisma } from "./prisma";
 
 /**
  * Mengambil semua data perumahan dari Supabase
+ * Dicache selama 1 jam untuk meningkatkan performa navigasi
  */
-export async function getProperties() {
-    const properties = await prisma.property.findMany({
-        orderBy: { name: "asc" },
-    });
-    return properties;
-}
+export const getProperties = unstable_cache(
+    async () => {
+        const properties = await prisma.property.findMany({
+            orderBy: { name: "asc" },
+        });
+        return properties;
+    },
+    ["all-properties"],
+    { revalidate: 3600, tags: ["properties"] }
+);
 
 /**
  * Mengambil satu properti berdasarkan slug/id
+ * Dicache per request dan secara global dengan tag slug
  */
-export async function getPropertyBySlug(slug: string) {
-    const property = await prisma.property.findUnique({
-        where: { id: slug },
-        include: { units: true },
-    });
-    return property;
-}
+export const getPropertyBySlug = cache(async (slug: string) => {
+    return unstable_cache(
+        async () => {
+            const property = await prisma.property.findUnique({
+                where: { id: slug },
+                include: {
+                    units: {
+                        orderBy: {
+                            label: 'asc'
+                        }
+                    }
+                }
+            });
+            return property;
+        },
+        [`property-${slug}`],
+        { revalidate: 3600, tags: [`property-${slug}`] }
+    )();
+});
 
 /**
  * Mengambil unit yang tersedia untuk properti tertentu

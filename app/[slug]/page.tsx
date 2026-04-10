@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { getProperties } from "../lib/data";
-import { prisma } from "../lib/prisma";
+import { getProperties, getPropertyBySlug } from "../lib/data";
 import PromoBadge from "../components/PromoBadge";
 import dynamic from "next/dynamic";
 
@@ -9,7 +8,6 @@ const PropertyInteractiveContent = dynamic(() => import("../components/PropertyI
 });
 const Chatbot = dynamic(() => import("../components/Chatbot"), { ssr: false });
 import MarketingButton from "../components/MarketingButton";
-
 
 import Loading from "./loading";
 import { Suspense } from "react";
@@ -31,17 +29,8 @@ export default async function PropertyPage({ params }: PageProps) {
 }
 
 async function PropertyData({ slug }: { slug: string }) {
-    // Fetch properti lengkap dengan unitnya
-    const activeProperty = await prisma.property.findUnique({
-        where: { id: slug },
-        include: {
-            units: {
-                orderBy: {
-                    label: 'asc'
-                }
-            }
-        }
-    });
+    // Fetch properti lengkap dengan unitnya menggunakan cache
+    const activeProperty = await getPropertyBySlug(slug);
 
     if (!activeProperty) {
         return <div className="min-h-screen flex items-center justify-center text-white">Property Not Found</div>;
@@ -173,4 +162,3 @@ async function PropertyData({ slug }: { slug: string }) {
         </main>
     );
 }
-
