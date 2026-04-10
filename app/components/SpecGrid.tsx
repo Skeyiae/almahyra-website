@@ -5,6 +5,10 @@ import * as Fc from "react-icons/fc";
 import * as Gi from "react-icons/gi";
 import * as Hi2 from "react-icons/hi2";
 import * as Md from "react-icons/md";
+import * as Ci from "react-icons/ci";
+import * as Ai from "react-icons/ai";
+import * as Fa from "react-icons/fa";
+import * as Io5 from "react-icons/io5";
 
 interface Spec {
     label: string;
@@ -23,24 +27,20 @@ export default function SpecGrid({ specs }: SpecGridProps) {
         const AnyGi = Gi as any;
         const AnyHi2 = Hi2 as any;
         const AnyMd = Md as any;
+        const AnyCi = Ci as any;
+        const AnyAi = Ai as any;
+        const AnyFa = Fa as any;
+        const AnyIo5 = Io5 as any;
 
         // Mendukung input nama icon langsung dari Supabase
-        if (AnyFc[type]) {
-            const IconComponent = AnyFc[type];
-            return <IconComponent size={22} />;
-        }
-        if (AnyGi[type]) {
-            const IconComponent = AnyGi[type];
-            return <IconComponent size={22} />;
-        }
-        if (AnyHi2[type]) {
-            const IconComponent = AnyHi2[type];
-            return <IconComponent size={22} />;
-        }
-        if (AnyMd[type]) {
-            const IconComponent = AnyMd[type];
-            return <IconComponent size={22} />;
-        }
+        if (AnyFc[type]) { const Icon = AnyFc[type]; return <Icon size={22} />; }
+        if (AnyGi[type]) { const Icon = AnyGi[type]; return <Icon size={22} />; }
+        if (AnyHi2[type]) { const Icon = AnyHi2[type]; return <Icon size={22} />; }
+        if (AnyMd[type]) { const Icon = AnyMd[type]; return <Icon size={22} />; }
+        if (AnyCi[type]) { const Icon = AnyCi[type]; return <Icon size={22} />; }
+        if (AnyAi[type]) { const Icon = AnyAi[type]; return <Icon size={22} />; }
+        if (AnyFa[type]) { const Icon = AnyFa[type]; return <Icon size={22} />; }
+        if (AnyIo5[type]) { const Icon = AnyIo5[type]; return <Icon size={22} />; }
 
         switch (t) {
             case "bed": 
