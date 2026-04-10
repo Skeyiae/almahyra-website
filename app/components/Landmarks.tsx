@@ -15,10 +15,32 @@ interface LandmarksProps {
 
 export default function Landmarks({ landmarks }: LandmarksProps) {
     const getIcon = (type: string) => {
-        switch (type) {
-            case "school": return <FcGraduationCap size={22} />;
-            case "mall": return <FcShop size={22} />;
-            case "transport": return <FcAutomotive size={22} />;
+        const t = type.toLowerCase().trim();
+        
+        // Cek jika user memasukkan nama icon langsung dari Supabase (misal: FcShop)
+        const AnyFc = Fc as any;
+        if (AnyFc[type]) {
+            const IconComponent = AnyFc[type];
+            return <IconComponent size={22} />;
+        }
+
+        switch (t) {
+            case "school": 
+            case "sekolah":
+            case "education":
+                return <FcGraduationCap size={22} />;
+            case "mall": 
+            case "perbelanjaan":
+            case "store":
+                return <FcShop size={22} />;
+            case "transport": 
+            case "perjalanan":
+            case "akses":
+                return <FcAutomotive size={22} />;
+            case "hospital":
+            case "kesehatan":
+            case "medical":
+                return <FcBusiness size={22} />;
             default: return <FcBusiness size={22} />;
         }
     };

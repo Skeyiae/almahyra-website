@@ -15,12 +15,32 @@ interface SpecGridProps {
 
 export default function SpecGrid({ specs }: SpecGridProps) {
     const getIcon = (type: string) => {
-        switch (type) {
-            case "bed": return <FcHome size={22} />;
-            case "bath": return <FcInspection size={22} />;
-            case "water": return <FcBiomass size={22} />;
-            case "power": return <FcFlashOn size={22} />;
-            case "layout": return <FcGrid size={22} />;
+        const t = type.toLowerCase().trim();
+        const AnyFc = Fc as any;
+
+        // Mendukung input nama icon langsung dari Supabase
+        if (AnyFc[type]) {
+            const IconComponent = AnyFc[type];
+            return <IconComponent size={22} />;
+        }
+
+        switch (t) {
+            case "bed": 
+            case "kamar":
+                return <FcHome size={22} />;
+            case "bath": 
+            case "toilet":
+                return <FcInspection size={22} />;
+            case "water": 
+            case "sumur":
+            case "air":
+                return <FcBiomass size={22} />;
+            case "power": 
+            case "listrik":
+                return <FcFlashOn size={22} />;
+            case "layout": 
+            case "tanah":
+                return <FcGrid size={22} />;
             default: return <FcPrivacy size={22} />;
         }
     };
