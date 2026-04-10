@@ -182,7 +182,8 @@ export default function ModelConfigurator({
     imagesPremium
 }: ModelConfiguratorProps) {
     const [filter, setFilter] = useState<string>("All");
-    const [showAll, setShowAll] = useState(false);
+    const [currentPage, setCurrentPage] = useState(0);
+    const pageSize = 10;
 
     // Helper to format type as LB/LT
     const formatType = (u: any) => {
@@ -211,7 +212,13 @@ export default function ModelConfigurator({
             return labelA.localeCompare(labelB, undefined, { numeric: true, sensitivity: 'base' });
         });
 
-    const visibleUnits = showAll ? filteredUnits : filteredUnits.slice(0, 10);
+    // Reset pagination when filter or property changes
+    useEffect(() => {
+        setCurrentPage(0);
+    }, [filter, activePropertyId]);
+
+    const totalPages = Math.ceil(filteredUnits.length / pageSize);
+    const visibleUnits = filteredUnits.slice(currentPage * pageSize, (currentPage + 1) * pageSize);
 
     // Build separate models for each type found
     const dbModels = useMemo(() => {
@@ -445,24 +452,52 @@ export default function ModelConfigurator({
                             ))}
                         </div>
 
-                        {/* Pagination/Show All Toggle */}
-                        {filteredUnits.length > 10 && (
-                            <div className="mt-6 flex justify-center">
-                                <button
-                                    onClick={() => setShowAll(!showAll)}
-                                    className="group relative flex items-center gap-3 px-8 py-3 bg-white/5 border border-white/10 rounded-full hover:border-accent/40 transition-all duration-300"
-                                >
-                                    <span className="font-display text-xs font-bold tracking-widest text-text-secondary group-hover:text-accent">
-                                        {showAll ? "TAMPILKAN SEDIKIT" : `LIHAT SEMUA UNIT (${filteredUnits.length})`}
-                                    </span>
-                                    <svg 
-                                        className={`w-4 h-4 text-accent transition-transform duration-500 ${showAll ? 'rotate-180' : ''}`} 
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                        {/* Pagination with Arrows */}
+                        {filteredUnits.length > pageSize && (
+                            <div className="mt-8 flex flex-col items-center gap-4">
+                                <div className="flex items-center gap-6">
+                                    <button
+                                        onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))}
+                                        disabled={currentPage === 0}
+                                        className={`group flex items-center justify-center w-12 h-12 rounded-full border transition-all duration-300 ${
+                                            currentPage === 0 
+                                            ? "opacity-20 cursor-not-allowed border-white/5" 
+                                            : "opacity-100 cursor-pointer border-white/10 bg-white/5 hover:border-accent/50 hover:bg-white/10 text-text-secondary hover:text-accent shadow-lg"
+                                        }`}
+                                        aria-label="Halaman Sebelumnya"
                                     >
-                                        <path d="M19 9l-7 7-7-7" />
-                                    </svg>
-                                    <div className="absolute inset-x-0 -bottom-px h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                                </button>
+                                        <svg className="w-5 h-5 transition-transform group-hover:-translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                            <path d="M15 18l-6-6 6-6" />
+                                        </svg>
+                                    </button>
+
+                                    <div className="flex flex-col items-center">
+                                        <span className="font-display text-[0.65rem] font-black text-accent tracking-[3px] uppercase mb-0.5">Halaman</span>
+                                        <div className="flex items-center gap-2">
+                                            <span className="font-display text-lg font-bold text-white">{currentPage + 1}</span>
+                                            <span className="text-white/20 text-sm">/</span>
+                                            <span className="text-text-muted font-medium text-sm">{totalPages}</span>
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        onClick={() => setCurrentPage(prev => Math.min(totalPages - 1, prev + 1))}
+                                        disabled={currentPage === totalPages - 1}
+                                        className={`group flex items-center justify-center w-12 h-12 rounded-full border transition-all duration-300 ${
+                                            currentPage === totalPages - 1 
+                                            ? "opacity-20 cursor-not-allowed border-white/5" 
+                                            : "opacity-100 cursor-pointer border-white/10 bg-white/5 hover:border-accent/50 hover:bg-white/10 text-text-secondary hover:text-accent shadow-lg"
+                                        }`}
+                                        aria-label="Halaman Selanjutnya"
+                                    >
+                                        <svg className="w-5 h-5 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                            <path d="M9 18l6-6-6-6" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div className="text-[0.6rem] text-text-muted font-bold tracking-[0.1em] uppercase opacity-50 bg-white/5 px-3 py-1 rounded-full border border-white/5">
+                                    Menampilkan {currentPage * pageSize + 1}-{Math.min((currentPage + 1) * pageSize, filteredUnits.length)} dari {filteredUnits.length} Unit
+                                </div>
                             </div>
                         )}
                     </div>
