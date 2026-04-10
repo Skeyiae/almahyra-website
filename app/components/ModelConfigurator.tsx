@@ -192,6 +192,7 @@ export default function ModelConfigurator({
     imagesPremium
 }: ModelConfiguratorProps) {
     const [filter, setFilter] = useState<string>("All");
+    const [showAll, setShowAll] = useState(false);
 
     // Helper to format type as LB/LT
     const formatType = (u: any) => {
@@ -219,6 +220,8 @@ export default function ModelConfigurator({
             const labelB = b.label || b.id || "";
             return labelA.localeCompare(labelB, undefined, { numeric: true, sensitivity: 'base' });
         });
+
+    const visibleUnits = showAll ? filteredUnits : filteredUnits.slice(0, 10);
 
     // Build separate models for each type found
     const dbModels = useMemo(() => {
@@ -374,7 +377,7 @@ export default function ModelConfigurator({
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-white/5">
-                                    {filteredUnits.map((unit: any) => (
+                                    {visibleUnits.map((unit: any) => (
                                         <tr
                                             key={unit.id}
                                             className={`cursor-pointer transition-all duration-200 ${selectedUnitId === unit.id ? 'bg-accent/10 border-l-4 border-l-accent' : 'hover:bg-white/[0.05] border-l-4 border-l-transparent'}`}
@@ -408,7 +411,7 @@ export default function ModelConfigurator({
 
                         {/* VIEW MOBILE: Ultra-Slim List (Hidden on Desktop) */}
                         <div className="md:hidden flex flex-col gap-2">
-                            {filteredUnits.map((unit: any) => (
+                            {visibleUnits.map((unit: any) => (
                                 <div
                                     key={unit.id}
                                     className={`px-3 py-2.5 rounded-lg border transition-all duration-200 flex items-center justify-between gap-3 ${selectedUnitId === unit.id ? 'bg-accent/10 border-accent' : 'bg-bg-card border-border-glass'}`}
@@ -435,6 +438,27 @@ export default function ModelConfigurator({
                                 </div>
                             ))}
                         </div>
+
+                        {/* Pagination/Show All Toggle */}
+                        {filteredUnits.length > 10 && (
+                            <div className="mt-6 flex justify-center">
+                                <button
+                                    onClick={() => setShowAll(!showAll)}
+                                    className="group relative flex items-center gap-3 px-8 py-3 bg-white/5 border border-white/10 rounded-full hover:border-accent/40 transition-all duration-300"
+                                >
+                                    <span className="font-display text-xs font-bold tracking-widest text-text-secondary group-hover:text-accent">
+                                        {showAll ? "TAMPILKAN SEDIKIT" : `LIHAT SEMUA UNIT (${filteredUnits.length})`}
+                                    </span>
+                                    <svg 
+                                        className={`w-4 h-4 text-accent transition-transform duration-500 ${showAll ? 'rotate-180' : ''}`} 
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                                    >
+                                        <path d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                    <div className="absolute inset-x-0 -bottom-px h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </button>
+                            </div>
+                        )}
                     </div>
                 ) : (
                     <div className="text-center py-12 border border-dashed border-border-glass rounded-xl">

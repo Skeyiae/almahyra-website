@@ -126,21 +126,28 @@ async function PropertyData({ slug }: { slug: string }) {
             </section>
 
             {/* INTERACTIVE CONTENT (SPECS, CALCULATOR, CONFIGURATOR) */}
-            <PropertyInteractiveContent
-                propertyId={activeProperty.id}
-                propertyName={activeProperty.name}
-                units={activeProperty.units as any}
-                landmarks={activeProperty.landmarks as any[]}
-                locationText={activeProperty.locationText || "Lokasi Strategis"}
-                sitePlanImage={activeProperty.sitePlanImage}
-                mapUrl={activeProperty.mapUrl}
-                imagesStandard={(activeProperty as any).imagesStandard}
-                imagesPremium={(activeProperty as any).imagesPremium}
-                mortgageSchemes={(activeProperty as any).mortgageSchemes}
-                facilities={(activeProperty as any).facilities}
-                defaultDpAmount={(activeProperty as any).defaultDpAmount ?? 0}
-                defaultBookingAmount={(activeProperty as any).defaultBookingAmount ?? 2000000}
-            />
+            <Suspense fallback={
+                <div className="py-24 text-center">
+                    <div className="inline-block w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin mb-4" />
+                    <p className="text-text-muted font-display text-sm tracking-widest uppercase">Menyiapkan Visualisasi...</p>
+                </div>
+            }>
+                <PropertyInteractiveContent
+                    propertyId={activeProperty.id}
+                    propertyName={activeProperty.name}
+                    units={activeProperty.units as any}
+                    landmarks={activeProperty.landmarks as any[]}
+                    locationText={activeProperty.locationText || "Lokasi Strategis"}
+                    sitePlanImage={activeProperty.sitePlanImage}
+                    mapUrl={activeProperty.mapUrl}
+                    imagesStandard={(activeProperty as any).imagesStandard}
+                    imagesPremium={(activeProperty as any).imagesPremium}
+                    mortgageSchemes={(activeProperty as any).mortgageSchemes}
+                    facilities={(activeProperty as any).facilities}
+                    defaultDpAmount={(activeProperty as any).defaultDpAmount ?? 0}
+                    defaultBookingAmount={(activeProperty as any).defaultBookingAmount ?? 2000000}
+                />
+            </Suspense>
 
             {/* FOOTER */}
             <footer className="py-12 px-6 border-t border-border-glass text-center">

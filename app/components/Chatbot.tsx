@@ -48,13 +48,15 @@ export default function Chatbot({
 
     const { openMarketing } = useMarketing();
 
-    // Fetch units from Supabase on mount
+    // Fetch units from Supabase ONLY when opened to save navigation performance
     useEffect(() => {
-        fetch("/api/units")
-            .then(res => res.json())
-            .then(data => setUnits(data))
-            .catch(err => console.error("Failed to fetch units:", err));
-    }, []);
+        if (isOpen && units.length === 0) {
+            fetch("/api/units")
+                .then(res => res.json())
+                .then(data => setUnits(data))
+                .catch(err => console.error("Failed to fetch units:", err));
+        }
+    }, [isOpen, units.length]);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
