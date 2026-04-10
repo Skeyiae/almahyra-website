@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MapPin, GraduationCap, Building2, ShoppingBag } from "lucide-react";
+import { FcGraduationCap, FcShop, FcAutomotive, FcBusiness } from "react-icons/fc";
 
 interface Landmark {
     label: string;
@@ -16,10 +16,10 @@ interface LandmarksProps {
 export default function Landmarks({ landmarks }: LandmarksProps) {
     const getIcon = (type: string) => {
         switch (type) {
-            case "school": return <GraduationCap size={18} />;
-            case "mall": return <ShoppingBag size={18} />;
-            case "transport": return <MapPin size={18} />;
-            default: return <Building2 size={18} />;
+            case "school": return <FcGraduationCap size={22} />;
+            case "mall": return <FcShop size={22} />;
+            case "transport": return <FcAutomotive size={22} />;
+            default: return <FcBusiness size={22} />;
         }
     };
 
@@ -36,7 +36,7 @@ export default function Landmarks({ landmarks }: LandmarksProps) {
                     viewport={{ once: true }}
                     className="flex items-center gap-3 p-2.5 md:p-4 rounded-lg md:rounded-xl bg-bg-glass border border-border-glass group hover:border-accent/40 transition-smooth"
                 >
-                    <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent shrink-0 group-hover:bg-accent group-hover:text-background-primary transition-smooth">
+                    <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:bg-white/20 transition-smooth shadow-sm">
                         {getIcon(landmark.type)}
                     </div>
                     <div>
