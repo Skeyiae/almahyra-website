@@ -230,8 +230,8 @@ export default function ModelConfigurator({
         };
 
         // Find which unit types correspond to Standard and Premium images
-        const standardUnit = units.find(u => (u.bedrooms === 2 || u.bedrooms === 1) || u.type.includes("60/84") || u.type.toLowerCase().includes("standard"));
-        const premiumUnit = units.find(u => u.bedrooms === 3 || u.type.includes("80/105") || u.type.toLowerCase().includes("premium"));
+        const standardUnit = units.find(u => (u.bedrooms === 2 || u.bedrooms === 1) || u.type?.includes("60/84") || u.type?.toLowerCase().includes("standard"));
+        const premiumUnit = units.find(u => u.bedrooms === 3 || u.type?.includes("80/105") || u.type?.toLowerCase().includes("premium"));
         
         const standardTypeName = standardUnit ? formatType(standardUnit) : "Standard";
         const premiumTypeName = premiumUnit ? formatType(premiumUnit) : "Premium";

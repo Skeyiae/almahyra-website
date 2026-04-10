@@ -25,7 +25,9 @@ export default function Landmarks({ landmarks }: LandmarksProps) {
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
-            {landmarks.map((landmark, idx) => (
+            {(!landmarks || landmarks.length === 0) ? (
+                <p className="text-text-muted text-sm col-span-2">Belum ada lokasi strategis yang ditambahkan.</p>
+            ) : landmarks.map((landmark, idx) => (
                 <motion.div
                     key={idx}
                     initial={{ opacity: 0, x: -20 }}

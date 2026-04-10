@@ -70,7 +70,7 @@ export default function PropertyInteractiveContent({
         { label: "Luas Tanah", value: selectedUnit.landArea ? `${selectedUnit.landArea} m²` : null, icon: "layout" as const },
     ].filter(spec => spec.value !== null) as any[] : [];
 
-    const priceInt = selectedUnit ? parseInt(selectedUnit.price.replace(/\./g, '')) : 350000000;
+    const priceInt = selectedUnit?.price ? parseInt(selectedUnit.price.replace(/\./g, '')) : 350000000;
 
     // Logic for DP and Booking fee from Database
     // Priority: Unit-specific value > Property default value
@@ -108,7 +108,7 @@ export default function PropertyInteractiveContent({
                                 </h3>
 
                                 <div className="relative z-10">
-                                    <Landmarks landmarks={landmarks} />
+                                    <Landmarks landmarks={landmarks || []} />
                                     <a
                                         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationText)}`}
                                         target="_blank"
