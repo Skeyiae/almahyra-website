@@ -6,7 +6,7 @@ const PropertySlider = dynamic(() => import("./components/PropertySlider"), {
   loading: () => <div className="min-h-[400px] w-full flex items-center justify-center py-20 text-accent opacity-50">Memuat Data Property...</div>
 });
 import BrandIntroduction from "./components/BrandIntroduction";
-import Link from "next/link";
+import TransitionLink from "./components/TransitionLink";
 
 export default async function Home() {
   const properties = await getProperties();
@@ -20,13 +20,13 @@ export default async function Home() {
         <div className="max-w-[1200px] mx-auto overflow-x-auto no-scrollbar">
           <div className="flex gap-3 justify-start md:justify-center min-w-max">
             {properties.map((prop) => (
-              <Link
+              <TransitionLink
                 key={prop.id}
                 href={`/${prop.id}`}
                 className="px-8 py-3.5 rounded-full font-display text-sm font-bold transition-all duration-300 border bg-white/5 text-white/70 border-white/10 hover:border-accent hover:text-accent hover:bg-white/10 hover:shadow-[0_0_20px_rgba(201,169,110,0.1)]"
               >
                 {prop.name}
-              </Link>
+              </TransitionLink>
             ))}
           </div>
         </div>

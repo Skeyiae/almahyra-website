@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   },
 };
 
+import { Suspense } from "react";
+import ProgressBar from "./components/ProgressBar";
+
 export default function RootLayout({
   children,
 }: {
@@ -18,6 +21,9 @@ export default function RootLayout({
   return (
     <html lang="id">
       <body className="antialiased">
+        <Suspense fallback={null}>
+          <ProgressBar />
+        </Suspense>
         <MarketingProvider>
           {children}
           <MarketingPopup />

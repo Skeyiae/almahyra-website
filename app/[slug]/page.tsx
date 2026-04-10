@@ -1,4 +1,4 @@
-import Link from "next/link";
+import TransitionLink from "../components/TransitionLink";
 import { getProperties, getPropertyBySlug } from "../lib/data";
 import PromoBadge from "../components/PromoBadge";
 import dynamic from "next/dynamic";
@@ -110,7 +110,7 @@ async function PropertyData({ slug }: { slug: string }) {
                 <div className="max-w-[1200px] mx-auto overflow-x-auto pb-4 no-scrollbar">
                     <div className="flex gap-3 justify-start md:justify-center min-w-max">
                         {allProperties.map((prop) => (
-                            <Link
+                            <TransitionLink
                                 key={prop.id}
                                 href={`/${prop.id}`}
                                 className={`px-6 py-3 rounded-full font-display text-sm font-medium transition-all duration-300 border ${activeProperty.id === prop.id
@@ -119,7 +119,7 @@ async function PropertyData({ slug }: { slug: string }) {
                                     }`}
                             >
                                 {prop.name}
-                            </Link>
+                            </TransitionLink>
                         ))}
                     </div>
                 </div>
