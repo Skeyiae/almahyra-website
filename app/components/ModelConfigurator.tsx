@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
 import { models } from "../data/configData";
 import { Model } from "../types/config";
-import { Maximize2, Minimize2 } from "lucide-react";
+import { Maximize2, Minimize2, Smartphone, Monitor } from "lucide-react";
 import SitePlan from "./SitePlan";
 
 
@@ -31,6 +31,7 @@ interface ModelCardProps {
 function ModelCard({ model }: ModelCardProps) {
     const [activeIndex, setActiveIndex] = useState(0);
     const [isFullscreen, setIsFullscreen] = useState(false);
+    const [fullscreenOrientation, setFullscreenOrientation] = useState<'landscape' | 'portrait'>('landscape');
     const cardRef = useRef<HTMLDivElement>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
     const fullscreenContainerRef = useRef<HTMLDivElement>(null);
@@ -38,7 +39,8 @@ function ModelCard({ model }: ModelCardProps) {
 
     const activeVariant = model.variants[activeIndex];
 
-    const toggleFullscreen = async () => {
+    const requestFullscreen = async (orientation: 'landscape' | 'portrait') => {
+        setFullscreenOrientation(orientation);
         if (!isFullscreen) {
             try {
                 if (fullscreenContainerRef.current) {
@@ -47,9 +49,9 @@ function ModelCard({ model }: ModelCardProps) {
                     }
                     if (window.screen && window.screen.orientation && (window.screen.orientation as any).lock) {
                         try {
-                            await (window.screen.orientation as any).lock('landscape');
+                            await (window.screen.orientation as any).lock(orientation);
                         } catch (e) {
-                            // Ignore orientation lock errors (e.g., unsupported or need user gesture)
+                            // Ignore orientation lock errors
                         }
                     }
                 }
@@ -58,22 +60,33 @@ function ModelCard({ model }: ModelCardProps) {
             }
             setIsFullscreen(true);
         } else {
-            try {
-                if (document.fullscreenElement) {
-                    if (window.screen && window.screen.orientation && (window.screen.orientation as any).unlock) {
-                        try {
-                            (window.screen.orientation as any).unlock();
-                        } catch (e) {}
-                    }
-                    if (document.exitFullscreen) {
-                        await document.exitFullscreen();
-                    }
+            // Already fullscreen, just attempt to switch orientation
+            if (window.screen && window.screen.orientation && (window.screen.orientation as any).lock) {
+                try {
+                    await (window.screen.orientation as any).lock(orientation);
+                } catch (e) {
+                    // Ignore
                 }
-            } catch (e) {
-                console.error(e);
             }
-            setIsFullscreen(false);
         }
+    };
+
+    const exitFullscreen = async () => {
+        try {
+            if (document.fullscreenElement) {
+                if (window.screen && window.screen.orientation && (window.screen.orientation as any).unlock) {
+                    try {
+                        (window.screen.orientation as any).unlock();
+                    } catch (e) {}
+                }
+                if (document.exitFullscreen) {
+                    await document.exitFullscreen();
+                }
+            }
+        } catch (e) {
+            console.error(e);
+        }
+        setIsFullscreen(false);
     };
 
     useEffect(() => {
@@ -172,13 +185,57 @@ function ModelCard({ model }: ModelCardProps) {
                 ref={fullscreenContainerRef} 
                 className={`relative ${isFullscreen ? 'bg-black w-full h-full flex flex-col justify-center items-center' : 'md:px-8 py-0 md:py-6'}`}
             >
-                {/* Fullscreen Toggle Button */}
-                <button 
-                    onClick={toggleFullscreen}
-                    className={`absolute z-[25] p-2 rounded-full bg-black/40 hover:bg-accent border border-white/20 text-white backdrop-blur-md transition-all ${isFullscreen ? 'top-4 right-4 md:top-8 md:right-8' : 'top-2 right-2 md:top-8 md:right-10'}`}
-                >
-                    {isFullscreen ? <Minimize2 size={16} className="md:w-5 md:h-5" /> : <Maximize2 size={16} className="md:w-5 md:h-5" />}
-                </button>
+                {/* Fullscreen Toggle Buttons */}
+                <div className={`absolute z-[25] flex gap-2 ${isFullscreen ? 'top-4 right-4 md:top-8 md:right-8' : 'top-2 right-2 md:top-8 md:right-10'}`}>
+                    {isFullscreen ? (
+                        <>
+                            {fullscreenOrientation === 'landscape' && (
+                                <button 
+                                    onClick={(e) => { e.stopPropagation(); requestFullscreen('portrait'); }}
+                                    className="p-2 px-3 rounded-full bg-black/40 hover:bg-accent border border-white/20 text-white backdrop-blur-md transition-all flex items-center gap-1.5 md:text-sm text-xs"
+                                    title="Ubah ke Portrait"
+                                >
+                                    <Smartphone className="w-4 h-4 md:w-5 md:h-5" />
+                                    <span className="hidden md:inline">Portrait</span>
+                                </button>
+                            )}
+                            {fullscreenOrientation === 'portrait' && (
+                                <button 
+                                    onClick={(e) => { e.stopPropagation(); requestFullscreen('landscape'); }}
+                                    className="p-2 px-3 rounded-full bg-black/40 hover:bg-accent border border-white/20 text-white backdrop-blur-md transition-all flex items-center gap-1.5 md:text-sm text-xs"
+                                    title="Ubah ke Landscape"
+                                >
+                                    <Monitor className="w-4 h-4 md:w-5 md:h-5" />
+                                    <span className="hidden md:inline">Landscape</span>
+                                </button>
+                            )}
+                            <button 
+                                onClick={(e) => { e.stopPropagation(); exitFullscreen(); }}
+                                className="p-2 rounded-full bg-black/40 hover:bg-red-500/80 border border-white/20 text-white backdrop-blur-md transition-all"
+                                title="Keluar Fullscreen"
+                            >
+                                <Minimize2 size={16} className="md:w-5 md:h-5" />
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <button 
+                                onClick={(e) => { e.stopPropagation(); requestFullscreen('portrait'); }}
+                                className="p-2 rounded-full bg-black/40 hover:bg-accent border border-white/20 text-white backdrop-blur-md transition-all flex items-center gap-1.5 md:text-sm text-xs"
+                                title="Fullscreen Portrait"
+                            >
+                                <Smartphone size={16} className="w-4 h-4 md:w-5 md:h-5" />
+                            </button>
+                            <button 
+                                onClick={(e) => { e.stopPropagation(); requestFullscreen('landscape'); }}
+                                className="p-2 rounded-full bg-black/40 hover:bg-accent border border-white/20 text-white backdrop-blur-md transition-all flex items-center gap-1.5 md:text-sm text-xs"
+                                title="Fullscreen Landscape"
+                            >
+                                <Monitor size={16} className="w-4 h-4 md:w-5 md:h-5" />
+                            </button>
+                        </>
+                    )}
+                </div>
 
                 {/* Type Dimension Label Inside Image (Top Left) */}
                 <div className={`absolute z-[15] pointer-events-none ${isFullscreen ? 'top-4 left-4 md:top-8 md:left-8' : 'top-2 md:top-8 left-2 md:left-10'}`}>
