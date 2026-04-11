@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
 import { models } from "../data/configData";
 import { Model } from "../types/config";
+import { Maximize2, Minimize2 } from "lucide-react";
 import SitePlan from "./SitePlan";
 
 
@@ -29,11 +30,77 @@ interface ModelCardProps {
 
 function ModelCard({ model }: ModelCardProps) {
     const [activeIndex, setActiveIndex] = useState(0);
+    const [isFullscreen, setIsFullscreen] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
+    const fullscreenContainerRef = useRef<HTMLDivElement>(null);
     const isScrollingRef = useRef(false);
 
     const activeVariant = model.variants[activeIndex];
+
+    const toggleFullscreen = async () => {
+        if (!isFullscreen) {
+            try {
+                if (fullscreenContainerRef.current) {
+                    if (fullscreenContainerRef.current.requestFullscreen) {
+                        await fullscreenContainerRef.current.requestFullscreen();
+                    }
+                    if (window.screen && window.screen.orientation && window.screen.orientation.lock) {
+                        try {
+                            await window.screen.orientation.lock('landscape');
+                        } catch (e) {
+                            // Ignore orientation lock errors (e.g., unsupported or need user gesture)
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error(e);
+            }
+            setIsFullscreen(true);
+        } else {
+            try {
+                if (document.fullscreenElement) {
+                    if (window.screen && window.screen.orientation && window.screen.orientation.unlock) {
+                        try {
+                            window.screen.orientation.unlock();
+                        } catch (e) {}
+                    }
+                    if (document.exitFullscreen) {
+                        await document.exitFullscreen();
+                    }
+                }
+            } catch (e) {
+                console.error(e);
+            }
+            setIsFullscreen(false);
+        }
+    };
+
+    useEffect(() => {
+        const handleFullscreenChange = () => {
+            if (!document.fullscreenElement) {
+                setIsFullscreen(false);
+                if (window.screen && window.screen.orientation && window.screen.orientation.unlock) {
+                    try {
+                        window.screen.orientation.unlock();
+                    } catch (e) {}
+                }
+            }
+        };
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    }, []);
+
+    // Also sync scroll position when fullscreen layout changes
+    useEffect(() => {
+        if (scrollRef.current) {
+            const container = scrollRef.current;
+            container.scrollTo({
+                left: activeIndex * container.offsetWidth,
+                behavior: 'instant' as ScrollBehavior
+            });
+        }
+    }, [isFullscreen, activeIndex]);
 
     // Handle button click - scroll to that image
     const handleVariantClick = (idx: number) => {
@@ -98,38 +165,50 @@ function ModelCard({ model }: ModelCardProps) {
             ref={cardRef}
         >
             {/* Image Viewer - Scroll Slider (Full width on mobile) */}
-            <div className="relative md:px-8 py-0 md:py-6">
+            <div 
+                ref={fullscreenContainerRef} 
+                className={`relative ${isFullscreen ? 'bg-black w-full h-full flex flex-col justify-center items-center' : 'md:px-8 py-0 md:py-6'}`}
+            >
+                {/* Fullscreen Toggle Button */}
+                <button 
+                    onClick={toggleFullscreen}
+                    className={`absolute z-[25] p-2 rounded-full bg-black/40 hover:bg-accent border border-white/20 text-white backdrop-blur-md transition-all ${isFullscreen ? 'top-4 right-4 md:top-8 md:right-8' : 'top-2 right-2 md:top-8 md:right-10'}`}
+                >
+                    {isFullscreen ? <Minimize2 size={16} className="md:w-5 md:h-5" /> : <Maximize2 size={16} className="md:w-5 md:h-5" />}
+                </button>
+
                 {/* Type Dimension Label Inside Image (Top Left) */}
-                <div className="absolute top-2 md:top-8 left-2 md:left-10 z-[15] pointer-events-none">
-                    <span className="font-display text-[0.6rem] md:text-[0.75rem] font-black text-black/90 bg-white/70 backdrop-blur-md px-2 py-0.5 rounded-sm tracking-[0.1em] uppercase shadow-sm">
+                <div className={`absolute z-[15] pointer-events-none ${isFullscreen ? 'top-4 left-4 md:top-8 md:left-8' : 'top-2 md:top-8 left-2 md:left-10'}`}>
+                    <span className={`font-display font-black text-black/90 bg-white/70 backdrop-blur-md rounded-sm tracking-[0.1em] uppercase shadow-sm ${isFullscreen ? 'text-[0.8rem] md:text-sm px-3 py-1' : 'text-[0.6rem] md:text-[0.75rem] px-2 py-0.5'}`}>
                         {model.category}
                     </span>
                 </div>
                 <div 
                     ref={scrollRef}
                     onScroll={handleScroll}
-                    className="relative flex overflow-x-auto snap-x snap-mandatory no-scrollbar md:rounded-md aspect-[16/10] bg-background-secondary shadow-lg"
+                    className={`relative flex overflow-x-auto snap-x snap-mandatory no-scrollbar shadow-lg ${isFullscreen ? 'w-full h-full items-center' : 'md:rounded-md aspect-[16/10] bg-background-secondary'}`}
                 >
                     {model.variants.map((variant, idx) => (
-                        <div key={variant.id} className="relative flex-shrink-0 w-full h-full snap-center">
+                        <div key={variant.id} className="relative flex-shrink-0 w-full h-full snap-center flex justify-center items-center">
+                            {isFullscreen && <div className="absolute inset-0 bg-black animate-pulse" />} {/* Prevents white flash while loading */}
                             <Image
                                 src={variant.image}
                                 alt={`${model.name} - ${variant.label}`}
                                 fill
-                                sizes="(max-width: 768px) 100vw, 1200px"
-                                className="object-cover"
-                                priority={idx === 0}
+                                sizes={isFullscreen ? "100vw" : "(max-width: 768px) 100vw, 1200px"}
+                                className={isFullscreen ? "object-contain" : "object-cover"}
+                                priority={idx === 0 || isFullscreen}
                             />
                         </div>
                     ))}
                 </div>
 
                 {/* Overlay Info (Centered at the bottom) - RESTORED */}
-                <div className="absolute bottom-4 md:bottom-8 left-0 right-0 flex flex-col items-center justify-center pointer-events-none z-[5] gap-1 md:gap-2">
-                    <span className="font-display text-[0.65rem] md:text-[0.85rem] font-black text-white uppercase tracking-[0.2em] drop-shadow-[0_2px_8px_rgba(0,0,0,1)]">
+                <div className={`absolute left-0 right-0 flex flex-col items-center justify-center pointer-events-none z-[5] gap-1 md:gap-2 ${isFullscreen ? 'bottom-8 md:bottom-12' : 'bottom-4 md:bottom-8'}`}>
+                    <span className={`font-display font-black text-white uppercase tracking-[0.2em] drop-shadow-[0_2px_8px_rgba(0,0,0,1)] ${isFullscreen ? 'text-[0.85rem] md:text-xl' : 'text-[0.65rem] md:text-[0.85rem]'}`}>
                         {activeVariant.label}
                     </span>
-                    <span className="text-[0.55rem] md:text-[0.65rem] text-white/40 font-bold tracking-widest drop-shadow-md">
+                    <span className={`text-white/40 font-bold tracking-widest drop-shadow-md ${isFullscreen ? 'text-[0.75rem] md:text-sm' : 'text-[0.55rem] md:text-[0.65rem]'}`}>
                         {activeIndex + 1} &nbsp;|&nbsp; {model.variants.length}
                     </span>
                 </div>
