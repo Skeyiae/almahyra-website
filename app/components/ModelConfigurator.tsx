@@ -91,16 +91,19 @@ function ModelCard({ model }: ModelCardProps) {
         return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
     }, []);
 
-    // Also sync scroll position when fullscreen layout changes
+    // Sync scroll position when fullscreen layout changes
     useEffect(() => {
         if (scrollRef.current) {
             const container = scrollRef.current;
-            container.scrollTo({
-                left: activeIndex * container.offsetWidth,
-                behavior: 'instant' as ScrollBehavior
-            });
+            // Delay slightly to allow layout to update after fullscreen change
+            setTimeout(() => {
+                container.scrollTo({
+                    left: activeIndex * container.offsetWidth,
+                    behavior: 'instant' as ScrollBehavior
+                });
+            }, 50);
         }
-    }, [isFullscreen, activeIndex]);
+    }, [isFullscreen]);
 
     // Handle button click - scroll to that image
     const handleVariantClick = (idx: number) => {
@@ -190,7 +193,7 @@ function ModelCard({ model }: ModelCardProps) {
                 >
                     {model.variants.map((variant, idx) => (
                         <div key={variant.id} className="relative flex-shrink-0 w-full h-full snap-center flex justify-center items-center">
-                            {isFullscreen && <div className="absolute inset-0 bg-black animate-pulse" />} {/* Prevents white flash while loading */}
+                            {isFullscreen && <div className="absolute inset-0 bg-black" />} {/* Prevents white flash while loading */}
                             <Image
                                 src={variant.image}
                                 alt={`${model.name} - ${variant.label}`}
