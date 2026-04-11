@@ -45,9 +45,9 @@ function ModelCard({ model }: ModelCardProps) {
                     if (fullscreenContainerRef.current.requestFullscreen) {
                         await fullscreenContainerRef.current.requestFullscreen();
                     }
-                    if (window.screen && window.screen.orientation && window.screen.orientation.lock) {
+                    if (window.screen && window.screen.orientation && (window.screen.orientation as any).lock) {
                         try {
-                            await window.screen.orientation.lock('landscape');
+                            await (window.screen.orientation as any).lock('landscape');
                         } catch (e) {
                             // Ignore orientation lock errors (e.g., unsupported or need user gesture)
                         }
@@ -60,9 +60,9 @@ function ModelCard({ model }: ModelCardProps) {
         } else {
             try {
                 if (document.fullscreenElement) {
-                    if (window.screen && window.screen.orientation && window.screen.orientation.unlock) {
+                    if (window.screen && window.screen.orientation && (window.screen.orientation as any).unlock) {
                         try {
-                            window.screen.orientation.unlock();
+                            (window.screen.orientation as any).unlock();
                         } catch (e) {}
                     }
                     if (document.exitFullscreen) {
@@ -80,9 +80,9 @@ function ModelCard({ model }: ModelCardProps) {
         const handleFullscreenChange = () => {
             if (!document.fullscreenElement) {
                 setIsFullscreen(false);
-                if (window.screen && window.screen.orientation && window.screen.orientation.unlock) {
+                if (window.screen && window.screen.orientation && (window.screen.orientation as any).unlock) {
                     try {
-                        window.screen.orientation.unlock();
+                        (window.screen.orientation as any).unlock();
                     } catch (e) {}
                 }
             }
