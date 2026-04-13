@@ -10,6 +10,7 @@ import * as Ai from "react-icons/ai";
 import * as Fa from "react-icons/fa";
 import * as Io5 from "react-icons/io5";
 import * as Lu from "react-icons/lu";
+import * as Pi from "react-icons/pi";
 
 interface Landmark {
     label: string;
@@ -35,6 +36,7 @@ export default function Landmarks({ landmarks }: LandmarksProps) {
         const AnyFa = Fa as any;
         const AnyIo5 = Io5 as any;
         const AnyLu = Lu as any;
+        const AnyPi = Pi as any;
 
         if (AnyFc[type]) { const Icon = AnyFc[type]; return <Icon size={22} />; }
         if (AnyGi[type]) { const Icon = AnyGi[type]; return <Icon size={22} />; }
@@ -45,6 +47,7 @@ export default function Landmarks({ landmarks }: LandmarksProps) {
         if (AnyFa[type]) { const Icon = AnyFa[type]; return <Icon size={22} />; }
         if (AnyIo5[type]) { const Icon = AnyIo5[type]; return <Icon size={22} />; }
         if (AnyLu[type]) { const Icon = AnyLu[type]; return <Icon size={22} />; }
+        if (AnyPi[type]) { const Icon = AnyPi[type]; return <Icon size={22} />; }
 
         switch (t) {
             case "school": 
@@ -63,6 +66,9 @@ export default function Landmarks({ landmarks }: LandmarksProps) {
             case "kesehatan":
             case "medical":
                 return <Fc.FcBusiness size={22} />;
+            case "park":
+            case "taman":
+                return <Pi.PiPark size={22} />;
             default: return <Fc.FcBusiness size={22} />;
         }
     };
