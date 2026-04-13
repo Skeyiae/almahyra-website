@@ -65,6 +65,10 @@ export default function SpecGrid({ specs }: SpecGridProps) {
             case "layout":
             case "tanah":
                 return <Fc.FcGrid size={22} />;
+            case "home":
+            case "bangunan":
+            case "building":
+                return <Fa.FaHome size={22} />;
             case "school":
             case "sekolah":
             case "education":
