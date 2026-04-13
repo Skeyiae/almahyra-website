@@ -77,7 +77,7 @@ function ModelCard({ model }: ModelCardProps) {
                 if (window.screen && window.screen.orientation && (window.screen.orientation as any).unlock) {
                     try {
                         (window.screen.orientation as any).unlock();
-                    } catch (e) {}
+                    } catch (e) { }
                 }
                 if (document.exitFullscreen) {
                     await document.exitFullscreen();
@@ -96,7 +96,7 @@ function ModelCard({ model }: ModelCardProps) {
                 if (window.screen && window.screen.orientation && (window.screen.orientation as any).unlock) {
                     try {
                         (window.screen.orientation as any).unlock();
-                    } catch (e) {}
+                    } catch (e) { }
                 }
             }
         };
@@ -121,18 +121,18 @@ function ModelCard({ model }: ModelCardProps) {
     // Handle button click - scroll to that image
     const handleVariantClick = (idx: number) => {
         if (!scrollRef.current) return;
-        
+
         isScrollingRef.current = true;
         setActiveIndex(idx);
-        
+
         const container = scrollRef.current;
         const targetScroll = idx * container.offsetWidth;
-        
+
         container.scrollTo({
             left: targetScroll,
             behavior: 'smooth'
         });
-        
+
         // Unlock auto-sync after animation
         setTimeout(() => {
             isScrollingRef.current = false;
@@ -142,11 +142,11 @@ function ModelCard({ model }: ModelCardProps) {
     // Auto-sync index on scroll
     const handleScroll = () => {
         if (isScrollingRef.current || !scrollRef.current) return;
-        
+
         const container = scrollRef.current;
         const scrollPosition = container.scrollLeft;
         const itemWidth = container.offsetWidth;
-        
+
         if (itemWidth > 0) {
             const newIndex = Math.round(scrollPosition / itemWidth);
             if (newIndex !== activeIndex && newIndex >= 0 && newIndex < model.variants.length) {
@@ -181,8 +181,8 @@ function ModelCard({ model }: ModelCardProps) {
             ref={cardRef}
         >
             {/* Image Viewer - Scroll Slider (Full width on mobile) */}
-            <div 
-                ref={fullscreenContainerRef} 
+            <div
+                ref={fullscreenContainerRef}
                 className={`relative ${isFullscreen ? 'bg-black w-full h-full flex flex-col justify-center items-center' : 'md:px-8 py-0 md:py-6'}`}
             >
                 {/* Fullscreen Toggle Buttons */}
@@ -190,7 +190,7 @@ function ModelCard({ model }: ModelCardProps) {
                     {isFullscreen ? (
                         <>
                             {fullscreenOrientation === 'landscape' && (
-                                <button 
+                                <button
                                     onClick={(e) => { e.stopPropagation(); requestFullscreen('portrait'); }}
                                     className="p-2 px-3 rounded-full bg-black/40 hover:bg-accent border border-white/20 text-white backdrop-blur-md transition-all flex items-center gap-1.5 md:text-sm text-xs"
                                     title="Ubah ke Portrait"
@@ -200,7 +200,7 @@ function ModelCard({ model }: ModelCardProps) {
                                 </button>
                             )}
                             {fullscreenOrientation === 'portrait' && (
-                                <button 
+                                <button
                                     onClick={(e) => { e.stopPropagation(); requestFullscreen('landscape'); }}
                                     className="p-2 px-3 rounded-full bg-black/40 hover:bg-accent border border-white/20 text-white backdrop-blur-md transition-all flex items-center gap-1.5 md:text-sm text-xs"
                                     title="Ubah ke Landscape"
@@ -209,7 +209,7 @@ function ModelCard({ model }: ModelCardProps) {
                                     <span className="hidden md:inline">Landscape</span>
                                 </button>
                             )}
-                            <button 
+                            <button
                                 onClick={(e) => { e.stopPropagation(); exitFullscreen(); }}
                                 className="p-2 rounded-full bg-black/40 hover:bg-red-500/80 border border-white/20 text-white backdrop-blur-md transition-all"
                                 title="Keluar Fullscreen"
@@ -219,14 +219,14 @@ function ModelCard({ model }: ModelCardProps) {
                         </>
                     ) : (
                         <>
-                            <button 
+                            <button
                                 onClick={(e) => { e.stopPropagation(); requestFullscreen('portrait'); }}
                                 className="p-2 rounded-full bg-black/40 hover:bg-accent border border-white/20 text-white backdrop-blur-md transition-all flex items-center gap-1.5 md:text-sm text-xs"
                                 title="Fullscreen Portrait"
                             >
                                 <Smartphone size={16} className="w-4 h-4 md:w-5 md:h-5" />
                             </button>
-                            <button 
+                            <button
                                 onClick={(e) => { e.stopPropagation(); requestFullscreen('landscape'); }}
                                 className="p-2 rounded-full bg-black/40 hover:bg-accent border border-white/20 text-white backdrop-blur-md transition-all flex items-center gap-1.5 md:text-sm text-xs"
                                 title="Fullscreen Landscape"
@@ -243,7 +243,7 @@ function ModelCard({ model }: ModelCardProps) {
                         {model.category}
                     </span>
                 </div>
-                <div 
+                <div
                     ref={scrollRef}
                     onScroll={handleScroll}
                     className={`relative flex overflow-x-auto snap-x snap-mandatory no-scrollbar shadow-lg ${isFullscreen ? 'w-full h-full items-center' : 'md:rounded-md aspect-[16/10] bg-background-secondary'}`}
@@ -365,20 +365,24 @@ export default function ModelConfigurator({
 
         // Helper to convert arrays of {label, url} to variants
         const buildVariants = (data: any, suffix: string, typeName: string) => {
-            if (!data || !Array.isArray(data)) return [];
-            return data.map((img: any, idx: number) => ({
+            let parsedData = data;
+            if (typeof data === 'string') {
+                try { parsedData = JSON.parse(data); } catch(e) {}
+            }
+            if (!parsedData || !Array.isArray(parsedData)) return [];
+            return parsedData.map((img: any, idx: number) => ({
                 id: `db-${suffix}-${idx}`,
                 label: img.label || `${typeName} - View ${idx + 1}`,
                 color: suffix === 'standard' ? "#f5f0e8" : "#8B6914",
-                image: img.url,
+                image: img.url || img.image || "",
                 category: typeName // Use typeName instead of Standard/Premium
-            }));
+            })).filter((v: any) => v.image);
         };
 
         // Find which unit types correspond to Standard and Premium images
         const standardUnit = units.find(u => (u.bedrooms === 2 || u.bedrooms === 1) || u.type?.includes("60/84") || u.type?.toLowerCase().includes("standard"));
         const premiumUnit = units.find(u => u.bedrooms === 3 || u.type?.includes("80/105") || u.type?.toLowerCase().includes("premium"));
-        
+
         const standardTypeName = standardUnit ? formatType(standardUnit) : "Standard";
         const premiumTypeName = premiumUnit ? formatType(premiumUnit) : "Premium";
 
@@ -400,7 +404,7 @@ export default function ModelConfigurator({
             }
         } else {
             // Otherwise, keep them separate but with correct type labels
-            if (standardUnit && standardVariants.length > 0) {
+            if (standardVariants.length > 0) {
                 models.push({
                     id: `db-model-standard-${activePropertyId}`,
                     propertyId: activePropertyId || "",
@@ -411,7 +415,7 @@ export default function ModelConfigurator({
                 });
             }
 
-            if (premiumUnit && premiumVariants.length > 0) {
+            if (premiumVariants.length > 0) {
                 models.push({
                     id: `db-model-premium-${activePropertyId}`,
                     propertyId: activePropertyId || "",
@@ -544,10 +548,9 @@ export default function ModelConfigurator({
                                             </td>
                                             <td className="px-6 py-4 font-body text-sm text-text-primary font-semibold">Rp {unit.price}</td>
                                             <td className="px-6 py-4">
-                                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                                                    unit.status === 'Available' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
-                                                    (unit.status === 'Booked' || unit.status === 'Booking') ? 'bg-yellow-400/10 text-yellow-400 border border-yellow-400/30' :
-                                                    'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${unit.status === 'Available' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                                                        (unit.status === 'Booked' || unit.status === 'Booking') ? 'bg-yellow-400/10 text-yellow-400 border border-yellow-400/30' :
+                                                            'bg-rose-500/10 text-rose-400 border border-rose-500/20'
                                                     }`}>
                                                     {unit.status}
                                                 </span>
@@ -577,12 +580,11 @@ export default function ModelConfigurator({
                                             <span className="text-[0.6rem] text-text-secondary font-black leading-tight truncate">Tipe {formatType(unit)} | {unit.bedrooms}KT {unit.bathrooms}KM</span>
                                         </div>
                                     </div>
-                                    
+
                                     <div className="flex items-center gap-2">
-                                        <span className={`inline-flex items-center px-1.5 py-0.5 rounded-sm text-[8px] font-black uppercase tracking-tighter ${
-                                            unit.status === 'Available' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
-                                            (unit.status === 'Booked' || unit.status === 'Booking') ? 'bg-yellow-400/10 text-yellow-400 border border-yellow-400/30' :
-                                            'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                                        <span className={`inline-flex items-center px-1.5 py-0.5 rounded-sm text-[8px] font-black uppercase tracking-tighter ${unit.status === 'Available' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                                                (unit.status === 'Booked' || unit.status === 'Booking') ? 'bg-yellow-400/10 text-yellow-400 border border-yellow-400/30' :
+                                                    'bg-rose-500/10 text-rose-400 border border-rose-500/20'
                                             }`}>
                                             {unit.status}
                                         </span>
@@ -598,11 +600,10 @@ export default function ModelConfigurator({
                                     <button
                                         onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))}
                                         disabled={currentPage === 0}
-                                        className={`group flex items-center justify-center w-12 h-12 rounded-full border transition-all duration-300 ${
-                                            currentPage === 0 
-                                            ? "opacity-20 cursor-not-allowed border-white/5" 
-                                            : "opacity-100 cursor-pointer border-white/10 bg-white/5 hover:border-accent/50 hover:bg-white/10 text-text-secondary hover:text-accent shadow-lg"
-                                        }`}
+                                        className={`group flex items-center justify-center w-12 h-12 rounded-full border transition-all duration-300 ${currentPage === 0
+                                                ? "opacity-20 cursor-not-allowed border-white/5"
+                                                : "opacity-100 cursor-pointer border-white/10 bg-white/5 hover:border-accent/50 hover:bg-white/10 text-text-secondary hover:text-accent shadow-lg"
+                                            }`}
                                         aria-label="Halaman Sebelumnya"
                                     >
                                         <svg className="w-5 h-5 transition-transform group-hover:-translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -622,11 +623,10 @@ export default function ModelConfigurator({
                                     <button
                                         onClick={() => setCurrentPage(prev => Math.min(totalPages - 1, prev + 1))}
                                         disabled={currentPage === totalPages - 1}
-                                        className={`group flex items-center justify-center w-12 h-12 rounded-full border transition-all duration-300 ${
-                                            currentPage === totalPages - 1 
-                                            ? "opacity-20 cursor-not-allowed border-white/5" 
-                                            : "opacity-100 cursor-pointer border-white/10 bg-white/5 hover:border-accent/50 hover:bg-white/10 text-text-secondary hover:text-accent shadow-lg"
-                                        }`}
+                                        className={`group flex items-center justify-center w-12 h-12 rounded-full border transition-all duration-300 ${currentPage === totalPages - 1
+                                                ? "opacity-20 cursor-not-allowed border-white/5"
+                                                : "opacity-100 cursor-pointer border-white/10 bg-white/5 hover:border-accent/50 hover:bg-white/10 text-text-secondary hover:text-accent shadow-lg"
+                                            }`}
                                         aria-label="Halaman Selanjutnya"
                                     >
                                         <svg className="w-5 h-5 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
