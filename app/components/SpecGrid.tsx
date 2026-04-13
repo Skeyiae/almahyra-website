@@ -10,6 +10,7 @@ import * as Ai from "react-icons/ai";
 import * as Fa from "react-icons/fa";
 import * as Io5 from "react-icons/io5";
 import * as Lu from "react-icons/lu";
+import * as Pi from "react-icons/pi";
 
 interface Spec {
     label: string;
@@ -33,6 +34,7 @@ export default function SpecGrid({ specs }: SpecGridProps) {
         const AnyFa = Fa as any;
         const AnyIo5 = Io5 as any;
         const AnyLu = Lu as any;
+        const AnyPi = Pi as any;
 
         // Mendukung input nama icon langsung dari Supabase
         if (AnyFc[type]) { const Icon = AnyFc[type]; return <Icon size={22} />; }
@@ -44,6 +46,7 @@ export default function SpecGrid({ specs }: SpecGridProps) {
         if (AnyFa[type]) { const Icon = AnyFa[type]; return <Icon size={22} />; }
         if (AnyIo5[type]) { const Icon = AnyIo5[type]; return <Icon size={22} />; }
         if (AnyLu[type]) { const Icon = AnyLu[type]; return <Icon size={22} />; }
+        if (AnyPi[type]) { const Icon = AnyPi[type]; return <Icon size={22} />; }
 
         switch (t) {
             case "bed":
@@ -78,6 +81,9 @@ export default function SpecGrid({ specs }: SpecGridProps) {
             case "kesehatan":
             case "medical":
                 return <Fc.FcBusiness size={22} />;
+            case "park":
+            case "taman":
+                return <Pi.PiPark size={22} />;
             default: return <Fc.FcPrivacy size={22} />;
         }
     };
