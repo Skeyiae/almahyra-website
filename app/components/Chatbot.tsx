@@ -3,16 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useMarketing } from "../context/MarketingContext";
 
-interface Unit {
-    id: string;
-    propertyId: string;
-    label: string | null;
-    type: string;
-    price: string;
-    status: string;
-    features: string[];
-}
-
 interface Message {
     id: string;
     text: string;
@@ -43,20 +33,10 @@ export default function Chatbot({
         },
     ]);
     const [inputValue, setInputValue] = useState("");
-    const [units, setUnits] = useState<Unit[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const { openMarketing } = useMarketing();
-
-    // Fetch units from Supabase ONLY when opened to save navigation performance
-    useEffect(() => {
-        if (isOpen && units.length === 0) {
-            fetch("/api/units")
-                .then(res => res.json())
-                .then(data => setUnits(data))
-                .catch(err => console.error("Failed to fetch units:", err));
-        }
-    }, [isOpen, units.length]);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -66,10 +46,10 @@ export default function Chatbot({
         if (isOpen) {
             scrollToBottom();
         }
-    }, [messages, isOpen]);
+    }, [messages, isOpen, isLoading]);
 
-    const handleSend = (text: string = inputValue) => {
-        if (!text.trim()) return;
+    const handleSend = async (text: string = inputValue) => {
+        if (!text.trim() || isLoading) return;
 
         const userMsg: Message = {
             id: Date.now().toString(),
@@ -78,86 +58,53 @@ export default function Chatbot({
             timestamp: new Date(),
         };
 
-        setMessages((prev) => [...prev, userMsg]);
+        const updatedMessages = [...messages, userMsg];
+        setMessages(updatedMessages);
         setInputValue("");
+        setIsLoading(true);
 
-        // Simple Bot Logic
-        setTimeout(() => {
-            processBotResponse(text.toLowerCase());
-        }, 600);
-    };
+        try {
+            const response = await fetch("/api/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    messages: updatedMessages.map(m => ({
+                        sender: m.sender,
+                        text: m.text
+                    })),
+                    propertyId
+                }),
+            });
 
-    const processBotResponse = (input: string) => {
-        let response = "";
-        const cleanInput = input.trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
+            const data = await response.json();
 
-        // Get units specifically for THIS property if propertyId is provided
-        const relevantUnits = propertyId ? units.filter(u => u.propertyId === propertyId) : units;
-
-        // 1. Cek apakah input adalah ID Unit atau Label spesifik (misal: A-01)
-        const matchedUnit = relevantUnits.find(u => {
-            const unitIdClean = u.id.toUpperCase().replace(/[^A-Z0-9]/g, "");
-            const unitLabelClean = u.label?.toUpperCase().replace(/[^A-Z0-9]/g, "");
-            return unitIdClean === cleanInput || unitLabelClean === cleanInput;
-        });
-
-        if (matchedUnit) {
-            const statusEmoji = matchedUnit.status === "Available" ? "✅" : matchedUnit.status === "Booked" ? "🟡" : "🔴";
-            const displayLabel = matchedUnit.label || matchedUnit.id;
-
-            response = `Baik! Berikut adalah detail untuk unit **${displayLabel}**:\n\n` +
-                `SPESIFIKASI|DETAIL\n` +
-                `Unit|${displayLabel}\n` +
-                `ID Sistem|${matchedUnit.id}\n` +
-                `Lokasi|${matchedUnit.propertyId}\n` +
-                `Tipe|${matchedUnit.type}\n` +
-                `Harga|Rp ${matchedUnit.price}\n` +
-                `Status|${statusEmoji} ${matchedUnit.status}\n` +
-                `Fasilitas|${matchedUnit.features.join(", ")}\n\n` +
-                `Apakah Anda tertarik untuk survey lokasi atau memesan unit ini? Anda bisa langsung chat Sales kami.`;
-        }
-        // 2. Cek keyword Harga
-        else if (input.includes("harga") || input.includes("price") || input.includes("biaya")) {
-            // Get prices for relevant units only
-            const minPrice = relevantUnits.length > 0 
-                ? [...relevantUnits].sort((a, b) => parseFloat(a.price.replace(/\D/g, "")) - parseFloat(b.price.replace(/\D/g, "")))[0].price 
-                : "Hubungi Sales";
-            
-            const displayTitle = propertyId ? propertyName : "Properti Kami";
-            const priceList = `${displayTitle}|Rp ${minPrice}`;
-
-            response = "Tentu! Berikut adalah daftar harga terbaru untuk " + (propertyName || "hunian kami") + ":\n\n" +
-                "PROPERTI|MULAI DARI\n" +
-                priceList + "\n\n" +
-                "Ketik ID unit (contoh: **A-01**) untuk melihat detail spesifikasinya.";
-        }
-        // 3. Cek keyword Unit Kosong
-        else if (input.includes("kosong") || input.includes("stok") || input.includes("ready") || input.includes("sisa")) {
-            const available = relevantUnits.filter(u => u.status === "Available").slice(0, 8);
-            if (available.length > 0) {
-                const list = available.map(u => `${u.label || u.id}|Tipe ${u.type}`).join("\n");
-                response = "Berikut adalah unit di **" + (propertyName || "lokasi ini") + "** yang masih **TERSEDIA**:\n\n" +
-                    "KAPLING|TIPE UNIT\n" +
-                    list + "\n\n" +
-                    "Ketik nomor kapling di atas (contoh: **A-01**) untuk melihat detail lengkapnya.";
+            if (response.ok && data.response) {
+                // Strip markdown bold asterisks (**) for a cleaner text presentation
+                const cleanText = data.response.replace(/\*\*/g, "");
+                const botMsg: Message = {
+                    id: (Date.now() + 1).toString(),
+                    text: cleanText,
+                    sender: "bot",
+                    timestamp: new Date(),
+                };
+                setMessages((prev) => [...prev, botMsg]);
             } else {
-                response = "Wah, sepertinya saat ini unit kami sedang penuh. Silakan hubungi Sales kami untuk info daftar tunggu (waitlist).";
+                throw new Error(data.error || "Gagal mendapatkan respons");
             }
+        } catch (error) {
+            console.error("Chat error:", error);
+            const errorMsg: Message = {
+                id: (Date.now() + 1).toString(),
+                text: "Maaf, saat ini asisten AI sedang sibuk atau ada gangguan koneksi. 🙏\n\nSilakan langsung klik tombol WhatsApp di bawah untuk menghubungi marketing kami.",
+                sender: "bot",
+                timestamp: new Date(),
+            };
+            setMessages((prev) => [...prev, errorMsg]);
+        } finally {
+            setIsLoading(false);
         }
-        // 4. Default
-        else {
-            response = "Maaf, saya belum mengenali perintah itu. 🙏\n\n" +
-                "Coba ketik **'Harga'**, **'Unit Kosong'**, atau langsung ketik ID unit yang ingin Anda ketahui (contoh: **A-01**).";
-        }
-
-        const botMsg: Message = {
-            id: (Date.now() + 1).toString(),
-            text: response,
-            sender: "bot",
-            timestamp: new Date(),
-        };
-
-        setMessages((prev) => [...prev, botMsg]);
     };
 
     const handleQuickAction = (action: string) => {
@@ -181,7 +128,7 @@ export default function Chatbot({
                                 <h3 className="text-background-primary font-display font-bold text-sm leading-tight">{propertyName} Assistant</h3>
                                 <div className="flex items-center gap-1.5">
                                     <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                                    <span className="text-[10px] text-background-primary/70 uppercase tracking-wider font-medium">Online</span>
+                                    <span className="text-[10px] text-background-primary/70 uppercase tracking-wider font-medium">AI Agent Online</span>
                                 </div>
                             </div>
                         </div>
@@ -197,8 +144,8 @@ export default function Chatbot({
                         {messages.map((msg) => (
                             <div key={msg.id} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
                                 <div className={`max-w-[90%] p-3 rounded-2xl text-sm ${msg.sender === "user"
-                                    ? "bg-accent text-background-primary rounded-tr-none"
-                                    : "bg-white/5 border border-white/10 text-text-primary rounded-tl-none"
+                                    ? "bg-accent text-background-primary rounded-tr-none font-medium"
+                                    : "bg-white/5 border border-white/10 text-text-primary rounded-tl-none font-light leading-relaxed"
                                     }`}>
                                     {/* Detect if it includes table data via '|' */}
                                     {msg.text.includes("|") ? (
@@ -248,18 +195,27 @@ export default function Chatbot({
                                 </div>
                             </div>
                         ))}
+                        {isLoading && (
+                            <div className="flex justify-start">
+                                <div className="bg-white/5 border border-white/10 text-text-primary px-4 py-3 rounded-2xl rounded-tl-none text-sm flex items-center gap-1.5">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-bounce" style={{ animationDelay: "0ms" }} />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-bounce" style={{ animationDelay: "150ms" }} />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-bounce" style={{ animationDelay: "300ms" }} />
+                                </div>
+                            </div>
+                        )}
                         <div ref={messagesEndRef} />
                     </div>
 
                     {/* Quick Actions */}
                     <div className="px-4 py-2 flex gap-2 overflow-x-auto no-scrollbar border-t border-border-glass">
-                        <button onClick={() => handleQuickAction("Cek Harga")} className="whitespace-nowrap px-3 py-1.5 bg-white/5 hover:bg-accent/20 border border-white/10 hover:border-accent/30 rounded-full text-[11px] text-text-secondary transition-all">
+                        <button onClick={() => handleQuickAction("Daftar Harga Unit")} className="whitespace-nowrap px-3 py-1.5 bg-white/5 hover:bg-accent/20 border border-white/10 hover:border-accent/30 rounded-full text-[11px] text-text-secondary transition-all">
                             💰 Cek Harga
                         </button>
-                        <button onClick={() => handleQuickAction("Unit Kosong")} className="whitespace-nowrap px-3 py-1.5 bg-white/5 hover:bg-accent/20 border border-white/10 hover:border-accent/30 rounded-full text-[11px] text-text-secondary transition-all">
+                        <button onClick={() => handleQuickAction("Unit Kosong yang Tersedia")} className="whitespace-nowrap px-3 py-1.5 bg-white/5 hover:bg-accent/20 border border-white/10 hover:border-accent/30 rounded-full text-[11px] text-text-secondary transition-all">
                             🏠 Unit Kosong
                         </button>
-                        <button onClick={openMarketing} className="whitespace-nowrap px-3 py-1.5 bg-green-500/10 hover:bg-green-500/20 border border-green-500/20 rounded-full text-[11px] text-green-400 transition-all">
+                        <button onClick={openMarketing} className="whitespace-nowrap px-3 py-1.5 bg-green-500/10 hover:bg-green-500/20 border border-green-500/20 rounded-full text-[11px] text-green-400 transition-all font-medium">
                             📞 Hubungi Marketing
                         </button>
                     </div>
@@ -272,9 +228,10 @@ export default function Chatbot({
                                 value={inputValue}
                                 onChange={(e) => setInputValue(e.target.value)}
                                 placeholder="Tulis pesan..."
-                                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-text-primary focus:outline-none focus:border-accent/50 transition-colors"
+                                disabled={isLoading}
+                                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-text-primary focus:outline-none focus:border-accent/50 transition-colors disabled:opacity-50"
                             />
-                            <button type="submit" className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center text-background-primary hover:bg-accent-light transition-colors shadow-[0_0_15px_var(--accent-glow-subtle)]">
+                            <button type="submit" disabled={isLoading || !inputValue.trim()} className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center text-background-primary hover:bg-accent-light transition-colors shadow-[0_0_15px_var(--accent-glow-subtle)] disabled:opacity-50 disabled:cursor-not-allowed">
                                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                                 </svg>
